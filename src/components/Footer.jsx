@@ -41,58 +41,70 @@ export const Footer = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="relative w-full bg-[#fafafa] text-[#111] border-t border-[#e5e5e5] px-6 pt-16 pb-8 overflow-hidden font-inter">
+    <footer className="relative w-full bg-[#020202] text-white border-t border-white/10 overflow-hidden font-inter">
+      {/* Grid background */}
+      <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
+
+      {/* Giant watermark */}
       <div aria-hidden className="pointer-events-none select-none absolute inset-0 flex items-center justify-center">
-        <span className="block text-center font-display font-extrabold leading-[0.85] text-[15vw] md:text-[10rem] text-transparent [-webkit-text-stroke:1.5px_rgba(17,17,17,0.07)] whitespace-nowrap">
+        <span className="block text-center font-display font-extrabold leading-[0.85] text-[15vw] md:text-[10rem] text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,0.05)] whitespace-nowrap">
           <span className="block">SHAH</span>
           <span className="block">DHAIRYA</span>
         </span>
       </div>
 
-      <div className="relative max-w-7xl mx-auto z-10">
-        <div className="relative overflow-hidden px-8 py-10 md:px-14 md:py-12 flex flex-col md:flex-row md:items-center justify-between gap-8">
+      {/* Orange glow */}
+      <div className="absolute top-0 right-1/4 w-[500px] h-[250px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] blur-[100px] opacity-15 pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto z-10 px-6">
+        {/* ─── Top CTA Banner ─── */}
+        <div className="relative overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 px-8 py-10 md:px-14 md:py-12 mt-12">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#bf4417]/50 to-transparent" />
           <div className="absolute -top-28 -right-24 w-80 h-80 rounded-full bg-[radial-gradient(#bf4417_0%,transparent_70%)] blur-[80px] opacity-20 pointer-events-none" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-px bg-gradient-to-r from-transparent via-[#bf4417]/50 to-transparent pointer-events-none" />
 
-          <div className="relative z-10">
-            <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-[#bf4417] border border-[#bf4417]/40 bg-[#bf4417]/10 px-3 py-1 rounded-md">
-              <Code2 size={13} />
-              Open for work
-            </span>
-            <h2 className="mt-4 text-2xl md:text-4xl font-extrabold font-syne tracking-tight leading-tight">
-              Have an idea?{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] via-[#ea580c] to-[#991b1b]">
-                Let&apos;s build it.
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 relative z-10">
+            <div>
+              <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-[#bf4417] border border-[#bf4417]/30 bg-[#bf4417]/10 px-3 py-1 rounded-md">
+                <Code2 size={13} />
+                Open for work
               </span>
-            </h2>
-            <p className="mt-3 text-sm md:text-base text-[#666] max-w-md font-normal">
-              Open to freelance projects, collaborations, and new opportunities —
-              let&apos;s turn your vision into a product.
-            </p>
-          </div>
+              <h2 className="mt-4 text-2xl md:text-4xl font-extrabold font-syne tracking-tight leading-tight">
+                Have an idea?{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff9a4d] via-[#ea580c] to-[#991b1b]">
+                  Let&apos;s build it.
+                </span>
+              </h2>
+              <p className="mt-3 text-sm md:text-base text-white/55 max-w-md font-light leading-relaxed">
+                Open to freelance projects, collaborations, and new opportunities —
+                let&apos;s turn your vision into a product.
+              </p>
+            </div>
 
-          <Link
-            to="/contact"
-            className="relative z-10 group inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] hover:shadow-[0_0_35px_rgba(191,68,23,0.5)] transition-all duration-300 shrink-0"
-          >
-            <span>Let&apos;s Talk</span>
-            <ArrowUpRight
-              size={16}
-              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </Link>
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] hover:shadow-[0_0_35px_rgba(191,68,23,0.5)] transition-all duration-300 shrink-0"
+            >
+              <span>Let&apos;s Talk</span>
+              <ArrowUpRight
+                size={16}
+                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </Link>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pt-14">
+        {/* ─── Main Grid ─── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pt-16 pb-12">
+          {/* Brand Column */}
           <div className="lg:col-span-4 space-y-5">
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-extrabold font-syne text-[#111] tracking-tight">
+              <span className="text-2xl font-extrabold font-syne text-white tracking-tight">
                 Shah Dhairya
               </span>
               <span className="w-2 h-2 rounded-full bg-[#c2410c] animate-pulse" />
             </div>
 
-            <p className="text-sm text-[#555] leading-relaxed max-w-sm">
+            <p className="text-sm text-white/50 leading-relaxed max-w-sm font-light">
               Full-Stack Developer &amp; Digital Architect building performant,
               clean, and modern web applications with React, PHP, Python, and
               Node.js.
@@ -104,7 +116,7 @@ export const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="flex items-center justify-center w-9 h-9 rounded-lg bg-white border border-[#e5e5e5] text-[#444] hover:text-white hover:bg-[#111] hover:border-[#111] hover:-translate-y-0.5 transition-all duration-200"
+                className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <Github size={16} />
               </a>
@@ -113,14 +125,14 @@ export const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="flex items-center justify-center w-9 h-9 rounded-lg bg-white border border-[#e5e5e5] text-[#444] hover:text-white hover:bg-[#0077b5] hover:border-[#0077b5] hover:-translate-y-0.5 transition-all duration-200"
+                className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-blue-400 hover:bg-blue-500/10 hover:border-blue-400/30 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <Linkedin size={16} />
               </a>
               <a
                 href={`mailto:${identity.email}`}
                 aria-label="Email"
-                className="flex items-center justify-center w-9 h-9 rounded-lg bg-white border border-[#e5e5e5] text-[#444] hover:text-white hover:bg-[#c2410c] hover:border-[#c2410c] hover:-translate-y-0.5 transition-all duration-200"
+                className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-[#bf4417] hover:bg-[#bf4417]/10 hover:border-[#bf4417]/30 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <Mail size={16} />
               </a>
@@ -129,15 +141,16 @@ export const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
-                className="flex items-center justify-center w-9 h-9 rounded-lg bg-white border border-[#e5e5e5] text-[#444] hover:text-white hover:bg-emerald-600 hover:border-emerald-600 hover:-translate-y-0.5 transition-all duration-200"
+                className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-400/30 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <MessageSquare size={16} />
               </a>
             </div>
           </div>
 
+          {/* Navigation Column */}
           <div className="lg:col-span-3 space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-[#777] font-syne">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 font-syne">
               Navigation
             </h3>
             <ul className="space-y-2.5 text-sm font-medium">
@@ -145,9 +158,9 @@ export const Footer = () => {
                 <li key={l.path}>
                   <Link
                     to={l.path}
-                    className="group inline-flex items-center gap-2 text-[#444] hover:text-[#c2410c] transition-colors duration-200"
+                    className="group inline-flex items-center gap-2 text-white/55 hover:text-[#bf4417] transition-colors duration-200"
                   >
-                    <span className="font-mono text-[10px] text-[#c2410c] opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="font-mono text-[10px] text-[#bf4417] opacity-0 group-hover:opacity-100 transition-opacity">
                       0{i + 1}
                     </span>
                     {l.name}
@@ -157,32 +170,33 @@ export const Footer = () => {
             </ul>
           </div>
 
+          {/* Contact Cards Column */}
           <div className="lg:col-span-5 space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-[#777] font-syne">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 font-syne">
               Get in Touch
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <a
                 href={`mailto:${identity.email}`}
-                className="group flex items-center justify-between p-3.5 bg-white rounded-xl border border-[#e5e5e5] hover:border-[#c2410c]/40 hover:shadow-sm transition-all duration-200"
+                className="group flex items-center justify-between p-3.5 bg-white/[0.03] rounded-xl border border-white/10 hover:border-[#bf4417]/40 hover:bg-white/[0.06] transition-all duration-200"
               >
                 <div className="flex items-center gap-3 overflow-hidden">
-                  <div className="p-2 rounded-lg bg-orange-50 text-[#c2410c]">
+                  <div className="p-2 rounded-lg bg-[#bf4417]/10 border border-[#bf4417]/30 text-[#bf4417]">
                     <Mail size={18} />
                   </div>
                   <div className="flex flex-col truncate">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#888]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-white/40">
                       Email
                     </span>
-                    <span className="text-xs font-medium text-[#111] truncate">
+                    <span className="text-xs font-medium text-white/80 truncate">
                       {identity.email}
                     </span>
                   </div>
                 </div>
                 <ArrowUpRight
                   size={16}
-                  className="text-[#888] group-hover:text-[#c2410c] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 flex-shrink-0 ml-1"
+                  className="text-white/30 group-hover:text-[#bf4417] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 flex-shrink-0 ml-1"
                 />
               </a>
 
@@ -190,24 +204,24 @@ export const Footer = () => {
                 href={`https://wa.me/${waNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between p-3.5 bg-white rounded-xl border border-[#e5e5e5] hover:border-[#c2410c]/40 hover:shadow-sm transition-all duration-200"
+                className="group flex items-center justify-between p-3.5 bg-white/[0.03] rounded-xl border border-white/10 hover:border-emerald-400/40 hover:bg-white/[0.06] transition-all duration-200"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600">
+                  <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
                     <MessageSquare size={18} />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#888]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-white/40">
                       WhatsApp
                     </span>
-                    <span className="text-xs font-medium text-[#111]">
+                    <span className="text-xs font-medium text-white/80">
                       {identity.phone}
                     </span>
                   </div>
                 </div>
                 <ArrowUpRight
                   size={16}
-                  className="text-[#888] group-hover:text-[#c2410c] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 flex-shrink-0"
+                  className="text-white/30 group-hover:text-emerald-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 flex-shrink-0"
                 />
               </a>
 
@@ -215,24 +229,24 @@ export const Footer = () => {
                 href={socials[0]?.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between p-3.5 bg-white rounded-xl border border-[#e5e5e5] hover:border-[#111] hover:shadow-sm transition-all duration-200"
+                className="group flex items-center justify-between p-3.5 bg-white/[0.03] rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/[0.06] transition-all duration-200"
               >
                 <div className="flex items-center gap-3 truncate">
-                  <div className="p-2 rounded-lg bg-gray-100 text-[#111]">
+                  <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-white/70">
                     <Github size={18} />
                   </div>
                   <div className="flex flex-col truncate">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#888]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-white/40">
                       GitHub
                     </span>
-                    <span className="text-xs font-medium text-[#111] truncate">
+                    <span className="text-xs font-medium text-white/80 truncate">
                       github.com/shahdhairyah
                     </span>
                   </div>
                 </div>
                 <ArrowUpRight
                   size={16}
-                  className="text-[#888] group-hover:text-[#111] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 flex-shrink-0 ml-1"
+                  className="text-white/30 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 flex-shrink-0 ml-1"
                 />
               </a>
 
@@ -240,37 +254,38 @@ export const Footer = () => {
                 href={socials[1]?.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between p-3.5 bg-white rounded-xl border border-[#e5e5e5] hover:border-[#0077b5]/40 hover:shadow-sm transition-all duration-200"
+                className="group flex items-center justify-between p-3.5 bg-white/[0.03] rounded-xl border border-white/10 hover:border-blue-400/40 hover:bg-white/[0.06] transition-all duration-200"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-blue-50 text-[#0077b5]">
+                  <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400">
                     <Linkedin size={18} />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#888]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-white/40">
                       LinkedIn
                     </span>
-                    <span className="text-xs font-medium text-[#111]">
+                    <span className="text-xs font-medium text-white/80">
                       Dhairya Shah
                     </span>
                   </div>
                 </div>
                 <ArrowUpRight
                   size={16}
-                  className="text-[#888] group-hover:text-[#0077b5] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 flex-shrink-0"
+                  className="text-white/30 group-hover:text-blue-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 flex-shrink-0"
                 />
               </a>
             </div>
           </div>
         </div>
 
-        <div className="mt-2 border-t border-[#eaeaea]" />
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#777] pt-2 relative">          
+        {/* ─── Bottom Bar ─── */}
+        <div className="border-t border-white/10" />
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/35 pt-6 pb-8 relative">
           <p>© {year} Shah Dhairya. All rights reserved.</p>
           <button
             onClick={scrollToTop}
             aria-label="Back to top"
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-[#e5e5e5] hover:border-[#c2410c]/50 hover:text-[#c2410c] font-medium transition-all duration-200"
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-[#bf4417]/40 hover:text-[#bf4417] font-medium transition-all duration-200"
           >
             <span>Back to top</span>
             <ArrowUp
