@@ -171,6 +171,7 @@ const ProfileSection = () => {
             className="lg:col-span-5"
           >
             <div className="relative mx-auto w-full max-w-sm">
+              <div className="absolute -inset-6 bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-15 blur-[40px] pointer-events-none" />
               <span
                 aria-hidden
                 className="absolute -top-3 -left-3 h-10 w-10 border-t-2 border-l-2 border-[#bf4417]"
@@ -180,9 +181,9 @@ const ProfileSection = () => {
                 className="absolute -bottom-3 -right-3 h-10 w-10 border-b-2 border-r-2 border-[#bf4417]"
               />
 
-              <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-2 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] p-2 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
                 <img
-                  src="/passport-cutout.png"
+                  src="/passport.png"
                   alt="Portrait of Shah Dhairya"
                   className="aspect-[4/5] w-full rounded-xl object-cover object-top"
                   loading="eager"
