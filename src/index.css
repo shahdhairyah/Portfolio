@@ -311,6 +311,17 @@
   margin: 0 auto;
 }
 
+/* ── Navbar creative animations ── */
+@keyframes navbar-border-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes navbar-orbit {
+  0%   { transform: rotate(0deg)   translateX(18px) rotate(0deg);   }
+  100% { transform: rotate(360deg) translateX(18px) rotate(-360deg); }
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   html {

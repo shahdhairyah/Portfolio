@@ -1,5 +1,66 @@
 export const projects = [
   {
+    id: 4,
+    slug: "adit-cms",
+    title: "ADIT CMS Platform",
+    category: "Web Application",
+    year: "2026",
+    role: "Full-Stack Developer",
+    status: "Live",
+    image: "/images/projects/ADITCMS/cover.png",
+    coverPosition: "center 01%",
+    tagline:
+      "A full-stack content management system built for ADIT — a role-aware platform for managing departments, events, notices, gallery, and placements, replacing static pages with a dynamic, admin-controlled experience.",
+    stack: ["React", "PHP", "MySQL", "Bootstrap", "REST API"],
+    githubUrl: "https://github.com/shahdhairyah/ADITCMS",
+    demoUrl: "https://adit.shahdhairyah.in/",
+    featured: true,
+    stats: [
+      { value: "Full-stack", label: "Architecture" },
+      { value: "Role-based", label: "Access Control" },
+      { value: "Dynamic", label: "Content Mgmt" },
+      { value: "Live", label: "In Production" },
+    ],
+    problemTitle: "Static Website, Zero Admin Control",
+    problem:
+      "The institution's website was static HTML — every update needed a developer. Departments had no way to publish events, notices, or gallery updates on their own, and content stayed outdated for weeks.",
+    solutionTitle: "Dynamic CMS with Role-Based Admin Panel",
+    solutionIntro:
+      "Built a React-powered front end with a PHP REST API backend and MySQL database, giving admins and department heads a clean dashboard to manage every section of the site in real time.",
+    solutionPoints: [
+      "React front end with Bootstrap for a responsive, fast interface",
+      "PHP REST API backend with MySQL for reliable data management",
+      "Role-based access — admins and department heads see different dashboards",
+      "Dynamic content sections: events, notices, gallery, placements",
+      "Real-time content updates without touching code",
+    ],
+    capabilities: [
+      "Role-Based Access",
+      "Content Management",
+      "REST API Backend",
+      "Dynamic Pages",
+      "Event & Notice Publishing",
+      "Gallery Management",
+    ],
+    challenges: [
+      {
+        title: "Migrating Static to Dynamic",
+        detail:
+          "Replaced hardcoded HTML pages with a component-driven React front end while keeping the existing design language intact during the transition.",
+      },
+      {
+        title: "API Design for Multiple Content Types",
+        detail:
+          "Designed a clean PHP REST API surface that handles events, notices, gallery, and placement data through consistent endpoints with proper validation.",
+      },
+      {
+        title: "Role-Based Security",
+        detail:
+          "Implemented session-based auth with role middleware so department heads only manage their own sections while admins oversee everything.",
+      },
+    ],
+  },
+  {
     id: 1,
     slug: "centralized-dashboard",
     title: "Centralized Dashboard",
@@ -7,13 +68,13 @@ export const projects = [
     year: "2026",
     role: "Full-Stack Developer",
     status: "Live",
-    image: "/images/projects/project1.png",
+    image: "/images/projects/CD/cover.png",
     tagline:
       "A unified operations platform for a multi-department institution, aggregating attendance, performance, and administrative data into one real-time, role-aware dashboard. Replaced scattered spreadsheets with a single live source of truth for leadership and HODs.",
     stack: ["PHP", "MySQL", "Bootstrap", "jQuery", "Ajax"],
     githubUrl: "",
-    demoUrl: "https://tm00030.zya.me",
-    featured: true,
+    demoUrl: "https://tm000030.zya.me",
+    featured: false,
     stats: [
       { value: "5+", label: "Departments" },
       { value: "Real-time", label: "Analytics" },
@@ -61,132 +122,13 @@ export const projects = [
   },
   {
     id: 2,
-    slug: "ai-fruit-ninja",
-    title: "AI Fruit Ninja",
-    category: "AI / Computer Vision",
-    year: "2026",
-    role: "Developer & Researcher",
-    status: "Live",
-    image: "/images/projects/project2.png",
-    tagline:
-      "A computer-vision arcade experience where your hand becomes the controller. Using a webcam and 21-point hand tracking, players slice virtual fruit in real time — with zero extra hardware.",
-    stack: ["Python", "OpenCV", "MediaPipe", "PyGame"],
-    githubUrl: "https://github.com/shahdhairya12/fruit_ninja_python_game/",
-    demoUrl: "",
-    featured: true,
-    stats: [
-      { value: "30fps", label: "Tracking" },
-      { value: "21", label: "Hand points" },
-      { value: "0", label: "Extra hardware" },
-      { value: "100%", label: "Webcam driven" },
-    ],
-    problemTitle: "Gesture Games Need Expensive Controllers",
-    problem:
-      "Traditional gesture-based games require dedicated sensors or costly controllers. Building a responsive, gesture-controlled game using only a standard webcam — fast enough to feel natural — was the real engineering challenge.",
-    solutionTitle: "MediaPipe Tracking + Custom Slicing Engine",
-    solutionIntro:
-      "Combined MediaPipe hand landmarks with a custom slicing engine in Python, rendering the game in real time with PyGame at roughly 30fps.",
-    solutionPoints: [
-      "21-point hand landmark detection for precise gesture mapping",
-      "Real-time slicing detection with combo scoring",
-      "Runs entirely on the webcam feed — no controllers needed",
-      "Optimized render loop tuned to hold ~30fps on modest hardware",
-    ],
-    capabilities: [
-      "Gesture Controls",
-      "Real-Time Tracking",
-      "Combo Scoring",
-      "No Hardware Required",
-      "Webcam Powered",
-      "Python Pipeline",
-    ],
-    challenges: [
-      {
-        title: "Latency Between Detection and Gameplay",
-        detail:
-          "Mapped wrist-to-fingertip motion into game-space slicing logic and tuned the MediaPipe-to-PyGame pipeline to minimize perception delay.",
-      },
-      {
-        title: "Accurate Slice Hit Detection",
-        detail:
-          "Iterated on hit-detection algorithms and scoring during live playtesting until slicing felt precise and fair.",
-      },
-      {
-        title: "Performance on Low-End Devices",
-        detail:
-          "Reduced per-frame image processing and capped resolutions so the game stays smooth on ordinary webcams and laptops.",
-      },
-    ],
-  },
-  {
-    id: 3,
-    slug: "otp-verification-system",
-    title: "OTP Verification System",
-    category: "Security / Web",
-    year: "2026",
-    role: "Backend Developer",
-    status: "Live",
-    image: "/images/projects/project3.png",
-    tagline:
-      "A production-style authentication module with email OTP verification and a complete password-reset flow — designed to be dropped into any PHP application without third-party services.",
-    stack: ["PHP", "MySQL", "PHPMailer", "Bootstrap"],
-    githubUrl: "",
-    demoUrl: "",
-    featured: false,
-    stats: [
-      { value: "6-digit", label: "OTP" },
-      { value: "3-step", label: "Verify flow" },
-      { value: "Encrypted", label: "Storage" },
-      { value: "0", label: "Third-party" },
-    ],
-    problemTitle: "Weak Authentication & Manual Password Flows",
-    problem:
-      "Basic authentication and manual password flows left accounts exposed. The goal was a self-contained, reusable auth system with verified email sign-ups and safe password recovery — with no external services.",
-    solutionTitle: "Self-Hosted PHP Auth Module",
-    solutionIntro:
-      "Engineered a complete PHP auth flow — OTP generation, expiry, verification, and reset tokens — with secure hashing, session management, and abuse protection.",
-    solutionPoints: [
-      "6-digit email OTP with expiry and resend safeguards",
-      "Secure password hashing and session management",
-      "Forgot-password flow with one-time reset tokens",
-      "Rate limiting to stop replay and brute-force attempts",
-      "Responsive Bootstrap UI for a smooth user journey",
-    ],
-    capabilities: [
-      "Email OTP Verification",
-      "Password Reset",
-      "Session Management",
-      "Rate Limiting",
-      "Secure Hashing",
-      "Reusable Module",
-    ],
-    challenges: [
-      {
-        title: "Token Lifecycle & Expiry",
-        detail:
-          "Modeled OTP and reset-token tables with strict expiry windows so codes can never be reused after their lifetime ends.",
-      },
-      {
-        title: "Email Delivery Without External Services",
-        detail:
-          "Integrated PHPMailer for transactional email while keeping the module fully self-hosted and free to run.",
-      },
-      {
-        title: "Hardening Against Abuse",
-        detail:
-          "Added rate limiting and validation on every endpoint to defend against replay, brute-force, and token leakage.",
-      },
-    ],
-  },
-  {
-    id: 4,
     slug: "smart-home-system",
     title: "Smart Home System",
     category: "IoT / Hardware",
     year: "2026",
     role: "Hardware & Software",
     status: "Live",
-    image: "/images/projects/project4.png",
+    image: "/images/projects/smart-iot/cover.webp",
     tagline:
       "A low-cost IoT home automation system. An ESP8266 WiFi module connects household appliances to a simple web interface for instant remote control — affordable, safe, and expandable.",
     stack: ["Arduino", "C++", "ESP8266", "IoT"],
@@ -238,14 +180,14 @@ export const projects = [
     ],
   },
   {
-    id: 5,
+    id: 3,
     slug: "weather-application",
     title: "Weather Application",
     category: "Web Application",
     year: "2026",
     role: "Frontend Developer",
     status: "Live",
-    image: "/images/projects/project5.png",
+    image: "/images/projects/weather/cover.webp",
     tagline:
       "A real-time weather application that turns live API data into a clean, glanceable forecast — current conditions plus a multi-day outlook in a refined, responsive interface.",
     stack: ["HTML", "CSS", "JavaScript", "REST API"],

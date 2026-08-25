@@ -13,7 +13,7 @@ export const identity = {
 };
 
 export const stats = [
-  { value: "7+", label: "Projects" },
+  { value: "4+", label: "Projects" },
   { value: "3+", label: "Years" },
   { value: "2", label: "Hackathon wins" },
   { value: "15+", label: "Technologies" },
@@ -45,11 +45,11 @@ export const philosophy = [
 ];
 
 export const timeline = [
-  { year: "2021", title: "First C Program", desc: "Discovered the satisfaction of turning logic into action." },
-  { year: "2022", title: "HTML & CSS", desc: "Entered web development — building structure and style." },
-  { year: "2023", title: "Diploma in Computer Engineering", desc: "Formal foundation in algorithms, databases, and systems." },
-  { year: "2024", title: "JavaScript & React", desc: "Modern frontend — components, state, and interactivity." },
-  { year: "Now", title: "Full-Stack & AI", desc: "Building full-stack apps, exploring gesture recognition and ML." },
+  { year: "2021", title: "Started Coding Journey", desc: "Discovered programming — the spark that turned curiosity into craft." },
+  { year: "2023", title: "10th Completed", desc: "Finished 10th standard — the first academic milestone." },
+  { year: "2023", title: "Diploma in Computer Engineering", desc: "Began Diploma at BBIT, CVM University & Gujarat Technical University." },
+  { year: "2026", title: "Diploma Completed — 7.90 CGPA", desc: "Graduated with a 7.90 CGPA." },
+  { year: "2026", title: "B.Tech Computer Eng at ADIT, CVM", desc: "Started B.Tech — advancing into full-stack and AI." },
 ];
 
 export const roles = [

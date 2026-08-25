@@ -37,7 +37,7 @@ const KB = {
     title: "Shah Dhairya",
     body: `Also known as **Dhairya Shah** — a **Full-Stack Developer & Digital Architect** based in **Gujarat, India**. I build end-to-end web applications with precision and design thinking.\n\n*Crafting digital experiences with precision, purpose, and restraint.*`,
     bullets: [
-      "Full-Stack Developer with **3+ years** of experience",
+      "Full-Stack Developer with **4+ years** of experience",
       "Specializes in **React, PHP, Python, Node.js**",
       "Hackathon competitor — **4th place** in my sector (SSIP 2025)",
       "Passionate about **AI, IoT, and intelligent interfaces**",
@@ -58,15 +58,14 @@ const KB = {
   projects: {
     keywords: ["project", "work", "portfolio", "built", "made", "build", "creation", "case", "demo", "what have you built"],
     title: "Projects",
-    body: "I've shipped **7+ projects** across web apps, AI/computer vision, IoT, and security systems:",
+    body: "I've shipped **4+ projects** across web apps, IoT, and more:",
     cards: [
+      { name: "ADIT CMS Platform", tech: "React, PHP, MySQL, Bootstrap", desc: "Full-stack CMS with role-based admin panel for dynamic content management." },
       { name: "Centralized Dashboard", tech: "PHP, MySQL, Bootstrap, jQuery", desc: "Institutional analytics & management dashboard with real-time reports." },
-      { name: "AI Fruit Ninja", tech: "Python, OpenCV, MediaPipe, PyGame", desc: "Gesture-controlled game — 21 hand points tracked at 30fps." },
-      { name: "OTP Verification System", tech: "PHP, MySQL, PHPMailer", desc: "Secure auth with email OTP & encrypted password reset flow." },
       { name: "Smart Home System", tech: "Arduino, C++, ESP8266, IoT", desc: "WiFi-connected home automation controlling 4+ appliances." },
       { name: "Weather Application", tech: "HTML, CSS, JavaScript, Weather API", desc: "Real-time weather with 5-day forecast & clean UI." },
     ],
-    followUp: ["Tell me about AI Fruit Ninja", "Centralized Dashboard", "Smart Home System"],
+    followUp: ["Tell me about ADIT CMS", "Smart Home", "Tech stack"],
   },
   dashboard: {
     keywords: ["dashboard", "hod", "centralized", "institutional", "analytics", "department", "reports"],
@@ -79,31 +78,6 @@ const KB = {
     ],
     tags: ["PHP", "MySQL", "Bootstrap 5", "jQuery"],
     status: "Live",
-    followUp: ["More projects", "AI Fruit Ninja", "Tech stack"],
-  },
-  "fruit-ninja": {
-    keywords: ["fruit", "ninja", "ai", "computer", "vision", "gesture", "opencv", "mediapipe", "game", "hand"],
-    title: "AI Fruit Ninja",
-    body: "A gesture-controlled game where **your hand is the controller** — slice virtual fruit using just a webcam.",
-    bullets: [
-      "21 hand landmarks tracked at **30fps** using MediaPipe",
-      "Real-time gesture recognition with OpenCV",
-      "No additional hardware required — just a webcam",
-    ],
-    tags: ["Python", "OpenCV", "MediaPipe", "PyGame"],
-    link: { label: "View on GitHub", url: "https://github.com/shahdhairya12/fruit_ninja_python_game/" },
-    followUp: ["More projects", "OTP System", "Smart Home"],
-  },
-  otp: {
-    keywords: ["otp", "verification", "authentication", "login", "password", "security", "auth", "register"],
-    title: "OTP Verification System",
-    body: "A **production-ready** authentication system with email OTP verification and secure password management.",
-    bullets: [
-      "6-digit OTP sent via email using PHPMailer",
-      "Encrypted storage for OTPs and user data",
-      "Secure password reset with session management",
-    ],
-    tags: ["PHP", "MySQL", "PHPMailer", "Bootstrap"],
     followUp: ["More projects", "Smart Home", "Tech stack"],
   },
   "smart-home": {
@@ -139,7 +113,7 @@ const KB = {
       { name: "CVMU Hackathon 2025 — Top 181 Selection", desc: "**36+ hours** live code at CVMU Hackathon 2025 — **selected** in the **top 181 teams**. (2025)" },
     ],
     stats: [
-      { value: "7+", label: "Projects" },
+      { value: "4+", label: "Projects" },
       { value: "3+", label: "Years" },
       { value: "2", label: "Hackathons" },
       { value: "15+", label: "Technologies" },
@@ -151,13 +125,13 @@ const KB = {
     title: "My Journey",
     body: "From a single line of C to full-stack applications — here's how it unfolded:",
     timeline: [
-      { year: "2021", event: "First C Program — curiosity ignited" },
-      { year: "2022", event: "HTML & CSS — discovered web development" },
-      { year: "2023", event: "Diploma in Computer Engineering" },
-      { year: "2024", event: "JavaScript & React — modern frontend" },
-      { year: "Now", event: "Full-Stack & AI — building intelligent systems" },
+      { year: "2021", event: "Started Coding Journey — curiosity ignited" },
+      { year: "2023", event: "10th Completed" },
+      { year: "2023", event: "Diploma in Computer Engineering at BBIT, CVM & Gujarat Technical University" },
+      { year: "2026", event: "Diploma Completed — 7.90 CGPA" },
+      { year: "2026", event: "B.Tech Computer Eng at ADIT, CVM — started" },
     ],
-    body2: "Each phase taught me something different. Today I'm exploring **AI, gesture recognition, and intelligent interfaces**.",
+    body2: "Each phase taught me something different. Today I'm pursuing **B.Tech in Computer Engineering** while building full-stack applications and exploring AI.",
     followUp: ["Philosophy", "Skills", "Achievements"],
   },
   philosophy: {
@@ -240,7 +214,7 @@ const KB = {
     bullets: [
       "**REST API design** — clean, documented endpoints",
       "**Database schema** — normalized, efficient queries",
-      "**Authentication** — JWT, OTP, session management",
+      "**Authentication** — JWT, session management",
       "**Security** — encrypted storage, secure password flows",
     ],
     followUp: ["Frontend details", "Projects", "Tools"],
