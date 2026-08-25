@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "framer-motion";
 import PropTypes from "prop-types";
 import {
   ArrowUpRight,
@@ -11,6 +11,11 @@ import {
   Sparkles,
   Globe,
   Rocket,
+  ExternalLink,
+  Briefcase,
+  Zap,
+  Star,
+  ArrowRight,
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { identity, socials, stats } from "@/data/profile";
@@ -37,6 +42,232 @@ const floatingIcons = [
   { icon: Rocket, pos: "top-[15%] right-[6%] md:right-[11%]", anim: "3.9s", size: 20 },
   { icon: Sparkles, pos: "bottom-[22%] right-[8%] md:right-[13%]", anim: "4.7s", size: 18 },
 ];
+
+/* ═══════════════════════════════════════════
+   PARTICLE FIELD — floating dots
+   ═══════════════════════════════════════════ */
+const particles = Array.from({ length: 30 }, (_, i) => ({
+  id: i,
+  x: Math.random() * 100,
+  y: Math.random() * 100,
+  size: Math.random() * 3 + 1,
+  duration: Math.random() * 20 + 15,
+  delay: Math.random() * 10,
+}));
+
+const ParticleField = () => (
+  <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    {particles.map((p) => (
+      <motion.div
+        key={p.id}
+        className="absolute rounded-full bg-[#bf4417]/30"
+        style={{
+          width: p.size,
+          height: p.size,
+          left: `${p.x}%`,
+          top: `${p.y}%`,
+        }}
+        animate={{
+          y: [0, -80, 0],
+          opacity: [0.15, 0.5, 0.15],
+        }}
+        transition={{
+          duration: p.duration,
+          repeat: Infinity,
+          delay: p.delay,
+          ease: "linear",
+        }}
+      />
+    ))}
+  </div>
+);
+
+/* ═══════════════════════════════════════════
+   ORBIT RING — rotating ring with tech dots
+   ═══════════════════════════════════════════ */
+const orbitTechs = ["React", "PHP", "Python", "Node.js", "MySQL", "Tailwind", "Git", "Vite"];
+
+const OrbitRing = () => (
+  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div className="relative w-[340px] h-[340px] md:w-[480px] md:h-[480px]">
+      {/* Outer ring */}
+      <div className="absolute inset-0 rounded-full border border-dashed border-[#bf4417]/15" />
+      {/* Inner ring */}
+      <div className="absolute inset-6 rounded-full border border-[#bf4417]/8" />
+      {/* Spinning dot */}
+      <motion.div
+        className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        style={{ transformOrigin: "50% 240px" }}
+      >
+        <div className="w-2.5 h-2.5 rounded-full bg-[#bf4417] shadow-[0_0_12px_rgba(191,68,23,0.6)]" />
+      </motion.div>
+      {/* Tech dots on ring */}
+      {orbitTechs.map((tech, i) => {
+        const angle = (i / orbitTechs.length) * 360;
+        const rad = (angle * Math.PI) / 180;
+        const radius = 46;
+        const x = 50 + radius * Math.sin(rad);
+        const y = 50 - radius * Math.cos(rad);
+        return (
+          <div
+            key={tech}
+            className="absolute text-[9px] font-mono text-white/20 uppercase tracking-wider hidden md:block"
+            style={{
+              left: `${x}%`,
+              top: `${y}%`,
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            {tech}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
+/* ═══════════════════════════════════════════
+   GLITCH TEXT — periodic glitch on name
+   ═══════════════════════════════════════════ */
+const GlitchText = ({ children, className }) => {
+  const [glitch, setGlitch] = useState(false);
+
+  useEffect(() => {
+    const trigger = () => {
+      setGlitch(true);
+      setTimeout(() => setGlitch(false), 200);
+    };
+    const id = setInterval(trigger, 5000 + Math.random() * 3000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <span className={`relative inline-block ${className || ""}`}>
+      <span className="relative z-10">{children}</span>
+      {glitch && (
+        <>
+          <span
+            className="absolute inset-0 text-[#bf4417] opacity-70 z-20"
+            style={{ clipPath: "inset(20% 0 60% 0)", transform: "translate(-2px, 1px)" }}
+            aria-hidden
+          >
+            {children}
+          </span>
+          <span
+            className="absolute inset-0 text-cyan-400 opacity-50 z-20"
+            style={{ clipPath: "inset(60% 0 10% 0)", transform: "translate(2px, -1px)" }}
+            aria-hidden
+          >
+            {children}
+          </span>
+        </>
+      )}
+    </span>
+  );
+};
+
+GlitchText.propTypes = { children: PropTypes.node, className: PropTypes.string };
+
+/* ═══════════════════════════════════════════
+   MAGNETIC BUTTON — follows cursor slightly
+   ═══════════════════════════════════════════ */
+const MagneticButton = ({ children, className, href, to, ...props }) => {
+  const ref = useRef(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 200, damping: 20 });
+  const springY = useSpring(y, { stiffness: 200, damping: 20 });
+
+  const onMove = useCallback((e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    x.set((e.clientX - cx) * 0.15);
+    y.set((e.clientY - cy) * 0.15);
+  }, [x, y]);
+
+  const onLeave = useCallback(() => {
+    x.set(0);
+    y.set(0);
+  }, [x, y]);
+
+  const style = { x: springX, y: springY };
+
+  const Tag = to ? Link : href ? "a" : "button";
+  const extra = to ? { to } : href ? { href, target: "_blank", rel: "noopener noreferrer" } : {};
+
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={style}
+      {...extra}
+      {...props}
+    >
+      {children}
+    </Tag>
+  );
+};
+
+MagneticButton.propTypes = {
+  children: PropTypes.node,
+  className: PropTypes.string,
+  href: PropTypes.string,
+  to: PropTypes.string,
+};
+
+/* ═══════════════════════════════════════════
+   ANIMATED COUNTER — counts up on view
+   ═══════════════════════════════════════════ */
+const AnimatedCounter = ({ value, label, index }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const numericPart = parseInt(value, 10);
+  const suffix = value.replace(/[0-9]/g, "");
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!inView || isNaN(numericPart)) return;
+    let start = 0;
+    const duration = 1500;
+    const step = (ts) => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      setCount(Math.floor(progress * numericPart));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [inView, numericPart]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: EASE }}
+      className="group relative flex flex-col items-center p-5 rounded-2xl border border-white/[0.06] bg-white/[0.03] hover:border-[#bf4417]/30 hover:bg-white/[0.05] transition-all duration-300"
+    >
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-px bg-gradient-to-r from-transparent via-[#bf4417]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="font-display text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-[#ff9a4d]">
+        {inView && !isNaN(numericPart) ? `${count}${suffix}` : value}
+      </div>
+      <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-white/40">
+        {label}
+      </div>
+    </motion.div>
+  );
+};
+
+AnimatedCounter.propTypes = {
+  value: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+};
 
 /* ═══════════════════════════════════════════
    TEXT SCRAMBLE — decode effect on load
@@ -188,34 +419,6 @@ const LinkedinIcon = ({ size = 18 }) => (
 LinkedinIcon.propTypes = { size: PropTypes.number };
 
 /* ═══════════════════════════════════════════
-   STAT CARD
-   ═══════════════════════════════════════════ */
-const StatCard = ({ s, index }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: EASE }}
-      className="flex flex-col items-center p-4 rounded-2xl border border-white/[0.06] bg-white/[0.03] hover:border-[#bf4417]/30 transition-colors duration-300"
-    >
-      <div className="font-display text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-[#991b1b]">
-        {s.value}
-      </div>
-      <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-white/40">
-        {s.label}
-      </div>
-    </motion.div>
-  );
-};
-StatCard.propTypes = {
-  s: PropTypes.shape({ value: PropTypes.string, label: PropTypes.string }).isRequired,
-  index: PropTypes.number.isRequired,
-};
-
-/* ═══════════════════════════════════════════
    TERMINAL CARD
    ═══════════════════════════════════════════ */
 const TerminalCard = () => {
@@ -269,6 +472,133 @@ const TerminalCard = () => {
 };
 
 /* ═══════════════════════════════════════════
+   FEATURED PROJECT CARD
+   ═══════════════════════════════════════════ */
+const FeaturedProjectCard = ({ project }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, ease: EASE }}
+      className="group relative rounded-3xl border border-white/[0.08] bg-white/[0.03] overflow-hidden hover:border-[#bf4417]/30 transition-all duration-500"
+    >
+      {/* Image */}
+      <div className="relative w-full h-[280px] md:h-[420px] overflow-hidden">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/40 to-transparent" />
+        {/* Status badge */}
+        <div className="absolute top-5 left-5 flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            {project.status}
+          </span>
+          <span className="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white/70 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
+            {project.category}
+          </span>
+        </div>
+        {/* Year badge */}
+        <div className="absolute top-5 right-5 px-3 py-1 rounded-full bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] text-[10px] font-mono font-bold backdrop-blur-md">
+          {project.year}
+        </div>
+        {/* Featured star */}
+        <div className="absolute bottom-5 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
+          <Star size={12} fill="currentColor" />
+          Featured
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-7 md:p-10">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">
+            <Briefcase size={12} />
+            {project.role}
+          </span>
+        </div>
+
+        <h3 className="text-2xl md:text-3xl font-extrabold font-display text-white tracking-tight group-hover:text-[#ff9a4d] transition-colors duration-300">
+          {project.title}
+        </h3>
+
+        <p className="mt-3 text-sm text-white/50 leading-relaxed font-light line-clamp-3">
+          {project.tagline}
+        </p>
+
+        {/* Stack */}
+        <div className="mt-5 flex flex-wrap gap-2">
+          {project.stack.map((s) => (
+            <span
+              key={s}
+              className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-medium text-white/60"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+
+        {/* Stats */}
+        {project.stats && (
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {project.stats.map((st) => (
+              <div key={st.label} className="text-center p-2 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                <div className="text-xs font-bold text-[#ff9a4d]">{st.value}</div>
+                <div className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">{st.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Links */}
+        <div className="mt-7 flex flex-wrap items-center gap-3">
+          {project.demoUrl && (
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/btn inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-white text-xs font-semibold rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(191,68,23,0.2)] hover:shadow-[0_0_30px_rgba(191,68,23,0.4)]"
+            >
+              <ExternalLink size={13} />
+              Live Demo
+              <ArrowUpRight size={12} className="transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+            </a>
+          )}
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-white/10 hover:border-white/25 text-white/50 hover:text-white text-xs font-medium rounded-xl transition-all duration-300"
+            >
+              <GithubIcon size={13} />
+              Source Code
+            </a>
+          )}
+          <Link
+            to={`/projects/${project.slug}`}
+            className="inline-flex items-center gap-2 px-5 py-2.5 border border-white/10 hover:border-[#bf4417]/40 text-white/50 hover:text-[#ff9a4d] text-xs font-medium rounded-xl transition-all duration-300 ml-auto"
+          >
+            Case Study
+            <ArrowRight size={12} />
+          </Link>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+FeaturedProjectCard.propTypes = {
+  project: PropTypes.object.isRequired,
+};
+
+/* ═══════════════════════════════════════════
    JSON-LD
    ═══════════════════════════════════════════ */
 const personJsonLd = {
@@ -307,12 +637,24 @@ const Home = () => {
         jsonLd={personJsonLd}
       />
 
-      {/* ─── HERO ─── */}
+      {/* ═══════════════════════════════════════════
+          HERO SECTION
+         ═══════════════════════════════════════════ */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-[radial-gradient(#bf4417_0%,transparent_55%)] opacity-15 blur-[120px]" />
 
+        <ParticleField />
         <MouseGlow />
+        <OrbitRing />
+
+        {/* Giant watermark text */}
+        <div aria-hidden className="pointer-events-none select-none absolute inset-0 flex items-center justify-center">
+          <span className="block text-center font-display font-extrabold leading-[0.85] text-[18vw] md:text-[14rem] text-transparent [-webkit-text-stroke:1.5px_rgba(191,68,23,0.06)] whitespace-nowrap">
+            <span className="block">SHAH</span>
+            <span className="block">DHAIRYA</span>
+          </span>
+        </div>
 
         {floatingIcons.map((item, i) => {
           const Icon = item.icon;
@@ -340,13 +682,17 @@ const Home = () => {
             Full-Stack Developer &amp; Digital Architect
           </motion.p>
 
-          {/* ── SCRAMBLE NAME ── */}
+          {/* SCRAMBLE NAME with GLITCH */}
           <h1 className="font-display font-extrabold tracking-[-0.04em] leading-[0.85] select-none text-[clamp(3.5rem,12vw,9rem)]">
             <span className="block text-white">
-              <ScrambleText text="Shah" delay={300} />
+              <GlitchText>
+                <ScrambleText text="Shah" delay={300} />
+              </GlitchText>
             </span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] via-[#ea580c] to-[#ff9a4d]">
-              <ScrambleText text="Dhairya" delay={600} />
+              <GlitchText>
+                <ScrambleText text="Dhairya" delay={600} />
+              </GlitchText>
             </span>
           </h1>
 
@@ -363,7 +709,7 @@ const Home = () => {
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 1, delay: 1.5, ease: EASE }}
-            className="mt-10 w-16 h-px bg-gradient-to-r from-transparent via-[#bf4417]/50 to-transparent origin-center"
+            className="mt-10 w-24 h-px bg-gradient-to-r from-transparent via-[#bf4417]/50 to-transparent origin-center"
           />
 
           <motion.p
@@ -382,21 +728,20 @@ const Home = () => {
             transition={{ duration: 0.7, delay: 1.9, ease: EASE }}
             className="mt-10 flex items-center gap-4"
           >
-            <Link
+            <MagneticButton
               to="/projects"
-              className="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-[0_0_30px_rgba(191,68,23,0.3)] hover:shadow-[0_0_50px_rgba(191,68,23,0.5)] hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-[0_0_30px_rgba(191,68,23,0.3)] hover:shadow-[0_0_50px_rgba(191,68,23,0.5)]"
             >
               View Work
               <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-            <a
+            </MagneticButton>
+            <MagneticButton
               href="/Dhairya-Shah-Resume.pdf"
-              download
               className="group inline-flex items-center gap-2 px-6 py-3.5 bg-transparent border border-white/10 hover:border-white/25 text-white/50 hover:text-white text-sm font-medium rounded-xl transition-all duration-300"
             >
               <FileText size={14} />
               Resume
-            </a>
+            </MagneticButton>
           </motion.div>
 
           <motion.div
@@ -417,6 +762,7 @@ const Home = () => {
           </motion.div>
         </div>
 
+        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -424,11 +770,29 @@ const Home = () => {
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
           <span className="text-[10px] uppercase tracking-[0.25em] text-white/20">Scroll</span>
-          <span className="w-px h-8 bg-gradient-to-b from-white/20 to-transparent animate-pulse" />
+          <motion.span
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="w-px h-8 bg-gradient-to-b from-white/20 to-transparent"
+          />
         </motion.div>
+
+        {/* Hero marquee ticker */}
+        <div className="absolute bottom-0 left-0 right-0 border-t border-white/[0.04] bg-white/[0.01] py-3 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="flex w-max gap-10 animate-marquee-left">
+            {[...TICKER, ...TICKER].map((w, i) => (
+              <span key={i} className="flex items-center gap-10 text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+                <span className="text-white/15">{w}</span>
+                <span className="text-[#bf4417]/30">◆</span>
+              </span>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* ─── INTRO — BENTO GRID ─── */}
+      {/* ═══════════════════════════════════════════
+          INTRO — BENTO GRID
+         ═══════════════════════════════════════════ */}
       <section className="relative w-full py-20 md:py-28 px-6">
         <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
         <div className="pointer-events-none absolute left-1/4 top-1/3 h-[400px] w-[600px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-10 blur-[120px]" />
@@ -448,7 +812,7 @@ const Home = () => {
           {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-auto">
 
-            {/* ── BIO — large left ── */}
+            {/* BIO — large left */}
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -476,7 +840,7 @@ const Home = () => {
               </p>
             </motion.div>
 
-            {/* ── TERMINAL — right tall ── */}
+            {/* TERMINAL — right tall */}
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -487,7 +851,7 @@ const Home = () => {
               <TerminalCard />
             </motion.div>
 
-            {/* ── CONTACT PILLS ── */}
+            {/* CONTACT PILLS */}
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -512,7 +876,7 @@ const Home = () => {
               </a>
             </motion.div>
 
-            {/* ── STATS — wide bottom ── */}
+            {/* STATS — animated counters */}
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -522,13 +886,13 @@ const Home = () => {
             >
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {stats.map((s, i) => (
-                  <StatCard key={s.label} s={s} index={i} />
+                  <AnimatedCounter key={s.label} value={s.value} label={s.label} index={i} />
                 ))}
               </div>
             </motion.div>
           </div>
 
-          {/* Tech Ticker */}
+          {/* Tech Ticker — dual direction */}
           <div className="mt-14 border-y border-white/[0.06] bg-white/[0.02] py-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
             <div className="flex w-max gap-8 animate-marquee-left">
               {[...TICKER, ...TICKER].map((w, i) => (
@@ -542,7 +906,61 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* ═══════════════════════════════════════════
+          SKILLS MARQUEE — dual direction
+         ═══════════════════════════════════════════ */}
+      <section className="relative w-full py-16 overflow-hidden">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[800px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-6 blur-[100px]" />
+
+        <div className="relative z-10 mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: EASE }}
+            className="text-center"
+          >
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/40 text-xs font-semibold uppercase tracking-wider mb-3">
+              <Zap size={13} />
+              Tech Stack
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold font-syne tracking-tight text-white">
+              Technologies I{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-[#ff9a4d]">
+                Work With
+              </span>
+            </h2>
+          </motion.div>
+        </div>
+
+        {/* Row 1 — left */}
+        <div className="border-y border-white/[0.04] py-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="flex w-max gap-8 animate-marquee-left">
+            {[...TICKER, ...TICKER, ...TICKER].map((w, i) => (
+              <span key={i} className="flex items-center gap-8 text-base font-bold uppercase tracking-wider whitespace-nowrap">
+                <span className="text-white/10 hover:text-[#bf4417] transition-colors duration-300 cursor-default">{w}</span>
+                <span className="text-[#bf4417]/20">•</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2 — right (reversed) */}
+        <div className="border-b border-white/[0.04] py-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="flex w-max gap-8 animate-marquee-right">
+            {[...TICKER, ...TICKER, ...TICKER].map((w, i) => (
+              <span key={i} className="flex items-center gap-8 text-base font-bold uppercase tracking-wider whitespace-nowrap">
+                <span className="text-white/10 hover:text-[#bf4417] transition-colors duration-300 cursor-default">{w}</span>
+                <span className="text-[#bf4417]/20">•</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          CTA SECTION
+         ═══════════════════════════════════════════ */}
       <section id="contact" className="relative w-full py-20 md:py-28 px-6">
         <div className="pointer-events-none absolute right-1/4 top-1/2 h-[400px] w-[600px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-10 blur-[120px]" />
 
@@ -568,17 +986,21 @@ const Home = () => {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <a href={`mailto:${identity.email}`}
-              className="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-[0_0_30px_rgba(191,68,23,0.3)] hover:shadow-[0_0_50px_rgba(191,68,23,0.5)] hover:-translate-y-0.5">
+            <MagneticButton
+              href={`mailto:${identity.email}`}
+              className="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-[0_0_30px_rgba(191,68,23,0.3)] hover:shadow-[0_0_50px_rgba(191,68,23,0.5)]"
+            >
               <Send size={15} />
               Contact Me
-            </a>
-            <Link to="/projects"
-              className="group inline-flex items-center gap-2 px-6 py-3.5 border border-white/10 hover:border-white/25 text-white/50 hover:text-white text-sm font-medium rounded-xl transition-all duration-300">
+            </MagneticButton>
+            <MagneticButton
+              to="/projects"
+              className="group inline-flex items-center gap-2 px-6 py-3.5 border border-white/10 hover:border-white/25 text-white/50 hover:text-white text-sm font-medium rounded-xl transition-all duration-300"
+            >
               <Code2 size={15} className="text-[#bf4417]" />
               View Projects
               <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
+            </MagneticButton>
           </div>
         </motion.div>
       </section>
