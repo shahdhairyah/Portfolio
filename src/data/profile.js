@@ -5,7 +5,7 @@ export const identity = {
   title: "Full-Stack Developer & Digital Architect",
   location: "Gujarat, India · Anand",
   education: "Computer Engineering, ADIT (CVM University), Anand",
-  email: "admin@mail.shahdhairyah.in",
+  email: "sdhairyah@gmail.com",
   phone: "+91 70692 76736",
   website: "https://shahdhairyah.in",
   resume: "/Dhairya-Shah-Resume.pdf",

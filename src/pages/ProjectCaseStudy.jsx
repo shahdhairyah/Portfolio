@@ -266,7 +266,7 @@ export const ProjectCaseStudy = () => {
                   All Projects
                 </Link>
                 <a
-                  href="mailto:admin@mail.shahdhairyah.in"
+                  href="mailto:sdhairyah@gmail.com"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/15 text-sm font-semibold text-white/70 hover:text-[#ff9a4d] hover:border-[#bf4417]/50 transition-all duration-300"
                 >
                   Contact Me

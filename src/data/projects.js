@@ -238,6 +238,67 @@ export const projects = [
       },
     ],
   },
+  {
+    id: 5,
+    slug: "foodzip",
+    title: "FoodZip",
+    category: "Web Application",
+    year: "2026",
+    role: "Full-Stack Developer",
+    status: "Live",
+    image: "/images/projects/FoodZip/cover.png",
+    coverPosition: "center",
+    tagline:
+      "A fast, modern food ordering platform that streamlines browsing, ordering, and delivery tracking in one clean, responsive experience.",
+    stack: ["React", "Node.js", "MongoDB", "REST API"],
+    githubUrl: "",
+    demoUrl: "https://foodzip.shahdhairyah.in/",
+    featured: false,
+    stats: [
+      { value: "1", label: "Unified Platform" },
+      { value: "Fast", label: "Ordering Flow" },
+      { value: "100%", label: "Responsive" },
+      { value: "Live", label: "In Production" },
+    ],
+    problemTitle: "Clunky Ordering, Slow Experience",
+    problem:
+      "Ordering food online shouldn't feel complicated. Legacy ordering experiences are overloaded with friction and slow pages, making it easy for users to abandon an order before it's placed.",
+    solutionTitle: "Clean, Fast Ordering Experience",
+    solutionIntro:
+      "Built FoodZip as a modern, focused web application that takes users from browsing to checkout with minimal friction, a responsive layout, and real-time order tracking.",
+    solutionPoints: [
+      "Clean, mobile-first interface for browsing and ordering",
+      "Streamlined checkout flow that reduces abandonment",
+      "Real-time order status tracking",
+      "Responsive design across all devices",
+      "Fast, efficient data fetching for a smooth experience",
+    ],
+    capabilities: [
+      "Menu Browsing",
+      "Streamlined Checkout",
+      "Order Tracking",
+      "Responsive UI",
+      "Search & Filter",
+      "Fast Interactions",
+    ],
+    challenges: [
+      {
+        title: "Frictionless Checkout",
+        detail:
+          "Optimized the ordering flow to minimize steps between selecting an item and confirming an order, keeping users engaged from start to finish.",
+      },
+      {
+        title: "Responsive Across Devices",
+        detail:
+          "Designed and tested the interface across screen sizes so ordering feels native whether on a phone, tablet, or desktop.",
+      },
+      {
+        title: "Fast Data Loading",
+        detail:
+          "Implemented efficient data fetching and caching so menus and orders load instantly without noticeable delay.",
+      },
+    ],
+  },
 ];
 
 export const projectCategories = ["All", ...new Set(projects.map((p) => p.category))];

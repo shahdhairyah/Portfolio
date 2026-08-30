@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import {
   ArrowUpRight,
   FileText,
-  Mail,
   Code2,
   Send,
   Sparkles,
@@ -16,9 +15,11 @@ import {
   Zap,
   Star,
   ArrowRight,
+  Command,
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
-import { identity, socials, stats } from "@/data/profile";
+import { identity, socials, stats, philosophy } from "@/data/profile";
+import { projects } from "@/data/projects";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -37,10 +38,10 @@ const TICKER = [
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!?";
 
 const floatingIcons = [
-  { icon: Code2, pos: "top-[12%] left-[6%] md:left-[10%]", anim: "4.2s", size: 20 },
-  { icon: Globe, pos: "bottom-[20%] left-[8%] md:left-[14%]", anim: "5.1s", size: 18 },
-  { icon: Rocket, pos: "top-[15%] right-[6%] md:right-[11%]", anim: "3.9s", size: 20 },
-  { icon: Sparkles, pos: "bottom-[22%] right-[8%] md:right-[13%]", anim: "4.7s", size: 18 },
+  { icon: Code2, pos: "top-[14%] left-[8%] md:left-[12%]", anim: "4.2s", size: 20 },
+  { icon: Globe, pos: "bottom-[26%] left-[10%] md:left-[16%]", anim: "5.1s", size: 18 },
+  { icon: Rocket, pos: "top-[18%] right-[8%] md:right-[13%]", anim: "3.9s", size: 20 },
+  { icon: Sparkles, pos: "bottom-[28%] right-[10%] md:right-[15%]", anim: "4.7s", size: 18 },
 ];
 
 /* ═══════════════════════════════════════════
@@ -61,22 +62,9 @@ const ParticleField = () => (
       <motion.div
         key={p.id}
         className="absolute rounded-full bg-[#bf4417]/30"
-        style={{
-          width: p.size,
-          height: p.size,
-          left: `${p.x}%`,
-          top: `${p.y}%`,
-        }}
-        animate={{
-          y: [0, -80, 0],
-          opacity: [0.15, 0.5, 0.15],
-        }}
-        transition={{
-          duration: p.duration,
-          repeat: Infinity,
-          delay: p.delay,
-          ease: "linear",
-        }}
+        style={{ width: p.size, height: p.size, left: `${p.x}%`, top: `${p.y}%` }}
+        animate={{ y: [0, -80, 0], opacity: [0.15, 0.5, 0.15] }}
+        transition={{ duration: p.duration, repeat: Infinity, delay: p.delay, ease: "linear" }}
       />
     ))}
   </div>
@@ -90,11 +78,8 @@ const orbitTechs = ["React", "PHP", "Python", "Node.js", "MySQL", "Tailwind", "G
 const OrbitRing = () => (
   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
     <div className="relative w-[340px] h-[340px] md:w-[480px] md:h-[480px]">
-      {/* Outer ring */}
       <div className="absolute inset-0 rounded-full border border-dashed border-[#bf4417]/15" />
-      {/* Inner ring */}
       <div className="absolute inset-6 rounded-full border border-[#bf4417]/8" />
-      {/* Spinning dot */}
       <motion.div
         className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2"
         animate={{ rotate: 360 }}
@@ -103,7 +88,6 @@ const OrbitRing = () => (
       >
         <div className="w-2.5 h-2.5 rounded-full bg-[#bf4417] shadow-[0_0_12px_rgba(191,68,23,0.6)]" />
       </motion.div>
-      {/* Tech dots on ring */}
       {orbitTechs.map((tech, i) => {
         const angle = (i / orbitTechs.length) * 360;
         const rad = (angle * Math.PI) / 180;
@@ -114,11 +98,7 @@ const OrbitRing = () => (
           <div
             key={tech}
             className="absolute text-[9px] font-mono text-white/20 uppercase tracking-wider hidden md:block"
-            style={{
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: "translate(-50%, -50%)",
-            }}
+            style={{ left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)" }}
           >
             {tech}
           </div>
@@ -195,20 +175,11 @@ const MagneticButton = ({ children, className, href, to, ...props }) => {
   }, [x, y]);
 
   const style = { x: springX, y: springY };
-
   const Tag = to ? Link : href ? "a" : "button";
   const extra = to ? { to } : href ? { href, target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
-    <Tag
-      ref={ref}
-      className={className}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      style={style}
-      {...extra}
-      {...props}
-    >
+    <Tag ref={ref} className={className} onMouseMove={onMove} onMouseLeave={onLeave} style={style} {...extra} {...props}>
       {children}
     </Tag>
   );
@@ -256,18 +227,12 @@ const AnimatedCounter = ({ value, label, index }) => {
       <div className="font-display text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-[#ff9a4d]">
         {inView && !isNaN(numericPart) ? `${count}${suffix}` : value}
       </div>
-      <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-white/40">
-        {label}
-      </div>
+      <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-white/40">{label}</div>
     </motion.div>
   );
 };
 
-AnimatedCounter.propTypes = {
-  value: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-};
+AnimatedCounter.propTypes = { value: PropTypes.string.isRequired, label: PropTypes.string.isRequired, index: PropTypes.number.isRequired };
 
 /* ═══════════════════════════════════════════
    TEXT SCRAMBLE — decode effect on load
@@ -293,9 +258,7 @@ const ScrambleText = ({ text, className, delay = 0 }) => {
           .join("")
       );
       iteration += 1 / 2;
-      if (iteration <= total) {
-        frameRef.current = requestAnimationFrame(tick);
-      }
+      if (iteration <= total) frameRef.current = requestAnimationFrame(tick);
     };
 
     timeout = setTimeout(() => {
@@ -311,11 +274,7 @@ const ScrambleText = ({ text, className, delay = 0 }) => {
   return <span className={className}>{display}</span>;
 };
 
-ScrambleText.propTypes = {
-  text: PropTypes.string.isRequired,
-  className: PropTypes.string,
-  delay: PropTypes.number,
-};
+ScrambleText.propTypes = { text: PropTypes.string.isRequired, className: PropTypes.string, delay: PropTypes.number };
 
 /* ═══════════════════════════════════════════
    MOUSE GLOW — radial gradient follows cursor
@@ -381,7 +340,7 @@ const RotatingWord = () => {
   useEffect(() => {
     const id = setInterval(() => setIndex((i) => (i + 1) % words.length), 2200);
     return () => clearInterval(id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <span className="relative inline-block h-[1.15em] overflow-hidden align-bottom">
@@ -434,30 +393,22 @@ const TerminalCard = () => {
       setCurrentLine((prev) => (prev + 1) % lines.length);
     }, 3200);
     return () => clearInterval(id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="rounded-2xl bg-[#0a0a0a] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-white/[0.08] h-full">
+    <div className="flex flex-col h-full rounded-2xl bg-[#0a0a0a] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-white/[0.08]">
       <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06] bg-white/[0.02]">
         <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
         <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
         <span className="w-3 h-3 rounded-full bg-[#28c840]" />
-        <span className="ml-3 text-[11px] font-mono text-white/40 truncate">
-          shah@dhairya — sdh
-        </span>
+        <span className="ml-3 text-[11px] font-mono text-white/40 truncate">shah@dhairya — sdh</span>
       </div>
-      <div className="px-5 py-6 font-mono text-[13px] leading-7 space-y-4 min-h-[200px]">
+      <div className="px-5 py-6 font-mono text-[13px] leading-7 space-y-4">
         {lines.map((line, i) => (
-          <div
-            key={i}
-            className={`transition-opacity duration-500 ${
-              i === currentLine ? "opacity-100" : "opacity-25"
-            }`}
-          >
+          <div key={i} className={`transition-opacity duration-500 ${i === currentLine ? "opacity-100" : "opacity-25"}`}>
             <p>
-              <span className="text-[#4ade80]">$</span>{" "}
-              <span className="text-white/85">{line.cmd}</span>
+              <span className="text-[#4ade80]">$</span> <span className="text-white/85">{line.cmd}</span>
             </p>
             <p className="text-white/55 pl-4">{line.out}</p>
           </div>
@@ -486,15 +437,14 @@ const FeaturedProjectCard = ({ project }) => {
       transition={{ duration: 0.7, ease: EASE }}
       className="group relative rounded-3xl border border-white/[0.08] bg-white/[0.03] overflow-hidden hover:border-[#bf4417]/30 transition-all duration-500"
     >
-      {/* Image */}
-      <div className="relative w-full h-[280px] md:h-[420px] overflow-hidden">
+      <div className="relative w-full h-[280px] md:h-[400px] overflow-hidden">
         <img
           src={project.image}
           alt={project.title}
+          loading="lazy"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/40 to-transparent" />
-        {/* Status badge */}
         <div className="absolute top-5 left-5 flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -504,19 +454,18 @@ const FeaturedProjectCard = ({ project }) => {
             {project.category}
           </span>
         </div>
-        {/* Year badge */}
         <div className="absolute top-5 right-5 px-3 py-1 rounded-full bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] text-[10px] font-mono font-bold backdrop-blur-md">
           {project.year}
         </div>
-        {/* Featured star */}
-        <div className="absolute bottom-5 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
-          <Star size={12} fill="currentColor" />
-          Featured
-        </div>
+        {project.featured && (
+          <div className="absolute bottom-5 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
+            <Star size={12} fill="currentColor" />
+            Featured
+          </div>
+        )}
       </div>
 
-      {/* Content */}
-      <div className="p-7 md:p-10">
+      <div className="p-7 md:p-9">
         <div className="flex items-center gap-3 mb-4">
           <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white/40">
             <Briefcase size={12} />
@@ -528,23 +477,16 @@ const FeaturedProjectCard = ({ project }) => {
           {project.title}
         </h3>
 
-        <p className="mt-3 text-sm text-white/50 leading-relaxed font-light line-clamp-3">
-          {project.tagline}
-        </p>
+        <p className="mt-3 text-sm text-white/50 leading-relaxed font-light line-clamp-3">{project.tagline}</p>
 
-        {/* Stack */}
         <div className="mt-5 flex flex-wrap gap-2">
           {project.stack.map((s) => (
-            <span
-              key={s}
-              className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-medium text-white/60"
-            >
+            <span key={s} className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-medium text-white/60">
               {s}
             </span>
           ))}
         </div>
 
-        {/* Stats */}
         {project.stats && (
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
             {project.stats.map((st) => (
@@ -556,7 +498,6 @@ const FeaturedProjectCard = ({ project }) => {
           </div>
         )}
 
-        {/* Links */}
         <div className="mt-7 flex flex-wrap items-center gap-3">
           {project.demoUrl && (
             <a
@@ -594,9 +535,30 @@ const FeaturedProjectCard = ({ project }) => {
   );
 };
 
-FeaturedProjectCard.propTypes = {
-  project: PropTypes.object.isRequired,
+FeaturedProjectCard.propTypes = { project: PropTypes.object.isRequired };
+
+/* ═══════════════════════════════════════════
+   PHILOSOPHY CARD — principle panel
+   ═══════════════════════════════════════════ */
+const PhilosophyCard = ({ item, index }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: EASE }}
+      className="group relative rounded-3xl border border-white/[0.08] bg-white/[0.02] p-8 overflow-hidden hover:border-[#bf4417]/30 transition-colors duration-500"
+    >
+      <span className="font-mono text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-[#bf4417]/60 to-[#bf4417]/10">{item.num}</span>
+      <h3 className="mt-6 text-xl font-extrabold font-display text-white">{item.title}</h3>
+      <p className="mt-3 text-sm text-white/45 leading-relaxed font-light">{item.text}</p>
+    </motion.div>
+  );
 };
+
+PhilosophyCard.propTypes = { item: PropTypes.object.isRequired, index: PropTypes.number.isRequired };
 
 /* ═══════════════════════════════════════════
    JSON-LD
@@ -614,12 +576,25 @@ const personJsonLd = {
 };
 
 /* ═══════════════════════════════════════════
+   Section eyebrow helper
+   ═══════════════════════════════════════════ */
+const SectionEyebrow = ({ icon: Icon, children, center }) => (
+  <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#bf4417]/10 border border-[#bf4417]/30 text-[#ff8a5c] text-xs font-semibold uppercase tracking-wider ${center ? "mx-auto" : ""}`}>
+    {Icon && <Icon size={14} />}
+    {children}
+  </div>
+);
+
+SectionEyebrow.propTypes = { icon: PropTypes.any, children: PropTypes.node, center: PropTypes.bool };
+
+/* ═══════════════════════════════════════════
    HOME PAGE
    ═══════════════════════════════════════════ */
 const Home = () => {
   const location = useLocation();
   const github = socials.find((s) => s.label === "GitHub")?.href;
   const linkedin = socials.find((s) => s.label === "LinkedIn")?.href;
+  const featuredProjects = projects.filter((p) => p.featured);
 
   useEffect(() => {
     if (location.state?.scrollTo) {
@@ -648,7 +623,6 @@ const Home = () => {
         <MouseGlow />
         <OrbitRing />
 
-        {/* Giant watermark text */}
         <div aria-hidden className="pointer-events-none select-none absolute inset-0 flex items-center justify-center">
           <span className="block text-center font-display font-extrabold leading-[0.85] text-[18vw] md:text-[14rem] text-transparent [-webkit-text-stroke:1.5px_rgba(191,68,23,0.06)] whitespace-nowrap">
             <span className="block">SHAH</span>
@@ -682,7 +656,6 @@ const Home = () => {
             Full-Stack Developer &amp; Digital Architect
           </motion.p>
 
-          {/* SCRAMBLE NAME with GLITCH */}
           <h1 className="font-display font-extrabold tracking-[-0.04em] leading-[0.85] select-none text-[clamp(3.5rem,12vw,9rem)]">
             <span className="block text-white">
               <GlitchText>
@@ -750,19 +723,16 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 2.1 }}
             className="mt-14 flex items-center gap-4"
           >
-            <a href={github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"
-              className="text-white/20 hover:text-white/60 transition-colors duration-300">
+            <a href={github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-white/20 hover:text-white/60 transition-colors duration-300">
               <GithubIcon size={18} />
             </a>
             <span className="w-px h-3 bg-white/10" />
-            <a href={linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
-              className="text-white/20 hover:text-white/60 transition-colors duration-300">
+            <a href={linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-white/20 hover:text-white/60 transition-colors duration-300">
               <LinkedinIcon size={18} />
             </a>
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -777,7 +747,6 @@ const Home = () => {
           />
         </motion.div>
 
-        {/* Hero marquee ticker */}
         <div className="absolute bottom-0 left-0 right-0 border-t border-white/[0.04] bg-white/[0.01] py-3 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
           <div className="flex w-max gap-10 animate-marquee-left">
             {[...TICKER, ...TICKER].map((w, i) => (
@@ -793,7 +762,7 @@ const Home = () => {
       {/* ═══════════════════════════════════════════
           INTRO — BENTO GRID
          ═══════════════════════════════════════════ */}
-      <section className="relative w-full py-20 md:py-28 px-6">
+      <section className="relative w-full py-24 md:py-32 px-6">
         <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
         <div className="pointer-events-none absolute left-1/4 top-1/3 h-[400px] w-[600px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-10 blur-[120px]" />
 
@@ -803,15 +772,36 @@ const Home = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, ease: EASE }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#bf4417]/10 border border-[#bf4417]/30 text-[#ff8a5c] text-xs font-semibold uppercase tracking-wider mb-10"
           >
-            <Sparkles size={14} />
-            Introduction
+            <SectionEyebrow icon={Sparkles}>Introduction</SectionEyebrow>
           </motion.div>
 
-          {/* Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-auto">
+          {/* Section header */}
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-end">
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: EASE }}
+              className="text-3xl sm:text-5xl lg:text-[52px] leading-[1.08] tracking-tighter text-white font-extrabold font-display"
+            >
+              Designing and Engineering <RotatingWord />.
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
+              className="lg:max-w-md text-white/45 text-base leading-relaxed font-light"
+            >
+              I build production-ready digital products for startups, academic
+              institutions, and businesses — turning complex requirements into
+              reliable, scalable web applications.
+            </motion.p>
+          </div>
 
+          {/* Bento Grid */}
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-12 gap-5 auto-rows-auto">
             {/* BIO — large left */}
             <motion.div
               initial={{ opacity: 0, y: 28 }}
@@ -820,79 +810,49 @@ const Home = () => {
               transition={{ duration: 0.6, ease: EASE }}
               className="md:col-span-7 rounded-3xl border border-white/[0.08] bg-white/[0.03] p-8 md:p-10 hover:border-[#bf4417]/30 transition-colors duration-300"
             >
-              <h2 className="text-3xl sm:text-5xl lg:text-[52px] leading-[1.08] tracking-tighter text-white font-extrabold font-display">
-                Designing and Engineering <br />
-                <RotatingWord />.
-              </h2>
-              <p className="mt-6 text-white/50 text-base leading-relaxed font-light">
-                I build production-ready digital products for startups, academic
-                institutions, and businesses — turning complex requirements into
-                reliable, scalable web applications.
-              </p>
-              <p className="mt-4 text-sm text-white/35 leading-relaxed">
+              <span className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-white/30 mb-6">
+                <Command size={13} className="text-[#bf4417]" />
+                Full lifecycle
+              </span>
+              <p className="text-white/55 text-sm sm:text-base leading-relaxed font-light">
                 From custom applications and management portals to modernizing
                 legacy systems, I work across the full development lifecycle. My
                 expertise includes{" "}
-                <strong className="text-white/70 font-medium">
+                <strong className="text-white/75 font-medium">
                   React, PHP, Python, MySQL, Node.js, and Tailwind CSS
-                </strong>
+                </strong>{" "}
                 — building software designed not just to work, but to scale.
               </p>
+              <div className="mt-8 pt-6 border-t border-white/[0.06] grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {stats.map((s) => (
+                  <div key={s.label} className="text-center">
+                    <div className="font-display text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-[#ff9a4d]">{s.value}</div>
+                    <div className="text-[10px] uppercase tracking-widest text-white/35 mt-1">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </motion.div>
 
-            {/* TERMINAL — right tall */}
+            {/* TERMINAL — right */}
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
-              className="md:col-span-5 md:row-span-2"
+              className="md:col-span-5"
             >
               <TerminalCard />
             </motion.div>
 
-            {/* CONTACT PILLS */}
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
-              className="md:col-span-7 flex flex-wrap gap-3"
-            >
-              <a href={`mailto:${identity.email}`}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-white/60 hover:text-[#bf4417] hover:border-[#bf4417]/40 transition-all duration-200">
-                <Mail size={16} className="text-[#bf4417]" />
-                <span className="text-sm">{identity.email}</span>
-              </a>
-              <a href={github} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-white/60 hover:text-white hover:border-white/25 transition-all duration-200">
-                <GithubIcon size={16} />
-                <span className="text-sm">GitHub</span>
-              </a>
-              <a href={linkedin} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-white/60 hover:text-[#0077b5] hover:border-[#0077b5]/40 transition-all duration-200">
-                <LinkedinIcon size={16} className="text-[#0077b5]" />
-                <span className="text-sm">LinkedIn</span>
-              </a>
-            </motion.div>
-
-            {/* STATS — animated counters */}
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
-              className="md:col-span-12"
-            >
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {stats.map((s, i) => (
-                  <AnimatedCounter key={s.label} value={s.value} label={s.label} index={i} />
-                ))}
+            {/* PHILOSOPHY — 3 cards */}
+            {philosophy.map((item) => (
+              <div key={item.num} className="md:col-span-4">
+                <PhilosophyCard item={item} index={Number(item.num) - 1} />
               </div>
-            </motion.div>
+            ))}
           </div>
 
-          {/* Tech Ticker — dual direction */}
+          {/* Tech Ticker */}
           <div className="mt-14 border-y border-white/[0.06] bg-white/[0.02] py-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
             <div className="flex w-max gap-8 animate-marquee-left">
               {[...TICKER, ...TICKER].map((w, i) => (
@@ -907,12 +867,56 @@ const Home = () => {
       </section>
 
       {/* ═══════════════════════════════════════════
+          FEATURED WORK
+         ═══════════════════════════════════════════ */}
+      <section className="relative w-full py-24 md:py-32 px-6">
+        <div className="pointer-events-none absolute right-1/4 top-1/3 h-[400px] w-[600px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-8 blur-[120px]" />
+
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: EASE }}
+            >
+              <SectionEyebrow icon={Briefcase}>Featured Work</SectionEyebrow>
+              <h2 className="mt-6 text-3xl sm:text-5xl font-extrabold font-display text-white tracking-tight">
+                Selected{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-[#ff9a4d]">Projects</span>
+              </h2>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
+            >
+              <Link
+                to="/projects"
+                className="gold-link"
+              >
+                View all projects
+                <ArrowRight size={14} />
+              </Link>
+            </motion.div>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {featuredProjects.map((project) => (
+              <FeaturedProjectCard key={project.slug} project={project} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
           SKILLS MARQUEE — dual direction
          ═══════════════════════════════════════════ */}
-      <section className="relative w-full py-16 overflow-hidden">
+      <section className="relative w-full py-20 overflow-hidden">
         <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[800px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-6 blur-[100px]" />
 
-        <div className="relative z-10 mb-8">
+        <div className="relative z-10 mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -920,20 +924,14 @@ const Home = () => {
             transition={{ duration: 0.5, ease: EASE }}
             className="text-center"
           >
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/40 text-xs font-semibold uppercase tracking-wider mb-3">
-              <Zap size={13} />
-              Tech Stack
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold font-syne tracking-tight text-white">
+            <SectionEyebrow icon={Zap} center>Tech Stack</SectionEyebrow>
+            <h2 className="mt-5 text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-white">
               Technologies I{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-[#ff9a4d]">
-                Work With
-              </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-[#ff9a4d]">Work With</span>
             </h2>
           </motion.div>
         </div>
 
-        {/* Row 1 — left */}
         <div className="border-y border-white/[0.04] py-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
           <div className="flex w-max gap-8 animate-marquee-left">
             {[...TICKER, ...TICKER, ...TICKER].map((w, i) => (
@@ -945,7 +943,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Row 2 — right (reversed) */}
         <div className="border-b border-white/[0.04] py-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
           <div className="flex w-max gap-8 animate-marquee-right">
             {[...TICKER, ...TICKER, ...TICKER].map((w, i) => (
@@ -961,7 +958,7 @@ const Home = () => {
       {/* ═══════════════════════════════════════════
           CTA SECTION
          ═══════════════════════════════════════════ */}
-      <section id="contact" className="relative w-full py-20 md:py-28 px-6">
+      <section id="contact" className="relative w-full py-24 md:py-32 px-6">
         <div className="pointer-events-none absolute right-1/4 top-1/2 h-[400px] w-[600px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-10 blur-[120px]" />
 
         <motion.div

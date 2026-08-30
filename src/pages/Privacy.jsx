@@ -27,7 +27,7 @@ const sections = [
   {
     icon: Mail,
     title: "Contact",
-    content: "If you have questions about this policy, reach out at admin@mail.shahdhairyah.in. I'll respond within 48 hours."
+    content: "If you have questions about this policy, reach out at sdhairyah@gmail.com. I'll respond within 48 hours."
   }
 ];
 
