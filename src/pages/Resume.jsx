@@ -168,7 +168,7 @@ export const Resume = () => {
               <div className="space-y-5">
                 {roles.map((group) => (
                   <div key={group.label}>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-2.5">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 mb-2.5">
                       {group.label}
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -239,7 +239,7 @@ export const Resume = () => {
                         <span className="font-mono text-[10px] text-[#bf4417] mr-2">0{i + 1}</span>
                         {p.title}
                       </h3>
-                      <span className="text-[11px] font-mono text-white/40">{p.year} · {p.category}</span>
+                      <span className="text-[11px] font-mono text-white/50">{p.year} · {p.category}</span>
                     </div>
                     <p className="text-sm text-white/55 leading-relaxed">{p.solution}</p>
                     <div className="flex flex-wrap gap-2 mt-3.5">

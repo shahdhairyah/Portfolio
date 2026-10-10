@@ -1,6 +1,7 @@
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
-import { ArrowLeft, Trophy, Sparkles, Users } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowLeft, Trophy, Sparkles, Users, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import { hackathons } from "@/data/achievements";
 
@@ -16,6 +17,50 @@ const reveal = (delay = 0) => ({
 export const AchievementDetails = () => {
   const { slug } = useParams();
   const hack = hackathons.find((h) => h.slug === slug);
+  const [lightbox, setLightbox] = useState(null);
+
+  const gallery = hack?.gallery || [];
+
+  const closeLightbox = () => setLightbox(null);
+
+  const goPrev = useCallback(
+    () => setLightbox((i) => (i - 1 + gallery.length) % gallery.length),
+    [gallery.length]
+  );
+  const goNext = useCallback(
+    () => setLightbox((i) => (i + 1) % gallery.length),
+    [gallery.length]
+  );
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setLightbox(null);
+      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") goNext();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightbox, goNext, goPrev]);
+
+  /* Touch swipe for mobile gallery navigation */
+  const touchStart = useRef(null);
+
+  const onTouchStart = (e) => {
+    const touch = e.touches[0];
+    touchStart.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const onTouchEnd = (e) => {
+    if (!touchStart.current || gallery.length < 2) return;
+    const touch = e.changedTouches[0];
+    const dx = touch.clientX - touchStart.current.x;
+    const dy = touch.clientY - touchStart.current.y;
+    touchStart.current = null;
+    if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx > 0) goPrev();
+    else goNext();
+  };
 
   if (!hack) {
     return <Navigate to="/achievements" replace />;
@@ -67,7 +112,7 @@ export const AchievementDetails = () => {
                 <span className="inline-flex items-center gap-1.5 w-fit px-3 py-1 rounded-md bg-[#bf4417]/10 border border-[#bf4417]/30 text-[11px] font-bold text-[#ff9a4d]">
                   {hack.org}
                 </span>
-                <span className="text-[11px] uppercase tracking-[0.2em] text-white/40 font-mono">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-white/50 font-mono">
                   {hack.year}
                 </span>
               </div>
@@ -85,6 +130,26 @@ export const AchievementDetails = () => {
               {hack.text}
             </p>
 
+            {hack.story && (
+              <motion.blockquote
+                {...reveal(0.15)}
+                className="relative mt-8 pl-6 md:pl-8 py-2"
+              >
+                <span className="absolute left-0 top-0 bottom-0 w-1 rounded-full bg-gradient-to-b from-[#ff9a4d] to-[#991b1b]" />
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden
+                  className="absolute -top-3 -left-1 w-9 h-9 text-[#bf4417]/25"
+                >
+                  <path d="M10 7.5c-2.5 0-4.5 2-4.5 4.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5c0-.3 0-.6-.1-.9C13.6 8.4 11.9 7.2 10 7.5Zm8.5 0c-2.5 0-4.5 2-4.5 4.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5c0-.3 0-.6-.1-.9-.3-1.2-2-2.4-3.9-2.1l-.5-.8Z" />
+                </svg>
+                <p className="font-display text-lg md:text-xl text-white/85 leading-relaxed">
+                  {hack.story}
+                </p>
+              </motion.blockquote>
+            )}
+
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
               {hack.stats.map((stat) => (
                 <div
@@ -94,7 +159,7 @@ export const AchievementDetails = () => {
                   <div className="font-display text-2xl sm:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-[#ff9a4d] to-[#991b1b]">
                     {stat.value}
                   </div>
-                  <div className="mt-2 text-[10px] uppercase tracking-[0.16em] text-white/40">
+                  <div className="mt-2 text-[10px] uppercase tracking-[0.16em] text-white/50">
                     {stat.label}
                   </div>
                 </div>
@@ -169,35 +234,128 @@ export const AchievementDetails = () => {
               </ul>
             </div>
 
-            {hack.gallery && hack.gallery.length > 0 && (
-              <div className="mt-10">
-                <div className="flex items-center gap-2.5">
-                  <Sparkles size={16} className="text-[#bf4417]" />
+            {gallery.length > 0 && (
+              <div className="mt-14">
+                <motion.div {...reveal(0.1)} className="flex items-end gap-2.5">
+                  <Sparkles size={18} className="text-[#bf4417]" />
                   <h2 className="text-sm font-bold uppercase tracking-widest text-white/80">
-                    Moments
+                    Moments from the journey
                   </h2>
-                </div>
-                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {hack.gallery.map((src, i) => (
-                    <motion.div
-                      key={src + i}
-                      initial={{ opacity: 0, y: 18 }}
-                      whileInView={{ opacity: 1, y: 0 }}
+                  <span className="ml-auto flex items-center justify-center min-w-9 h-9 px-2 rounded-full bg-[#bf4417]/10 border border-[#bf4417]/30 text-[#ff9a4d] text-xs font-mono font-bold">
+                    {gallery.length} photos
+                  </span>
+                </motion.div>
+                <p className="mt-3 mb-8 text-sm text-white/50 leading-relaxed">
+                  A peek behind the scenes — every frame below tells a part of the SSIP story.
+                  Tap any photo to view it up close.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+                  {gallery.map((src, i) => (
+                    <motion.button
+                      type="button"
+                      key={src}
+                      initial={{ opacity: 0, y: 24, rotate: i % 2 ? 1.5 : -1.5 }}
+                      whileInView={{ opacity: 1, y: 0, rotate: i % 2 ? 2.5 : -2.5 }}
                       viewport={{ once: true, margin: "-40px" }}
-                      transition={{ duration: 0.45, delay: (i % 4) * 0.06, ease: EASE }}
-                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black/30"
+                      transition={{ duration: 0.5, delay: (i % 4) * 0.08, ease: EASE }}
+                      whileHover={{ rotate: 0, scale: 1.02, y: -4 }}
+                      onClick={() => setLightbox(i)}
+                      className="group relative flex flex-col cursor-zoom-in rounded-xl bg-white/[0.04] border border-white/10 p-3 pb-4 shadow-[0_20px_40px_-20px_rgba(0,0,0,0.9)] text-left"
                     >
-                      <img
-                        src={src}
-                        alt={`${hack.title} photo ${i + 1}`}
-                        loading="lazy"
-                        className="w-full h-48 md:h-64 object-contain bg-black/30 transition-transform duration-500 group-hover:scale-[1.03]"
-                      />
-                    </motion.div>
+                      <span className="absolute -top-3 -right-3 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-[#bf4417] to-[#991b1b] text-white text-xs font-mono font-bold shadow-[0_0_16px_rgba(191,68,23,0.5)]">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="relative overflow-hidden rounded-lg bg-black/30">
+                        <img
+                          src={src}
+                          alt={`${hack.title} photo ${i + 1}`}
+                          loading="lazy"
+                          className="w-full h-52 md:h-72 object-contain bg-black/30 transition-transform duration-700 group-hover:scale-[1.04]"
+                        />
+                        <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                          <span className="px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-widest text-white bg-white/10 backdrop-blur-sm border border-white/15">
+                            View full size
+                          </span>
+                        </span>
+                      </span>
+                      <span className="mt-4 flex items-start gap-2.5 px-1">
+                        <span className="w-1 self-stretch shrink-0 rounded-full bg-gradient-to-b from-[#ff9a4d] to-[#991b1b]/60" />
+                        <span className="text-[13px] leading-relaxed text-white/55">
+                          {hack.captions && hack.captions[i]
+                            ? hack.captions[i]
+                            : `${hack.title} — photo ${i + 1}`}
+                        </span>
+                      </span>
+                    </motion.button>
                   ))}
                 </div>
               </div>
             )}
+
+            <AnimatePresence>
+              {lightbox !== null && gallery[lightbox] && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={closeLightbox}
+                  onTouchStart={onTouchStart}
+                  onTouchEnd={onTouchEnd}
+                  className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-[4vw]"
+                >
+                  <button
+                    type="button"
+                    aria-label="Close"
+                    onClick={closeLightbox}
+                    className="absolute top-5 right-5 flex items-center justify-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white z-50"
+                  >
+                    <X size={20} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Previous image"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goPrev();
+                    }}
+                    disabled={gallery.length < 2}
+                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white disabled:opacity-30"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <motion.img
+                    key={lightbox}
+                    src={gallery[lightbox]}
+                    alt={`${hack.title} photo ${lightbox + 1}`}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: EASE }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="max-w-full max-h-full object-contain rounded-xl"
+                  />
+                  <button
+                    type="button"
+                    aria-label="Next image"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goNext();
+                    }}
+                    disabled={gallery.length < 2}
+                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white disabled:opacity-30"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                  <span className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 px-4 py-1.5 rounded-full bg-white/10 text-sm text-white/80 font-mono">
+                    {lightbox + 1} / {gallery.length}
+                    {gallery.length > 1 && (
+                      <span className="text-[9px] uppercase tracking-[0.16em] text-white/50 sm:hidden">
+                        Swipe to browse
+                      </span>
+                    )}
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <div className="mt-10 flex flex-wrap gap-4">
               <Link

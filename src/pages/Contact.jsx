@@ -86,7 +86,7 @@ const ContactHeader = () => (
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: EASE }}
-      className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/40 sm:text-sm"
+      className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/50 sm:text-sm"
     >
       <span className="text-emerald-400">➜</span>{" "}
       <span className="text-sky-400">~</span> echo{" "}
@@ -179,7 +179,7 @@ export const Contact = () => {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 Available for Work
               </span>
-              <Globe size={18} className="text-white/40" />
+              <Globe size={18} className="text-white/50" />
             </div>
             <h3 className="text-lg font-bold text-white mt-2">Location & Status</h3>
             <p className="text-white/60 text-xs sm:text-sm mt-1">
@@ -252,7 +252,7 @@ export const Contact = () => {
                 {copiedField === "Email" ? (
                   <Check size={14} className="text-emerald-400 shrink-0" />
                 ) : (
-                  <Copy size={14} className="text-white/40 shrink-0 hover:text-white" />
+                  <Copy size={14} className="text-white/50 shrink-0 hover:text-white" />
                 )}
               </button>
               <button
@@ -266,7 +266,7 @@ export const Contact = () => {
                 {copiedField === "Phone" ? (
                   <Check size={14} className="text-emerald-400 shrink-0" />
                 ) : (
-                  <Copy size={14} className="text-white/40 shrink-0 hover:text-white" />
+                  <Copy size={14} className="text-white/50 shrink-0 hover:text-white" />
                 )}
               </button>
             </div>

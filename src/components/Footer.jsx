@@ -189,7 +189,7 @@ export const Footer = () => {
 
         {/* ─── Bottom Bar ─── */}
         <div className="border-t border-white/10" />
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/35 pt-4 pb-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50 pt-4 pb-6">
           <p>© {year} Shah Dhairya. All rights reserved.</p>
           <button
             onClick={scrollToTop}

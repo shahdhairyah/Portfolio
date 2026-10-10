@@ -12,6 +12,17 @@ dist
 dist-ssr
 *.local
 
+# Env files (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# Scratch / temp files
+*.tmp
+hello.txt
+nothing.txt
+testing.txt
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -10,7 +10,7 @@ const achievements = [
   { icon: Flame, number: "25+", label: "Hackathon Participant" },
   { icon: Users, number: "3+", label: "Years Building" },
   { icon: Trophy, number: "2", label: "Hackathon Winner (State Level)" },
-  { icon: Award, number: "13+", label: "Hackathon Final Round Selected" },
+  { icon: Award, number: "17+", label: "Hackathon Final Round Selected" },
 ];
 
 const CountUp = ({ value }) => {
@@ -61,7 +61,7 @@ const AchievementsHeader = () => {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: EASE }}
-        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/40 sm:text-sm"
+        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/50 sm:text-sm"
       >
         <span className="text-emerald-400">➜</span>{" "}
         <span className="text-sky-400">~</span> grep -r{" "}
@@ -128,7 +128,7 @@ export const Achievements = () => {
                   <div className="font-display text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-[#ff9a4d] to-[#991b1b]">
                     <CountUp value={a.number} />
                   </div>
-                  <div className="mt-2 text-[10px] uppercase tracking-[0.2em] text-white/40">
+                  <div className="mt-2 text-[10px] uppercase tracking-[0.2em] text-white/50">
                     {a.label}
                   </div>
                 </motion.div>
@@ -168,7 +168,7 @@ export const Achievements = () => {
                         <span className="inline-block px-2.5 py-1 rounded-md bg-[#bf4417]/10 border border-[#bf4417]/30 text-[11px] font-bold text-[#ff9a4d]">
                           {hack.org}
                         </span>
-                        <span className="block mt-1.5 text-[10px] uppercase tracking-[0.2em] text-white/40 font-mono">
+                        <span className="block mt-1.5 text-[10px] uppercase tracking-[0.2em] text-white/50 font-mono">
                           {hack.year}
                         </span>
                       </div>
@@ -185,16 +185,16 @@ export const Achievements = () => {
 
                   <p className="relative mt-4 text-white/60 leading-relaxed">{hack.text}</p>
 
-                  <div className="relative mt-8 grid grid-cols-3 gap-3">
+                  <div className="relative mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {hack.stats.map((stat) => (
                       <div
                         key={stat.label}
-                        className="px-3 py-4 rounded-xl bg-white/[0.02] border border-white/5 border-l-2 border-l-[#bf4417]"
+                        className="px-3 py-4 rounded-xl bg-white/[0.02] border border-white/5 border-l-2 border-l-[#bf4417] sm:flex sm:flex-col sm:items-center sm:text-center"
                       >
                         <div className="font-display text-xl sm:text-2xl text-white">
                           {stat.value}
                         </div>
-                        <div className="mt-1 text-[9px] uppercase tracking-[0.16em] text-white/40">
+                        <div className="mt-1 text-[9px] uppercase tracking-[0.16em] text-white/50">
                           {stat.label}
                         </div>
                       </div>

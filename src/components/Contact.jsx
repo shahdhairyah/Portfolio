@@ -1,6 +1,9 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Mail, MessageSquare, Send, ArrowUpRight, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Mail, MessageSquare, Send, ArrowUpRight, Sparkles, Check, Loader2, AlertCircle,
+} from "lucide-react";
 import { identity, socials } from "@/data/profile";
 
 const Github = ({ size = 18 }) => (
@@ -19,11 +22,27 @@ const Linkedin = ({ size = 18 }) => (
 
 Linkedin.propTypes = { size: PropTypes.number };
 
-const defaultForm = {
+const emptyForm = {
   name: "",
   email: "",
-  subject: "Project Inquiry / Collaboration",
-  message: "Hi Dhairya, I saw your portfolio and would like to discuss a potential project or opportunity with you.",
+  subject: "",
+  message: "",
+  botField: "",
+};
+
+const LIMITS = { name: 80, email: 120, subject: 140, message: 2000 };
+
+/* Set VITE_WEB3FORMS_KEY in .env to deliver submissions straight to
+   sdhairyah@gmail.com. Without it the form falls back to opening the
+   visitor's mail client with the message pre-filled. */
+const FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
+
+const statusCopy = {
+  idle: "",
+  sending: "Sending your message…",
+  success: "Message sent. I'll get back to you within 2-4 days.",
+  error: "Couldn't send that. Please email me directly or use WhatsApp.",
 };
 
 const cards = [
@@ -44,22 +63,85 @@ const cards = [
 ];
 
 const Contact = () => {
-  const [form, setForm] = useState(defaultForm);
+  const [form, setForm] = useState(emptyForm);
+  const [status, setStatus] = useState("idle");
 
   const github = socials.find((s) => s.label === "GitHub")?.href;
   const linkedin = socials.find((s) => s.label === "LinkedIn")?.href;
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const mailtoFallback = () => {
+    const subject = form.subject || "Portfolio Inquiry";
+    const body = `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`;
+    window.location.href = `mailto:${identity.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setStatus("success");
+    setForm(emptyForm);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (status === "sending") return;
 
+    /* Honeypot: a real visitor never fills this hidden field. */
+    if (form.botField) {
+      setStatus("success");
+      setForm(emptyForm);
+      return;
+    }
+
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      subject: form.subject.trim(),
+      message: form.message.trim(),
+    };
+
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email);
+    if (
+      !payload.name ||
+      !emailValid ||
+      payload.message.length < 10 ||
+      payload.message.length > LIMITS.message
+    ) {
+      setStatus("error");
+      return;
+    }
+
+    if (!FORMS_KEY) {
+      mailtoFallback();
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch(FORMS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: FORMS_KEY,
+          ...payload,
+          subject: payload.subject || "Portfolio Inquiry",
+          from_name: `${payload.name} — via shahdhairyah.in`,
+          replyto: payload.email,
+          botcheck: "",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || "Request failed");
+      setStatus("success");
+      setForm(emptyForm);
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const handleWhatsApp = () => {
     const waNumber = identity.phone.replace(/[^0-9]/g, "");
-    const waText = `*New Portfolio Contact*\n\n*Name:* ${form.name}\n*Email:* ${form.email}\n*Subject:* ${form.subject}\n\n*Message:*\n${form.message}`;
-    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waText)}`;
-
-    window.open(waUrl, "_blank");
-    setForm(defaultForm);
+    const waText = form.message
+      ? `Hi Dhairya — ${form.message}`
+      : "Hi Dhairya! I saw your portfolio and would like to talk about a project.";
+    window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(waText)}`, "_blank", "noopener");
   };
 
   return (
@@ -90,8 +172,8 @@ const Contact = () => {
             </span>
           </h2>
           <p className="text-white/60 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed mt-4">
-            Have a project in mind or an opportunity? Enter your details below
-            to chat directly on WhatsApp.
+            Have a project in mind or an opportunity? Send a message and it lands
+            directly in my inbox — or skip the form and start a WhatsApp chat.
           </p>
         </div>
 
@@ -111,7 +193,7 @@ const Contact = () => {
                   <c.icon size={18} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-[10px] font-bold tracking-wider uppercase text-white/40">
+                  <div className="text-[10px] font-bold tracking-wider uppercase text-white/50">
                     <span className="font-mono text-white/25 mr-2">0{i + 1}</span>
                     {c.label}
                   </div>
@@ -136,7 +218,7 @@ const Contact = () => {
                 <Github size={18} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[10px] font-bold tracking-wider uppercase text-white/40">
+                <div className="text-[10px] font-bold tracking-wider uppercase text-white/50">
                   <span className="font-mono text-white/25 mr-2">03</span>
                   GitHub
                 </div>
@@ -160,7 +242,7 @@ const Contact = () => {
                 <Linkedin size={18} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[10px] font-bold tracking-wider uppercase text-white/40">
+                <div className="text-[10px] font-bold tracking-wider uppercase text-white/50">
                   <span className="font-mono text-white/25 mr-2">04</span>
                   LinkedIn
                 </div>
@@ -181,73 +263,135 @@ const Contact = () => {
                 <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
-                <span className="ml-3 font-mono text-[11px] text-white/40">
+                <span className="ml-3 font-mono text-[11px] text-white/50">
                   new_message.txt
                 </span>
               </div>
               <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Quick reply
+                Replies in 2-4 days
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <input
+                type="text"
+                name="botField"
+                value={form.botField}
+                onChange={handleChange}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+              />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold text-white/70 uppercase tracking-wider">Name</label>
-                  <input
-                    name="name"
-                    value={form.name}
-                    placeholder="Name"
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-[#bf4417] focus:ring-1 focus:ring-[#bf4417] transition-all"
-                  />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold text-white/70 uppercase tracking-wider">Email</label>
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="email@gmail.com"
-                    value={form.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-[#bf4417] focus:ring-1 focus:ring-[#bf4417] transition-all"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-white/70 uppercase tracking-wider">Subject</label>
+<div className="flex flex-col gap-1.5">
+                <label htmlFor="contact-name" className="text-xs font-semibold text-white/70 uppercase tracking-wider">Name</label>
                 <input
-                  name="subject"
-                  value={form.subject}
+                  id="contact-name"
+                  name="name"
+                  value={form.name}
+                  placeholder="Your name"
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-[#bf4417] focus:ring-1 focus:ring-[#bf4417] transition-all"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-white/70 uppercase tracking-wider">Message</label>
-                <textarea
-                  name="message"
-                  rows={4}
-                  value={form.message}
-                  onChange={handleChange}
+                  autoComplete="name"
+                  maxLength={LIMITS.name}
                   required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-[#bf4417] focus:ring-1 focus:ring-[#bf4417] transition-all resize-none"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#bf4417] focus:ring-1 focus:ring-[#bf4417] transition-all"
                 />
               </div>
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="contact-email" className="text-xs font-semibold text-white/70 uppercase tracking-wider">Email</label>
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  placeholder="you@company.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  autoComplete="email"
+                  maxLength={LIMITS.email}
+                  required
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#bf4417] focus:ring-1 focus:ring-[#bf4417] transition-all"
+                />
+              </div>
+            </div>
 
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="contact-subject" className="text-xs font-semibold text-white/70 uppercase tracking-wider">Subject</label>
+              <input
+                id="contact-subject"
+                name="subject"
+                placeholder="Project inquiry / collaboration"
+                value={form.subject}
+                onChange={handleChange}
+                maxLength={LIMITS.subject}
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#bf4417] focus:ring-1 focus:ring-[#bf4417] transition-all"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="contact-message" className="text-xs font-semibold text-white/70 uppercase tracking-wider">Message</label>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows={4}
+                placeholder="Tell me about your project, timeline, and what you need built."
+                value={form.message}
+                onChange={handleChange}
+                maxLength={LIMITS.message}
+                minLength={10}
+                required
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#bf4417] focus:ring-1 focus:ring-[#bf4417] transition-all resize-none"
+              />
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <button
                 type="submit"
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-white shadow-[0_0_25px_rgba(191,68,23,0.35)] hover:shadow-[0_0_40px_rgba(191,68,23,0.55)]"
+                disabled={status === "sending"}
+                className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-white shadow-[0_0_25px_rgba(191,68,23,0.35)] hover:shadow-[0_0_40px_rgba(191,68,23,0.55)] disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <Send size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                <span>Send via WhatsApp</span>
+                {status === "sending" ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <Send size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                )}
+                <span>{status === "sending" ? "Sending…" : "Send Message"}</span>
               </button>
-            </form>
+
+              <button
+                type="button"
+                onClick={handleWhatsApp}
+                className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-sm transition-all duration-300 cursor-pointer border border-emerald-400/30 bg-emerald-500/10 text-emerald-400 hover:border-emerald-400/60 hover:bg-emerald-500/20"
+              >
+                <MessageSquare size={15} />
+                <span>Quick Chat on WhatsApp</span>
+              </button>
+            </div>
+
+            <AnimatePresence>
+              {statusCopy[status] && status !== "idle" && (
+                <motion.p
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  role="status"
+                  aria-live="polite"
+                  className={`flex items-center gap-2 text-xs ${
+                    status === "success"
+                      ? "text-emerald-400"
+                      : status === "error"
+                        ? "text-amber-400"
+                        : "text-white/60"
+                  }`}
+                >
+                  {status === "success" && <Check size={14} />}
+                  {status === "error" && <AlertCircle size={14} />}
+                  {statusCopy[status]}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </form>
           </div>
         </div>
       </div>
@@ -259,7 +403,7 @@ const Contact = () => {
         preserveAspectRatio="none"
       >
         <path
-          fill="#fafafa"
+          fill="#020202"
           fillOpacity="1"
           d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,133.3C672,139,768,181,864,181.3C960,181,1056,139,1152,122.7C1248,107,1344,117,1392,122.7L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
         />

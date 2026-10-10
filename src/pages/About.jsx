@@ -122,7 +122,7 @@ const AboutHeader = () => {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: EASE }}
-        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/40 sm:text-sm"
+        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/50 sm:text-sm"
       >
         <span className="text-emerald-400">➜</span>{" "}
         <span className="text-sky-400">~</span> whoami
@@ -244,14 +244,16 @@ const ProfileSection = () => {
               {facts.map((fact) => {
                 const Icon = fact.icon;
                 return (
-                  <li key={fact.label} className="flex items-center gap-4 py-3.5">
+                  <li key={fact.label} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 py-3.5">
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] border border-white/10 text-[#ff8a5c]">
                       <Icon size={16} />
                     </span>
-                    <span className="w-36 shrink-0 text-[11px] font-medium uppercase tracking-[0.16em] text-white/40">
+                    <span className="w-auto shrink-0 text-[11px] font-medium uppercase tracking-[0.16em] text-white/50 sm:w-36">
                       {fact.label}
                     </span>
-                    <span className="text-sm text-white/80">{fact.value}</span>
+                    <span className="basis-full text-sm text-white/80 sm:basis-auto sm:flex-1">
+                      {fact.value}
+                    </span>
                   </li>
                 );
               })}

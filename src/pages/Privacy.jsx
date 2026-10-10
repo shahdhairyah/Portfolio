@@ -40,8 +40,8 @@ export const Privacy = () => {
         path="/privacy"
         noindex
       />
-      <section className="relative py-20 sm:py-32 min-h-screen">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/[0.02]" />
+      <section className="relative py-20 sm:py-32 min-h-screen bg-[#020202] text-white">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020202] via-[#020202] to-[#bf4417]/[0.02]" />
         <div className="container max-w-4xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -49,14 +49,14 @@ export const Privacy = () => {
             transition={{ duration: 0.7 }}
             className="text-center max-w-2xl mx-auto mb-12"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-border/50 text-xs font-medium text-muted-foreground mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-white/60 mb-4 backdrop-blur-md">
               <Shield size={12} />
               Privacy Policy
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
               Your <span className="gradient-text">Privacy Matters</span>
             </h1>
-            <p className="mt-4 text-sm text-muted-foreground">Last updated: July 2026</p>
+            <p className="mt-4 text-sm text-white/60">Last updated: July 2026</p>
           </motion.div>
 
           <div className="space-y-4">
@@ -68,15 +68,15 @@ export const Privacy = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * i }}
-                  className="rounded-xl border border-border/50 bg-card/30 p-5 sm:p-6 hover:border-primary/20 transition-colors"
+                  className="rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-5 sm:p-6 hover:border-[#bf4417]/30 transition-colors"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="p-2.5 rounded-lg bg-primary/10 text-primary shrink-0">
+                    <div className="p-2.5 rounded-lg bg-[#bf4417]/15 text-[#ff9a4d] border border-[#bf4417]/30 shrink-0">
                       <Icon size={18} />
                     </div>
                     <div>
-                      <h2 className="font-bold text-sm sm:text-base mb-2">{section.title}</h2>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{section.content}</p>
+                      <h2 className="font-bold text-sm sm:text-base mb-2 text-white">{section.title}</h2>
+                      <p className="text-sm text-white/70 leading-relaxed">{section.content}</p>
                     </div>
                   </div>
                 </motion.div>

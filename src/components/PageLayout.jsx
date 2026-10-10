@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 export const PageLayout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-[#020202] text-white overflow-x-hidden">
       <main className="pt-16 sm:pt-20">{children}</main>
     </div>
   );

@@ -1,9 +1,9 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight, FolderGit2, CheckCircle2, Cpu, Code2, LayoutGrid } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, FolderGit2, CheckCircle2, Cpu, Code2, LayoutGrid, Lock } from "lucide-react";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import { SEO } from "@/components/SEO";
-import { projects } from "@/data/projects";
+import { projects, nextProject, isPrivateProject } from "@/data/projects";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -46,7 +46,7 @@ const StatTile = ({ stat }) => (
     <div className="font-display text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#ff9a4d] to-[#991b1b]">
       {stat.value}
     </div>
-    <div className="mt-1 text-[9px] uppercase tracking-[0.18em] text-white/40">
+    <div className="mt-1 text-[9px] uppercase tracking-[0.18em] text-white/50">
       {stat.label}
     </div>
   </div>
@@ -63,6 +63,8 @@ export const ProjectCaseStudy = () => {
   if (!project) {
     return <Navigate to="/projects" replace />;
   }
+
+  const upcoming = nextProject(project.slug);
 
   return (
     <main className="relative w-full min-h-screen bg-[#020202] text-white flex flex-col items-center py-[4vh] pb-40 px-[4vw] overflow-hidden font-sans">
@@ -97,7 +99,7 @@ export const ProjectCaseStudy = () => {
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#bf4417]/10 border border-[#bf4417]/30 text-[11px] font-bold text-[#ff9a4d]">
                 {project.category}
               </span>
-              <span className="text-[11px] uppercase tracking-[0.2em] text-white/40 font-mono">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/50 font-mono">
                 {project.year} · {project.role}
               </span>
               <span className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 text-[11px] font-bold">
@@ -147,8 +149,14 @@ export const ProjectCaseStudy = () => {
                 </a>
               )}
               {!project.demoUrl && (
-                <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-sm font-semibold text-white/35 cursor-not-allowed select-none">
+                <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-sm font-semibold text-white/50 select-none">
                   Demo coming soon
+                </span>
+              )}
+              {isPrivateProject(project) && (
+                <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 text-sm font-semibold text-white/50 select-none">
+                  <Lock size={14} />
+                  Private / institutional project
                 </span>
               )}
             </div>
@@ -276,12 +284,52 @@ export const ProjectCaseStudy = () => {
           </div>
         </motion.div>
 
+        {upcoming && (
+          <motion.div {...reveal(0.18)} className="mt-14">
+            <Link
+              to={`/projects/${upcoming.slug}`}
+              className="group relative flex flex-col gap-6 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition-all duration-500 hover:border-[#bf4417]/50 hover:bg-white/[0.05] sm:flex-row sm:items-center sm:justify-between md:p-9"
+            >
+              <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[radial-gradient(#bf4417,transparent)] opacity-0 blur-[70px] transition-opacity duration-500 group-hover:opacity-30" />
+              <div className="relative min-w-0">
+                <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#ff9a4d]">
+                  <ArrowRight size={12} />
+                  Next Project
+                </span>
+                <h3 className="mt-3 font-display text-2xl font-extrabold leading-tight text-white transition-colors duration-300 group-hover:text-[#ff9a4d] md:text-3xl">
+                  {upcoming.title}
+                </h3>
+                <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/60 line-clamp-2">
+                  {upcoming.tagline}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {upcoming.stack.slice(0, 4).map((s) => (
+                    <span
+                      key={s}
+                      className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-0.5 text-[10px] font-mono text-white/60"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <span className="relative inline-flex shrink-0 items-center gap-2 self-start rounded-xl border border-white/10 bg-white/[0.04] px-5 py-2.5 text-xs font-semibold uppercase tracking-widest text-white/70 transition-all duration-300 group-hover:border-[#bf4417]/50 group-hover:text-white sm:self-center">
+                Read Case Study
+                <ArrowUpRight
+                  size={14}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </span>
+            </Link>
+          </motion.div>
+        )}
+
         <motion.div
           {...reveal(0.2)}
           className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4"
         >
           {projects
-            .filter((p) => p.slug !== project.slug)
+            .filter((p) => p.slug !== project.slug && p.slug !== upcoming?.slug)
             .slice(0, 4)
             .map((p) => (
               <Link
@@ -293,7 +341,7 @@ export const ProjectCaseStudy = () => {
                 <div className="text-[13px] font-semibold text-white/80 group-hover:text-white leading-snug">
                   {p.title}
                 </div>
-                <div className="mt-1 text-[10px] uppercase tracking-widest text-white/35">
+                <div className="mt-1 text-[10px] uppercase tracking-widest text-white/50">
                   {p.category}
                 </div>
               </Link>

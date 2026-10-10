@@ -84,7 +84,7 @@ const RotatingWord = () => {
 
   return (
     <span className="inline-flex items-center gap-2 font-mono text-sm text-[#ff8a5c]">
-      <span className="text-white/40">&gt;</span>
+      <span className="text-white/50">&gt;</span>
       <AnimatePresence mode="wait">
         <motion.span
           key={WORDS[index]}
@@ -171,7 +171,7 @@ const JourneyTimeline = () => {
 
         <motion.div
           style={{ opacity: hudOpacity }}
-          className="absolute left-6 top-20 z-30 hidden font-mono text-xs text-white/40 md:left-[7vw] md:block"
+          className="absolute left-6 top-20 z-30 hidden font-mono text-xs text-white/50 md:left-[7vw] md:block"
         >
           ~/journey <span className="text-[#ff8a5c]">--reverse</span>
         </motion.div>
@@ -180,7 +180,7 @@ const JourneyTimeline = () => {
           style={{ opacity: hudOpacity }}
           className="absolute right-6 top-20 z-30 hidden flex-col items-end gap-1 md:right-[7vw] md:flex"
         >
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/50">
             Chapter
           </p>
           <div className="flex items-baseline gap-2">
@@ -241,7 +241,7 @@ const JourneyTimeline = () => {
               milestones. This is the repo behind the portfolio.
             </p>
 
-            <p className="mt-8 inline-flex items-center gap-2 font-mono text-xs text-white/35">
+            <p className="mt-8 inline-flex items-center gap-2 font-mono text-xs text-white/50">
               <span className="text-emerald-400">➜</span> keep scrolling — time
               moves sideways
             </p>
@@ -281,7 +281,7 @@ const JourneyTimeline = () => {
                 <div>
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px]">
                     <span className="text-[#ff8a5c]">* {item.hash}</span>
-                    <span className="text-white/40">({item.year})</span>
+                    <span className="text-white/50">({item.year})</span>
                   </div>
 
                   <span

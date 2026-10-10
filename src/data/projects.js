@@ -302,3 +302,11 @@ export const projects = [
 ];
 
 export const projectCategories = ["All", ...new Set(projects.map((p) => p.category))];
+
+export const isPrivateProject = (project) => !project.githubUrl;
+
+export const nextProject = (slug) => {
+  const index = projects.findIndex((project) => project.slug === slug);
+  if (index === -1) return null;
+  return projects[(index + 1) % projects.length];
+};

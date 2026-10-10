@@ -1,10 +1,10 @@
-import { useRef } from "react";
+import { forwardRef, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { motion, useInView } from "framer-motion";
-import { ArrowUpRight, ExternalLink, GitBranch, Rocket, Globe, Package, Code2 } from "lucide-react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { ArrowUpRight, ExternalLink, GitBranch, Rocket, Globe, Package, Code2, Lock } from "lucide-react";
 import { SEO } from "@/components/SEO";
-import { projects } from "@/data/projects";
+import { projects, projectCategories, isPrivateProject } from "@/data/projects";
 
 const GithubIcon = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -66,7 +66,7 @@ const ProjectsHeader = () => {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: EASE }}
-        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/40 sm:text-sm"
+        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/50 sm:text-sm"
       >
         <span className="text-emerald-400">➜</span>{" "}
         <span className="text-sky-400">~</span> git log{" "}
@@ -144,7 +144,7 @@ const FeaturedProject = ({ project }) => {
               {project.title}
             </h2>
 
-            <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-white/55">
+            <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-white/60">
               {project.tagline}
             </p>
 
@@ -153,7 +153,7 @@ const FeaturedProject = ({ project }) => {
                 {project.stats.map((stat) => (
                   <div key={stat.label} className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-center">
                     <div className="font-display text-lg font-bold text-white">{stat.value}</div>
-                    <div className="mt-0.5 text-[10px] text-white/40">{stat.label}</div>
+                    <div className="mt-0.5 text-[10px] text-white/50">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -175,7 +175,7 @@ const FeaturedProject = ({ project }) => {
                 View Case Study
                 <ArrowUpRight size={15} />
               </Link>
-              {project.githubUrl && (
+              {project.githubUrl ? (
                 <a
                   href={project.githubUrl}
                   target="_blank"
@@ -185,6 +185,11 @@ const FeaturedProject = ({ project }) => {
                   <GithubIcon size={14} />
                   Source
                 </a>
+              ) : (
+                <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] px-5 py-2.5 text-sm font-medium text-white/45">
+                  <Lock size={13} />
+                  Private repo
+                </span>
               )}
               {project.demoUrl && (
                 <a
@@ -209,15 +214,15 @@ FeaturedProject.propTypes = {
   project: PropTypes.object.isRequired,
 };
 
-const ProjectCard = ({ project, index }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-
+const ProjectCard = forwardRef(({ project, index }, ref) => {
   return (
     <motion.article
       ref={ref}
+      layout
       initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.55, delay: index * 0.1, ease: EASE }}
       className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all duration-300 hover:border-[#bf4417]/40 hover:shadow-[0_0_60px_rgba(191,68,23,0.1)]"
     >
@@ -251,9 +256,21 @@ const ProjectCard = ({ project, index }) => {
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
               className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-[#020202]/70 text-white/60 backdrop-blur-md transition-all duration-200 hover:border-[#bf4417]/60 hover:text-white"
+              aria-label={`${project.title} live demo`}
             >
               <ExternalLink size={14} />
             </a>
+          )}
+          {isPrivateProject(project) && (
+            <span
+              className="flex h-9 items-center gap-1.5 rounded-full border border-white/10 bg-[#020202]/70 px-3 text-white/45 backdrop-blur-md"
+              title="Source not public"
+            >
+              <Lock size={13} />
+              <span className="text-[10px] font-medium uppercase tracking-wider">
+                Private
+              </span>
+            </span>
           )}
         </div>
 
@@ -294,16 +311,82 @@ const ProjectCard = ({ project, index }) => {
       </div>
     </motion.article>
   );
-};
+});
+
+ProjectCard.displayName = "ProjectCard";
 
 ProjectCard.propTypes = {
   project: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
 };
 
+const FilterPills = ({ categories, active, counts, onChange }) => (
+  <motion.div
+    layout
+    className="mt-8 flex flex-wrap items-center gap-2.5"
+  >
+    {categories.map((cat) => {
+      const isActive = active === cat;
+      return (
+        <button
+          key={cat}
+          type="button"
+          onClick={() => onChange(cat)}
+          className={`relative rounded-full px-4 py-2 text-xs font-medium transition-colors duration-300 cursor-pointer ${
+            isActive ? "text-white" : "text-white/55 hover:text-white/90"
+          }`}
+        >
+          {isActive && (
+            <motion.span
+              layoutId="project-filter-pill"
+              className="absolute inset-0 rounded-full bg-gradient-to-r from-[#bf4417] to-[#991b1b] shadow-[0_0_18px_rgba(191,68,23,0.4)]"
+              transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            />
+          )}
+          {!isActive && (
+            <span className="absolute inset-0 rounded-full border border-white/10 bg-white/[0.03]" />
+          )}
+          <span className="relative flex items-center gap-2">
+            {cat}
+            <span className={`font-mono text-[10px] ${isActive ? "text-white/70" : "text-white/35"}`}>
+              {counts[cat] ?? 0}
+            </span>
+          </span>
+        </button>
+      );
+    })}
+  </motion.div>
+);
+
+FilterPills.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+  active: PropTypes.string.isRequired,
+  counts: PropTypes.objectOf(PropTypes.number).isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 export const Projects = () => {
+  const [activeCat, setActiveCat] = useState("All");
   const featured = projects.find((p) => p.featured) || projects[0];
-  const rest = projects.filter((p) => p.id !== featured.id);
+
+  const rest = useMemo(
+    () => projects.filter((p) => p.id !== featured.id),
+    [featured.id]
+  );
+
+  const counts = useMemo(() => {
+    const map = {};
+    projectCategories.forEach((cat) => {
+      map[cat] =
+        cat === "All"
+          ? rest.length
+          : rest.filter((p) => p.category === cat).length;
+    });
+    return map;
+  }, [rest]);
+
+  const filtered =
+    activeCat === "All" ? rest : rest.filter((p) => p.category === activeCat);
 
   return (
     <main className="relative w-full bg-[#020202]">
@@ -333,17 +416,39 @@ export const Projects = () => {
                   standard
                 </span>
               </h2>
-              <p className="mt-3 text-sm font-light text-white/50">
+              <p className="mt-3 text-sm font-light text-white/60">
                 {rest.length} more {rest.length === 1 ? "project" : "projects"} — each built with the same attention to
                 detail, performance, and clean architecture.
               </p>
             </motion.div>
 
-            <div className="mt-10 grid gap-5 sm:grid-cols-2">
-              {rest.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
-              ))}
-            </div>
+            <FilterPills
+              categories={projectCategories}
+              active={activeCat}
+              counts={counts}
+              onChange={setActiveCat}
+            />
+
+            <motion.div layout className="mt-10 grid gap-5 sm:grid-cols-2">
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project, index) => (
+                  <ProjectCard key={project.id} project={project} index={index} />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+
+            <AnimatePresence>
+              {filtered.length === 0 && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="mt-10 text-center text-sm font-mono text-white/45"
+                >
+                  No projects in this category yet.
+                </motion.p>
+              )}
+            </AnimatePresence>
           </section>
         </div>
       </div>

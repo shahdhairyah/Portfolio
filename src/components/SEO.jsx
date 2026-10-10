@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Helmet } from "react-helmet-async";
 
 const SITE_URL = "https://shahdhairyah.in";
@@ -30,9 +31,21 @@ export const SEO = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
-      {jsonLd && (
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      )}
+      {jsonLd &&
+        (Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map((schema, i) => (
+          <script key={i} type="application/ld+json">
+            {JSON.stringify(schema)}
+          </script>
+        ))}
     </Helmet>
   );
+};
+
+SEO.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  path: PropTypes.string,
+  image: PropTypes.string,
+  noindex: PropTypes.bool,
+  jsonLd: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };

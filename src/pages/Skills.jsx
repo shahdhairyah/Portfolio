@@ -1,12 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence, useInView } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
   Layers, Monitor, Server, Wrench, Code2, Terminal, Database, Cpu,
-  ChevronRight, Folder, FileCode, Braces, Hash,
+  ChevronRight, Folder, Hash, ArrowUpRight,
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
-import { skills, skillCategories, categoryColors } from "@/data/skills";
+import {
+  skills,
+  skillCategories,
+  categoryColors,
+  skillTiers,
+  tierFor,
+  projectsUsingSkill,
+} from "@/data/skills";
+import { projects } from "@/data/projects";
 
 const ICON_BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons";
 const iconFor = (name) => {
@@ -33,8 +42,6 @@ const iconFor = (name) => {
 };
 
 const catIcons = { all: Layers, frontend: Monitor, backend: Server, tools: Wrench };
-const catFileIcons = { all: Braces, frontend: FileCode, backend: Database, tools: Wrench };
-const levelLabels = { 1: "Beginner", 2: "Familiar", 3: "Proficient", 4: "Advanced", 5: "Expert" };
 
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
@@ -56,7 +63,7 @@ const reveal = (delay = 0) => ({
 
 const catCounts = { all: skills.length };
 skills.forEach((s) => { catCounts[s.category] = (catCounts[s.category] || 0) + 1; });
-const avgLevel = (skills.reduce((a, s) => a + s.level, 0) / skills.length).toFixed(1);
+const coreCount = skills.filter((s) => s.tier === "core").length;
 
 /* ═══ HEADER ═══ */
 const SkillsHeader = () => {
@@ -110,7 +117,7 @@ const SkillsHeader = () => {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: EASE }}
-        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/40 sm:text-sm"
+        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/50 sm:text-sm"
       >
         <span className="text-emerald-400">➜</span>{" "}
         <span className="text-sky-400">~</span> cat stack.json{" "}
@@ -149,15 +156,15 @@ const SkillsHeader = () => {
         <div className="px-6 py-3 text-center">
           <span className="font-display text-2xl font-extrabold text-white">{display}</span>
           <span className="ml-1 font-mono text-xs text-white/30">+</span>
-          <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/35">Technologies</p>
+          <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/50">Technologies</p>
         </div>
         <div className="px-6 py-3 text-center">
           <span className="font-display text-2xl font-extrabold text-white">3</span>
-          <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/35">Categories</p>
+          <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/50">Categories</p>
         </div>
         <div className="px-6 py-3 text-center">
-          <span className="font-display text-2xl font-extrabold text-white">{avgLevel}</span>
-          <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/35">Avg Level</p>
+          <span className="font-display text-2xl font-extrabold text-white">{coreCount}</span>
+          <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/50">Core stack</p>
         </div>
       </motion.div>
     </section>
@@ -175,7 +182,7 @@ const SidebarItem = ({ cat, active, onClick }) => {
       className={`w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-left text-xs font-medium transition-all duration-200 ${
         active
           ? "bg-[#bf4417]/10 text-white border border-[#bf4417]/20"
-          : "text-white/40 hover:text-white/70 hover:bg-white/[0.03] border border-transparent"
+          : "text-white/50 hover:text-white/70 hover:bg-white/[0.03] border border-transparent"
       }`}
     >
       <Icon size={15} style={{ color: active ? color : undefined }} className={active ? "" : "text-white/30"} />
@@ -194,18 +201,27 @@ SidebarItem.propTypes = {
 };
 
 /* ═══ SKILL GRID CARD ═══ */
-const SkillGridCard = ({ skill, index }) => {
+const SkillGridCard = forwardRef(({ skill, index, onHover }, ref) => {
   const icon = iconFor(skill.name);
   const color = categoryColors[skill.category];
+  const tier = tierFor(skill.tier);
+  const isCore = skill.tier === "core";
+  const usedIn = projectsUsingSkill(skill.name, projects);
 
   return (
-    <motion.div
+    <motion.button
+      ref={ref}
+      type="button"
       layout
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.35, delay: index * 0.03, ease: EASE }}
-      className="group relative flex flex-col items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 text-center transition-all duration-300 hover:border-[#bf4417]/25 hover:bg-white/[0.045]"
+      onMouseEnter={() => onHover(skill.name)}
+      onMouseLeave={() => onHover(null)}
+      onFocus={() => onHover(skill.name)}
+      onBlur={() => onHover(null)}
+      className="group relative flex flex-col items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 text-center transition-all duration-300 hover:border-[#bf4417]/25 hover:bg-white/[0.045] cursor-pointer"
     >
       {/* Top accent on hover */}
       <div
@@ -231,44 +247,101 @@ const SkillGridCard = ({ skill, index }) => {
       </div>
 
       {/* Name */}
-      <h4 className="font-display text-sm font-bold text-white/85 group-hover:text-white transition-colors">
+      <h4 className="font-display text-sm font-bold text-white/90 group-hover:text-white transition-colors">
         {skill.name}
       </h4>
 
-      {/* Description */}
-      <p className="text-[11px] text-white/30 leading-relaxed line-clamp-2">
+{/* Description */}
+      <p className="text-[11px] text-white/55 leading-relaxed line-clamp-2">
         {skill.description}
       </p>
 
-      {/* Level bar */}
-      <div className="w-full mt-auto">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="font-mono text-[9px] text-white/20 uppercase tracking-wider">{levelLabels[skill.level]}</span>
-          <span className="font-mono text-[10px] text-white/25">{skill.level}/5</span>
-        </div>
-        <div className="h-1 overflow-hidden rounded-full bg-white/[0.06]">
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: skill.level / 5 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: index * 0.05, ease: EASE }}
-            className="h-full origin-left rounded-full"
-            style={{ backgroundColor: color }}
-          />
-        </div>
+      {/* Usage badge — how the tech is actually applied */}
+      <div className="mt-auto w-full flex flex-col items-center gap-2 pt-1">
+        <span
+          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-semibold uppercase tracking-wider border ${
+            isCore
+              ? "bg-[#bf4417]/12 border-[#bf4417]/40 text-[#ff9a4d]"
+              : "bg-white/[0.03] border-white/10 text-white/55"
+          }`}
+        >
+          {tier.label}
+        </span>
+        <span className="font-mono text-[10px] text-white/50">
+          {usedIn.length > 0
+            ? `${usedIn.length} project${usedIn.length === 1 ? "" : "s"}`
+            : "Tooling"}
+        </span>
       </div>
-    </motion.div>
+    </motion.button>
   );
-};
+});
+
+SkillGridCard.displayName = "SkillGridCard";
 
 SkillGridCard.propTypes = {
   skill: PropTypes.object.isRequired,
   index: PropTypes.number,
+  onHover: PropTypes.func.isRequired,
 };
+
+/* ═══ PROJECTS USING HOVERED SKILL ═══ */
+const SkillProjectLinks = ({ skillName }) => {
+  const matched = skillName ? projectsUsingSkill(skillName, projects) : [];
+
+  return (
+    <div className="mt-4 min-h-[76px] rounded-xl border border-white/[0.07] bg-white/[0.02] p-4">
+      <AnimatePresence mode="wait">
+        {skillName && matched.length > 0 ? (
+          <motion.div
+            key={skillName}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: EASE }}
+          >
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/50">
+              {skillName} used in
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {matched.map((p) => (
+                <Link
+                  key={p.slug}
+                  to={`/projects/${p.slug}`}
+                  className="group inline-flex items-center gap-2 rounded-lg border border-[#bf4417]/30 bg-[#bf4417]/10 px-3 py-1.5 text-[11px] font-medium text-[#ff9a4d] transition-colors hover:border-[#bf4417]/70 hover:bg-[#bf4417]/20"
+                >
+                  {p.title}
+                  <ArrowUpRight
+                    size={11}
+                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        ) : (
+          <motion.p
+            key="hint"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="text-[11px] text-white/45"
+          >
+            Hover any technology to see the projects it was used in.
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+SkillProjectLinks.propTypes = { skillName: PropTypes.string };
 
 /* ═══ MAIN ═══ */
 export const Skills = () => {
   const [activeCat, setActiveCat] = useState("all");
+  const [hoveredSkill, setHoveredSkill] = useState(null);
 
   const filtered =
     activeCat === "all"
@@ -305,12 +378,44 @@ export const Skills = () => {
           >
             Browse the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-amber-500">Toolkit</span>
           </motion.h2>
-          <motion.p
+<motion.p
             {...reveal(0.1)}
-            className="mt-3 text-center text-sm text-white/40 max-w-md mx-auto"
+            className="mt-3 text-center text-sm text-white/60 max-w-md mx-auto"
           >
-            Navigate by category on the left, explore skills on the right.
+            Navigate by category on the left, explore skills on the right. Every
+            skill is tagged by how it&apos;s used in production work.
           </motion.p>
+
+          <motion.div
+            {...reveal(0.12)}
+            className="mt-8 grid gap-4 sm:grid-cols-2 max-w-3xl mx-auto text-left"
+          >
+            {skillTiers.map((tier) => (
+              <div
+                key={tier.id}
+                className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-5"
+              >
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#ff9a4d]">
+                  {tier.label}
+                </p>
+                <p className="mt-2 text-[13px] leading-relaxed text-white/60">
+                  {tier.blurb}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {skills
+                    .filter((s) => s.tier === tier.id)
+                    .map((s) => (
+                      <span
+                        key={s.name}
+                        className="rounded-md border border-white/10 bg-white/[0.04] px-2 py-0.5 font-mono text-[10px] text-white/60"
+                      >
+                        {s.name}
+                      </span>
+                    ))}
+                </div>
+              </div>
+            ))}
+          </motion.div>
 
           {/* Split layout */}
           <motion.div
@@ -323,7 +428,7 @@ export const Skills = () => {
                 {/* Sidebar header */}
                 <div className="flex items-center gap-2 px-2 py-1.5 mb-2 border-b border-white/[0.05]">
                   <Hash size={12} className="text-[#bf4417]/50" />
-                  <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/25">Categories</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/45">Categories</span>
                 </div>
 
                 <div className="space-y-1">
@@ -350,10 +455,10 @@ export const Skills = () => {
             {/* ── Main Grid ── */}
             <div className="flex-1 min-w-0">
               {/* Breadcrumb */}
-              <div className="flex items-center gap-2 mb-5 font-mono text-[11px] text-white/25">
+              <div className="flex items-center gap-2 mb-5 font-mono text-[11px] text-white/45">
                 <span className="text-[#bf4417]/50">skills</span>
                 <ChevronRight size={10} />
-                <span className="text-white/40 capitalize">{activeCat === "all" ? "all" : activeCat}</span>
+                <span className="text-white/50 capitalize">{activeCat === "all" ? "all" : activeCat}</span>
                 <span className="text-white/15">({filtered.length})</span>
               </div>
 
@@ -361,10 +466,17 @@ export const Skills = () => {
               <motion.div layout className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 <AnimatePresence mode="popLayout">
                   {filtered.map((skill, i) => (
-                    <SkillGridCard key={skill.name} skill={skill} index={i} />
+                    <SkillGridCard
+                      key={skill.name}
+                      skill={skill}
+                      index={i}
+                      onHover={setHoveredSkill}
+                    />
                   ))}
                 </AnimatePresence>
               </motion.div>
+
+              <SkillProjectLinks skillName={hoveredSkill} />
 
               {/* Empty */}
               <AnimatePresence>
@@ -376,7 +488,7 @@ export const Skills = () => {
                     className="flex flex-col items-center justify-center py-20 text-center"
                   >
                     <Folder size={32} className="text-white/10" />
-                    <p className="mt-3 text-sm text-white/25 font-mono">No skills in this folder</p>
+                    <p className="mt-3 text-sm text-white/45 font-mono">No skills in this folder</p>
                   </motion.div>
                 )}
               </AnimatePresence>

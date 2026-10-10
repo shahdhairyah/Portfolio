@@ -3,7 +3,7 @@
 
 @theme {
   /* ─────────────────────────────────────────────
-     Reference palette — light theme, burnt orange
+     Reference palette — dark only, burnt orange
   ───────────────────────────────────────────── */
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -94,18 +94,49 @@
 
 @layer base {
   :root {
-    --bg: #fafafa;
-    --surface: #ffffff;
-    --surface-2: #f5f5f5;
-    --ink: #111111;
-    --ink-muted: #555555;
-    --ink-faint: #888888;
+    --bg: #020202;
+    --surface: #0a0a0a;
+    --surface-2: #141414;
+    --ink: #f5f5f5;
+    --ink-muted: #a3a3a3;
+    --ink-faint: #737373;
     --gold: #bf4417;
-    --gold-bright: #c2410c;
-    --hairline: rgba(191, 68, 23, 0.35);
-    --hairline-soft: rgba(17, 17, 17, 0.1);
+    --gold-bright: #ea580c;
+    --hairline: rgba(191, 68, 23, 0.4);
+    --hairline-soft: rgba(255, 255, 255, 0.08);
     --void: #020202;
-    color-scheme: light;
+    color-scheme: dark;
+  }
+
+  [data-theme="light"],
+  .light {
+    --bg: #020202;
+    --surface: #0a0a0a;
+    --surface-2: #141414;
+    --ink: #f5f5f5;
+    --ink-muted: #a3a3a3;
+    --ink-faint: #737373;
+    --gold: #bf4417;
+    --gold-bright: #ea580c;
+    --hairline: rgba(191, 68, 23, 0.4);
+    --hairline-soft: rgba(255, 255, 255, 0.08);
+    --void: #020202;
+    color-scheme: dark;
+  }
+
+  .dark {
+    --bg: #020202;
+    --surface: #0a0a0a;
+    --surface-2: #141414;
+    --ink: #f5f5f5;
+    --ink-muted: #a3a3a3;
+    --ink-faint: #737373;
+    --gold: #bf4417;
+    --gold-bright: #ea580c;
+    --hairline: rgba(191, 68, 23, 0.4);
+    --hairline-soft: rgba(255, 255, 255, 0.08);
+    --void: #020202;
+    color-scheme: dark;
   }
 
   * {
@@ -113,6 +144,7 @@
   }
 
   html {
+    position: relative;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
