@@ -603,6 +603,61 @@ interface HackathonRecord {
 }
 ```
 
+<<<<<<< HEAD
+=======
+#### Concrete Data Record Example (`SSIP-2023`)
+
+```javascript
+{
+  slug: "SSIP-2023",
+  icon: Trophy,
+  rank: "4th",
+  category: "State & National",
+  badge: "State Finalist · 4th Place",
+  featured: true,
+  title: "SSIP Hackathon — 4th Place My Sector",
+  org: "SSIP Gujarat · State Level",
+  year: "2023",
+  period: "2023-2024",
+  image: "/images/achievement/ssip-2023-cover.webp",
+  text: "Competed against 2062 teams (10449 participants) across Gujarat. Our team was among 181 selected for the final round and secured 4th place in my sector.",
+  story: "2062 teams. 10,449 participants. One weekend that redefined how far we could push ourselves. What started as a rough idea scribbled on a whiteboard turned into a live, working product presented to state-level judges — and all of it happened inside a single high-pressure hackathon. Walking away with 4th place in my sector, we didn't just earn a rank; we proved that ideas only truly come alive the moment a team decides to commit, code, and ship.",
+  stats: [
+    { value: "2062", label: "Teams (10449 participants)" },
+    { value: "181", label: "Teams selected" },
+    { value: "4th", label: "Place in my sector" },
+  ],
+  details: [
+    "2062 teams · 10449 participants registered across Gujarat",
+    "181 teams shortlisted for the final round",
+    "Built and demoed a live working product to state-level judges",
+    "Secured 4th place in my sector",
+    "Learned to ship a product under real deadline pressure",
+    "An unforgettable lesson in teamwork, stamina and problem-solving",
+  ],
+  captions: [
+    "Live prototype demo to state judges — presenting our working solution mechanism",
+    "The arena is set — teams across Gujarat gather for the weekend",
+    "Whiteboard first: turning a rough idea into a plan of attack",
+    "The demo table — when the product has to speak for itself",
+    "Deep in the build, every line of code pulling us closer to the deadline",
+    "On stage, live — presenting our solution to the state-level judges",
+    "That walk away from the stage after securing 4th place in our sector",
+  ],
+  gallery: [
+    "/images/achievement/ssip-2023-cover.webp",
+    "/images/achievement/ssip-2023-01.webp",
+    "/images/achievement/ssip-2023-02.webp",
+    "/images/achievement/ssip-2023-03.webp",
+    "/images/achievement/ssip-2023-04.webp",
+    "/images/achievement/ssip-2023-05.webp",
+    "/images/achievement/ssip-2023-06.webp",
+  ],
+  role: "Core Developer & Pitch Presenter",
+}
+```
+
+>>>>>>> 900dd4c (updated archivments)
 ### `src/data/projects.js`
 Exports `projects` array and `projectCategories`:
 
@@ -632,6 +687,54 @@ interface ProjectRecord {
 }
 ```
 
+<<<<<<< HEAD
+=======
+#### Concrete Data Record Example (`adit-cms`)
+
+```javascript
+{
+  id: 4,
+  slug: "adit-cms",
+  title: "ADIT CMS Platform",
+  category: "Web Application",
+  year: "2026",
+  role: "Full-Stack Developer",
+  status: "Live",
+  image: "/images/projects/ADITCMS/cover.png",
+  coverPosition: "center 01%",
+  tagline: "A full-stack content management system built for ADIT — a role-aware platform for managing departments, events, notices, gallery, and placements, replacing static pages with a dynamic, admin-controlled experience.",
+  stack: ["React", "PHP", "MySQL", "Bootstrap", "REST API"],
+  githubUrl: "https://github.com/shahdhairyah/ADITCMS",
+  demoUrl: "https://adit.shahdhairyah.in/",
+  featured: true,
+  stats: [
+    { value: "Full-stack", label: "Architecture" },
+    { value: "Role-based", label: "Access Control" },
+    { value: "Dynamic", label: "Content Mgmt" },
+    { value: "Live", label: "In Production" },
+  ],
+  problemTitle: "Static Website, Zero Admin Control",
+  problem: "The institution's website was static HTML — every update needed a developer. Departments had no way to publish events, notices, or gallery updates on their own, and content stayed outdated for weeks.",
+  solutionTitle: "Dynamic CMS with Role-Based Admin Panel",
+  solutionIntro: "Built a React-powered front end with a PHP REST API backend and MySQL database, giving admins and department heads a clean dashboard to manage every section of the site in real time.",
+  solutionPoints: [
+    "React front end with Bootstrap for a responsive, fast interface",
+    "PHP REST API backend with MySQL for reliable data management",
+    "Role-based access — admins and department heads see different dashboards",
+    "Dynamic content sections: events, notices, gallery, placements",
+    "Real-time content updates without touching code",
+  ],
+  capabilities: [
+    "Role-Based Access",
+    "Content Management",
+    "REST API Backend",
+    "Responsive Dashboard",
+    "Multi-Department Administration",
+  ],
+}
+```
+
+>>>>>>> 900dd4c (updated archivments)
 ### `src/data/skills.js`
 Exports `skills` array, `skillCategories`, and `skillTiers`:
 - Classified by `tier`: `"core"`, `"proficient"`, `"familiar"`.
