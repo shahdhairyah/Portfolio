@@ -19,7 +19,7 @@ export const hackathons = [
     org: "SSIP Gujarat · State Level",
     year: "2023",
     period: "2023-2024",
-    image: "/images/achievement/ssip-2023-01.webp",
+    image: "/images/achievement/ssip-2023-cover.webp",
     text: "Competed against 2062 teams (10449 participants) across Gujarat. Our team was among 181 selected for the final round and secured 4th place in my sector.",
     story: "2062 teams. 10,449 participants. One weekend that redefined how far we could push ourselves. What started as a rough idea scribbled on a whiteboard turned into a live, working product presented to state-level judges — and all of it happened inside a single high-pressure hackathon. Walking away with 4th place in my sector, we didn't just earn a rank; we proved that ideas only truly come alive the moment a team decides to commit, code, and ship.",
     stats: [
@@ -36,6 +36,7 @@ export const hackathons = [
       "An unforgettable lesson in teamwork, stamina and problem-solving",
     ],
     captions: [
+      "Live prototype demo to state judges — presenting our working solution mechanism",
       "The arena is set — teams across Gujarat gather for the weekend",
       "Whiteboard first: turning a rough idea into a plan of attack",
       "The demo table — when the product has to speak for itself",
@@ -44,6 +45,7 @@ export const hackathons = [
       "That walk away from the stage after securing 4th place in our sector",
     ],
     gallery: [
+      "/images/achievement/ssip-2023-cover.webp",
       "/images/achievement/ssip-2023-01.webp",
       "/images/achievement/ssip-2023-02.webp",
       "/images/achievement/ssip-2023-03.webp",
