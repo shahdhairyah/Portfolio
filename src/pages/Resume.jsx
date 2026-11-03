@@ -12,6 +12,9 @@ import {
   User,
 } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
+import PageCTA from "@/components/shared/PageCTA";
+import ClickSpark from "@/components/reactbits/ClickSpark";
+import DotGrid from "@/components/reactbits/DotGrid";
 import { SEO } from "@/components/SEO";
 import { identity, socials, roles, timeline } from "@/data/profile";
 import { projects } from "@/data/projects";
@@ -84,7 +87,8 @@ const breadcrumbJsonLd = {
 
 export const Resume = () => {
   return (
-    <main className="w-full min-h-screen bg-[#020202] flex flex-col items-center justify-center gap-[10vh] py-[4vh] pb-40 px-[4vw] font-sans">
+    <ClickSpark color="#ff9a4d" count={10} size={14} radius={34} className="relative flex w-full flex-col items-center justify-center gap-[10vh] overflow-hidden bg-[#020202] px-[4vw] py-[4vh] pb-40 font-sans">
+      <DotGrid className="opacity-20" dotSize={1.5} gap={32} radius={150} activeColor="#ff9a4d" />
       <SEO
         title="Shah Dhairya's Resume – Full-Stack Developer"
         description="Resume of Shah Dhairya — Full-Stack Developer & Digital Architect. Skills, projects, education, and achievements."
@@ -94,6 +98,7 @@ export const Resume = () => {
 
       <PageHeader
         title="RESUME"
+        kicker="cat resume.pdf"
         subtitle="A snapshot of my journey, skills, and what I bring to the table."
       />
 
@@ -292,7 +297,16 @@ export const Resume = () => {
           </a>
         </motion.div>
       </div>
-    </main>
+
+      <PageCTA
+        eyebrow="NEXT STEP"
+        title="Like what you see?"
+        accent="Let's talk."
+        description="The resume is the summary — the real conversation is where the interesting details live. Reach out any time."
+        secondaryLabel="Explore Projects"
+        secondaryTo="/projects"
+      />
+    </ClickSpark>
   );
 };
 

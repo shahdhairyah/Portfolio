@@ -3,6 +3,9 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, Trophy, Sparkles, Users, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SEO } from "@/components/SEO";
+import PageCTA from "@/components/shared/PageCTA";
+import ClickSpark from "@/components/reactbits/ClickSpark";
+import DotGrid from "@/components/reactbits/DotGrid";
 import { hackathons } from "@/data/achievements";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -69,8 +72,9 @@ export const AchievementDetails = () => {
   const Icon = hack.icon;
 
   return (
-    <main className="relative w-full min-h-screen bg-[#020202] text-white flex flex-col items-center py-[4vh] pb-40 px-[4vw] overflow-hidden font-sans">
+    <ClickSpark color="#ff9a4d" count={10} size={14} radius={34} className="relative flex min-h-screen w-full flex-col items-center overflow-hidden bg-[#020202] px-[4vw] py-[4vh] pb-40 font-sans text-white">
       <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
+      <DotGrid className="opacity-20" dotSize={1.5} gap={32} radius={150} activeColor="#ff9a4d" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] blur-[140px] opacity-10 pointer-events-none" />
 
       <span
@@ -375,7 +379,16 @@ export const AchievementDetails = () => {
           </div>
         </motion.div>
       </div>
-    </main>
+
+      <PageCTA
+        eyebrow="THE NEXT MILESTONE"
+        title="Let's write the"
+        accent="next story."
+        description="Every award began as a team shipping under a deadline. If you're building something worth competing for, count me in."
+        secondaryLabel="All Achievements"
+        secondaryTo="/achievements"
+      />
+    </ClickSpark>
   );
 };
 

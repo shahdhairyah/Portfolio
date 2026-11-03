@@ -1,0 +1,53 @@
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  background: rgba(10, 10, 10, 0.72);
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  --spotlight-opacity: 0;
+}
+
+.spotlight-card__beam,
+.spotlight-card__ring {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--spotlight-opacity);
+  transition: opacity 0.35s ease;
+}
+
+.spotlight-card__beam {
+  background: radial-gradient(
+    var(--spotlight-size) circle at var(--spotlight-x) var(--spotlight-y),
+    var(--spotlight-color),
+    transparent 70%
+  );
+  filter: blur(6px);
+}
+
+.spotlight-card__ring {
+  padding: 1px;
+  background: radial-gradient(
+    calc(var(--spotlight-size) * 0.65) circle at var(--spotlight-x) var(--spotlight-y),
+    color-mix(in srgb, var(--spotlight-color) 85%, white),
+    transparent 65%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+.spotlight-card__content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+}

@@ -1,11 +1,19 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useState } from "react";
 import PropTypes from "prop-types";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
-  Layers, Monitor, Server, Wrench, Code2, Terminal, Database, Cpu,
+  Layers, Monitor, Server, Wrench,
   ChevronRight, Folder, Hash, ArrowUpRight,
 } from "lucide-react";
+import PageHeader from "@/components/PageHeader";
+import PageCTA from "@/components/shared/PageCTA";
+import BlurText from "@/components/reactbits/BlurText";
+import ClickSpark from "@/components/reactbits/ClickSpark";
+import CountUp from "@/components/reactbits/CountUp";
+import DotGrid from "@/components/reactbits/DotGrid";
+import GradientText from "@/components/reactbits/GradientText";
+import { SectionEyebrow } from "@/components/home/cards";
 import { SEO } from "@/components/SEO";
 import {
   skills,
@@ -66,110 +74,13 @@ skills.forEach((s) => { catCounts[s.category] = (catCounts[s.category] || 0) + 1
 const coreCount = skills.filter((s) => s.tier === "core").length;
 
 /* ═══ HEADER ═══ */
-const SkillsHeader = () => {
-  const [display, setDisplay] = useState(0);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-
-  useEffect(() => {
-    if (!inView) return;
-    const end = skills.length;
-    const duration = 1400;
-    const startTime = performance.now();
-    const animate = (now) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.round(eased * end));
-      if (progress < 1) requestAnimationFrame(animate);
-    };
-    requestAnimationFrame(animate);
-  }, [inView]);
-
-  return (
-    <section className="relative w-full flex min-h-[320px] flex-col items-center justify-center overflow-hidden bg-[#020202] px-6 py-20 md:min-h-[420px]">
-      <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[320px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-[radial-gradient(#bf4417_0%,transparent_55%)] opacity-20 blur-[100px] md:w-[1100px]" />
-
-      {[
-        { icon: Code2, pos: "top-[14%] left-[8%] md:left-[12%]", spd: "4.2s", sz: 22 },
-        { icon: Terminal, pos: "bottom-[24%] left-[10%] md:left-[16%]", spd: "5.1s", sz: 20 },
-        { icon: Database, pos: "top-[18%] right-[8%] md:right-[13%]", spd: "3.9s", sz: 22 },
-        { icon: Cpu, pos: "bottom-[22%] right-[10%] md:right-[15%]", spd: "4.7s", sz: 20 },
-        { icon: Layers, pos: "top-[48%] left-[5%]", spd: "5.4s", sz: 17 },
-      ].map((item, i) => {
-        const IC = item.icon;
-        return (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 + i * 0.08 }}
-            className={`absolute ${item.pos} z-20 rounded-xl border border-[#bf4417]/25 bg-white/[0.04] p-3 text-[#bf4417]/70 backdrop-blur-md animate-bounce`}
-            style={{ animationDuration: item.spd }}
-          >
-            <IC size={item.sz} />
-          </motion.div>
-        );
-      })}
-
-      <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: EASE }}
-        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/50 sm:text-sm"
-      >
-        <span className="text-emerald-400">➜</span>{" "}
-        <span className="text-sky-400">~</span> cat stack.json{" "}
-        <span className="text-white/30">| jq</span>
-      </motion.p>
-
-      <motion.h1
-        initial={{ opacity: 0, y: 28 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
-        className="relative z-10 mt-5 select-none text-center font-display font-extrabold uppercase leading-[0.95] tracking-tight text-[clamp(3rem,10vw,8rem)]"
-      >
-        <span className="block text-white">The</span>
-        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] via-amber-600 to-[#991b1b]">
-          Craft
-        </span>
-      </motion.h1>
-
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: EASE, delay: 0.22 }}
-        className="relative z-10 mt-6 max-w-lg text-center text-sm font-light leading-relaxed text-white/55 sm:text-base"
-      >
-        Every project starts with the right tools. Here&apos;s the set I reach
-        for — honed across builds, deadlines and late-night debug sessions.
-      </motion.p>
-
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: EASE, delay: 0.35 }}
-        className="relative z-10 mt-10 flex items-center gap-0 divide-x divide-white/10 overflow-hidden rounded-full border border-white/10 bg-white/[0.02]"
-      >
-        <div className="px-6 py-3 text-center">
-          <span className="font-display text-2xl font-extrabold text-white">{display}</span>
-          <span className="ml-1 font-mono text-xs text-white/30">+</span>
-          <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/50">Technologies</p>
-        </div>
-        <div className="px-6 py-3 text-center">
-          <span className="font-display text-2xl font-extrabold text-white">3</span>
-          <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/50">Categories</p>
-        </div>
-        <div className="px-6 py-3 text-center">
-          <span className="font-display text-2xl font-extrabold text-white">{coreCount}</span>
-          <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/50">Core stack</p>
-        </div>
-      </motion.div>
-    </section>
-  );
-};
+const SkillsHeader = () => (
+  <PageHeader
+    title={"THE\nCRAFT"}
+    kicker="cat stack.json | jq"
+    subtitle="Every project starts with the right tools. Here's the set I reach for — honed across builds, deadlines and late-night debug sessions."
+  />
+);
 
 /* ═══ SIDEBAR ITEM ═══ */
 const SidebarItem = ({ cat, active, onClick }) => {
@@ -349,7 +260,7 @@ export const Skills = () => {
       : skills.filter((s) => s.category === activeCat);
 
   return (
-    <main className="relative w-full bg-[#020202]">
+    <ClickSpark color="#ff9a4d" count={10} size={14} radius={34} className="relative w-full overflow-x-clip bg-[#020202]">
       <SEO
         title="Shah Dhairya's Skills – React, Node.js, Python, MySQL"
         description="Technical skills of Shah Dhairya: React, PHP, Python, MySQL, Tailwind CSS, Git, and more."
@@ -360,23 +271,26 @@ export const Skills = () => {
       <SkillsHeader />
 
       {/* ═══ EXPLORER SECTION ═══ */}
-      <section className="relative w-full px-5 py-14 md:py-20 overflow-hidden">
+      <section className="relative w-full overflow-x-clip px-5 py-14 md:py-20">
+        <DotGrid className="opacity-25" dotSize={1.5} gap={32} radius={160} activeColor="#ff9a4d" />
         <div className="pointer-events-none absolute right-0 top-0 h-[400px] w-[500px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-10 blur-[140px]" />
 
         <div className="relative z-10 mx-auto max-w-6xl">
           {/* Section label */}
-          <motion.div {...reveal()} className="text-center mb-10">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#bf4417]/20 bg-[#bf4417]/5 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-[#bf4417]/70">
-              <Folder size={12} />
+          <motion.div {...reveal()} className="text-center mb-5">
+            <SectionEyebrow icon={Folder} center>
               Explorer
-            </span>
+            </SectionEyebrow>
           </motion.div>
 
           <motion.h2
             {...reveal(0.05)}
-            className="text-center font-display text-2xl font-bold text-white/90 md:text-3xl"
+            className="text-center font-display text-3xl font-extrabold tracking-tight text-white md:text-5xl"
           >
-            Browse the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] to-amber-500">Toolkit</span>
+            <BlurText text="Browse the" className="block" />
+            <GradientText className="mt-1 block" speed={7} glow={0.2}>
+              Toolkit
+            </GradientText>
           </motion.h2>
 <motion.p
             {...reveal(0.1)}
@@ -385,6 +299,30 @@ export const Skills = () => {
             Navigate by category on the left, explore skills on the right. Every
             skill is tagged by how it&apos;s used in production work.
           </motion.p>
+
+          <motion.div
+            {...reveal(0.1)}
+            className="mx-auto mt-7 flex w-fit items-center divide-x divide-white/10 overflow-hidden rounded-full border border-white/10 bg-white/[0.02]"
+          >
+            <div className="px-5 py-2.5 text-center">
+              <span className="font-display text-xl font-extrabold text-white">
+                <CountUp to={skills.length} suffix="+" />
+              </span>
+              <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/50">Technologies</p>
+            </div>
+            <div className="px-5 py-2.5 text-center">
+              <span className="font-display text-xl font-extrabold text-white">
+                <CountUp to={3} />
+              </span>
+              <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/50">Categories</p>
+            </div>
+            <div className="px-5 py-2.5 text-center">
+              <span className="font-display text-xl font-extrabold text-white">
+                <CountUp to={coreCount} />
+              </span>
+              <p className="mt-0.5 text-[9px] uppercase tracking-[0.18em] text-white/50">Core stack</p>
+            </div>
+          </motion.div>
 
           <motion.div
             {...reveal(0.12)}
@@ -496,7 +434,14 @@ export const Skills = () => {
           </motion.div>
         </div>
       </section>
-    </main>
+
+      <PageCTA
+        eyebrow="PUT IT TO WORK"
+        title="Need this stack on"
+        accent="your next build?"
+        description="From interfaces to APIs and databases — let's turn the toolkit into something shipped."
+      />
+    </ClickSpark>
   );
 };
 

@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
 import { Shield, Mail, Cookie, Info, Database, Lock } from "lucide-react";
-import { PageLayout } from "@/components/PageLayout";
+import PageHeader from "@/components/PageHeader";
+import PageCTA from "@/components/shared/PageCTA";
+import ClickSpark from "@/components/reactbits/ClickSpark";
+import DotGrid from "@/components/reactbits/DotGrid";
+import SpotlightCard from "@/components/reactbits/SpotlightCard";
+import ShinyText from "@/components/reactbits/ShinyText";
 import { SEO } from "@/components/SEO";
 
 const sections = [
@@ -33,31 +38,38 @@ const sections = [
 
 export const Privacy = () => {
   return (
-    <PageLayout>
+    <ClickSpark color="#ff9a4d" count={10} size={14} radius={34} className="w-full overflow-hidden bg-[#020202]">
       <SEO
         title="Privacy Policy – Shah Dhairya"
         description="Privacy policy for shahdhairyah.in. Learn how your data is collected, used, and protected when visiting this portfolio."
         path="/privacy"
         noindex
       />
-      <section className="relative py-20 sm:py-32 min-h-screen bg-[#020202] text-white">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#020202] via-[#020202] to-[#bf4417]/[0.02]" />
-        <div className="container max-w-4xl mx-auto relative">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-center max-w-2xl mx-auto mb-12"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-white/60 mb-4 backdrop-blur-md">
+
+      <PageHeader
+        title="PRIVACY"
+        kicker="cat privacy.md"
+        titleSize="text-[clamp(3rem,12vw,8rem)]"
+        subtitle="Your privacy matters. Here's exactly what is collected, how it is used, and how it is protected."
+      />
+
+      <section className="relative min-h-screen overflow-hidden py-16 text-white sm:py-24">
+        <DotGrid className="opacity-20" dotSize={1.5} gap={32} radius={150} activeColor="#ff9a4d" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020202]/60 to-[#bf4417]/[0.03]" />
+        <div className="relative container mx-auto max-w-4xl px-6">
+          <div className="mb-10 flex flex-col items-center gap-3 text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/60 backdrop-blur-md">
               <Shield size={12} />
               Privacy Policy
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-              Your <span className="gradient-text">Privacy Matters</span>
-            </h1>
-            <p className="mt-4 text-sm text-white/60">Last updated: July 2026</p>
-          </motion.div>
+            </span>
+            <ShinyText
+              text="LAST UPDATED · JULY 2026"
+              color="#8b8b8b"
+              shineColor="#ff9a4d"
+              speed={5}
+              className="text-[10px] font-semibold uppercase tracking-[0.26em]"
+            />
+          </div>
 
           <div className="space-y-4">
             {sections.map((section, i) => {
@@ -66,25 +78,36 @@ export const Privacy = () => {
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * i }}
-                  className="rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-5 sm:p-6 hover:border-[#bf4417]/30 transition-colors"
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ delay: 0.06 * i, duration: 0.5 }}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="p-2.5 rounded-lg bg-[#bf4417]/15 text-[#ff9a4d] border border-[#bf4417]/30 shrink-0">
-                      <Icon size={18} />
+                  <SpotlightCard className="p-5 sm:p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="p-2.5 rounded-lg bg-[#bf4417]/15 text-[#ff9a4d] border border-[#bf4417]/30 shrink-0">
+                        <Icon size={18} />
+                      </div>
+                      <div>
+                        <h2 className="font-bold text-sm sm:text-base mb-2 text-white">{section.title}</h2>
+                        <p className="text-sm text-white/70 leading-relaxed">{section.content}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="font-bold text-sm sm:text-base mb-2 text-white">{section.title}</h2>
-                      <p className="text-sm text-white/70 leading-relaxed">{section.content}</p>
-                    </div>
-                  </div>
+                  </SpotlightCard>
                 </motion.div>
               );
             })}
           </div>
         </div>
       </section>
-    </PageLayout>
+
+      <PageCTA
+        eyebrow="QUESTIONS?"
+        title="Privacy is a"
+        accent="conversation."
+        description="If anything here is unclear, or you want your data removed, reach out directly — I'll respond within 48 hours."
+        secondaryLabel="Back to About"
+        secondaryTo="/about"
+      />
+    </ClickSpark>
   );
 };

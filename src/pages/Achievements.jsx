@@ -1,8 +1,13 @@
-import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Trophy, Award, Flame, Users, Quote, ArrowUpRight, Medal } from "lucide-react";
-import { motion, animate, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import PageHeader from "@/components/PageHeader";
+import PageCTA from "@/components/shared/PageCTA";
+import ClickSpark from "@/components/reactbits/ClickSpark";
+import CountUp from "@/components/reactbits/CountUp";
+import DotGrid from "@/components/reactbits/DotGrid";
+import { SectionEyebrow } from "@/components/home/cards";
 import { SEO } from "@/components/SEO";
 import { hackathons } from "@/data/achievements";
 
@@ -13,32 +18,14 @@ const achievements = [
   { icon: Award, number: "17+", label: "Hackathon Final Round Selected" },
 ];
 
-const CountUp = ({ value }) => {
-  const numeric = parseFloat(value.replace(/[^0-9.]/g, "")) || 0;
-  const suffix = value.replace(/[0-9.]/g, "");
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [display, setDisplay] = useState(0);
+const statNumber = (value) => parseInt(String(value), 10) || 0;
+const statSuffix = (value) => String(value).replace(/^\d+/, "");
 
-  useEffect(() => {
-    if (!inView) return;
-    const controls = animate(0, numeric, {
-      duration: 1.6,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => setDisplay(v),
-    });
-    return () => controls.stop();
-  }, [inView, numeric]);
+const StatCountUp = ({ value }) => (
+  <CountUp to={statNumber(value)} suffix={statSuffix(value)} />
+);
 
-  return (
-    <span ref={ref}>
-      {Math.round(display)}
-      {suffix}
-    </span>
-  );
-};
-
-CountUp.propTypes = { value: PropTypes.string.isRequired };
+StatCountUp.propTypes = { value: PropTypes.string.isRequired };
 
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
@@ -51,51 +38,17 @@ const breadcrumbJsonLd = {
 
 const EASE = [0.16, 1, 0.3, 1];
 
-const AchievementsHeader = () => {
-  return (
-    <section className="relative w-full flex min-h-[320px] flex-col items-center justify-center overflow-hidden bg-[#020202] px-6 py-20 md:min-h-[420px]">
-      <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[320px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-[radial-gradient(#bf4417_0%,transparent_55%)] opacity-20 blur-[100px] md:w-[1100px]" />
-
-      <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: EASE }}
-        className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/50 sm:text-sm"
-      >
-        <span className="text-emerald-400">➜</span>{" "}
-        <span className="text-sky-400">~</span> grep -r{" "}
-        <span className="text-white/30">&quot;wins&quot; ./achievements</span>
-      </motion.p>
-
-      <motion.h1
-        initial={{ opacity: 0, y: 28 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
-        className="relative z-10 mt-5 select-none text-center font-display font-extrabold uppercase leading-[0.95] tracking-tight text-[clamp(3rem,10vw,8rem)]"
-      >
-        <span className="block text-white">Hall of</span>
-        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] via-amber-600 to-[#991b1b]">
-          Fame
-        </span>
-      </motion.h1>
-
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: EASE, delay: 0.22 }}
-        className="relative z-10 mt-6 max-w-lg text-center text-sm font-light leading-relaxed text-white/55 sm:text-base"
-      >
-        Milestones, hackathon records, and recognition earned along the way.
-        Every number tells a story of building under pressure.
-      </motion.p>
-    </section>
-  );
-};
+const AchievementsHeader = () => (
+  <PageHeader
+    title={"HALL OF\nFAME"}
+    kicker={`grep -r "wins" ./achievements`}
+    subtitle="Milestones, hackathon records, and recognition earned along the way. Every number tells a story of building under pressure."
+  />
+);
 
 export const Achievements = () => {
   return (
-    <main className="relative w-full bg-[#020202]">
+    <ClickSpark color="#ff9a4d" count={10} size={14} radius={34} className="relative w-full overflow-hidden bg-[#020202]">
       <SEO
         title="Achievements – Shah Dhairya, Hackathons & Awards"
         description="Hackathon achievements and milestones of Shah Dhairya — SSIP Hackathon 4th place in my sector, selected in the top 181 teams of CVMU Hackathon 2025, Gujarat Gaurav Award 2026, and more."
@@ -106,11 +59,22 @@ export const Achievements = () => {
       <AchievementsHeader />
 
       <div className="relative w-full overflow-hidden py-16 md:py-24">
+        <DotGrid className="opacity-20" dotSize={1.5} gap={32} radius={160} activeColor="#ff9a4d" />
         <div className="pointer-events-none absolute left-1/4 top-0 h-[500px] w-[600px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-10 blur-[140px]" />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 space-y-16 md:space-y-24">
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: EASE }}
+              className="mb-8"
+            >
+              <SectionEyebrow icon={Trophy}>Track Record</SectionEyebrow>
+            </motion.div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {achievements.map((a, i) => {
               const Icon = a.icon;
               return (
@@ -126,7 +90,7 @@ export const Achievements = () => {
                   <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-[radial-gradient(#bf4417,transparent)] blur-[40px] opacity-10 group-hover:opacity-30 transition-opacity" />
                   <Icon size={20} className="text-[#bf4417] mb-4" />
                   <div className="font-display text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-[#ff9a4d] to-[#991b1b]">
-                    <CountUp value={a.number} />
+                    <StatCountUp value={a.number} />
                   </div>
                   <div className="mt-2 text-[10px] uppercase tracking-[0.2em] text-white/50">
                     {a.label}
@@ -134,6 +98,7 @@ export const Achievements = () => {
                 </motion.div>
               );
             })}
+            </div>
           </div>
 
           {/* Hackathon Cards */}
@@ -242,7 +207,16 @@ export const Achievements = () => {
           </motion.div>
         </div>
       </div>
-    </main>
+
+      <PageCTA
+        eyebrow="KEEP BUILDING"
+        title="Want this energy on"
+        accent="your team?"
+        description="Awards are a byproduct of shipping under pressure. If you're building something ambitious, I'd love to hear about it."
+        secondaryLabel="Explore Projects"
+        secondaryTo="/projects"
+      />
+    </ClickSpark>
   );
 };
 

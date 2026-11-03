@@ -12,9 +12,15 @@ import {
   Globe,
   Sparkles,
   ArrowRight,
-  MessageSquare,
 } from "lucide-react";
 import ContactSection from "@/components/Contact";
+import PageHeader from "@/components/PageHeader";
+import PageCTA from "@/components/shared/PageCTA";
+import BlurText from "@/components/reactbits/BlurText";
+import ClickSpark from "@/components/reactbits/ClickSpark";
+import DotGrid from "@/components/reactbits/DotGrid";
+import GradientText from "@/components/reactbits/GradientText";
+import { SectionEyebrow } from "@/components/home/cards";
 import { SEO } from "@/components/SEO";
 import { identity } from "@/data/profile";
 import { useToast } from "@/hooks/use-toast";
@@ -78,43 +84,11 @@ const steps = [
 
 /* ─── Custom Header ─── */
 const ContactHeader = () => (
-  <section className="relative w-full flex min-h-[320px] flex-col items-center justify-center overflow-hidden bg-[#020202] px-6 py-20 md:min-h-[420px]">
-    <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
-    <div className="pointer-events-none absolute left-1/2 top-1/2 h-[320px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-[radial-gradient(#bf4417_0%,transparent_55%)] opacity-20 blur-[100px] md:w-[1100px]" />
-
-    <motion.p
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: EASE }}
-      className="relative z-10 font-mono text-xs tracking-[0.08em] text-white/50 sm:text-sm"
-    >
-      <span className="text-emerald-400">➜</span>{" "}
-      <span className="text-sky-400">~</span> echo{" "}
-      <span className="text-white/30">$CONTACT_INFO</span>
-    </motion.p>
-
-    <motion.h1
-      initial={{ opacity: 0, y: 28 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
-      className="relative z-10 mt-5 select-none text-center font-display font-extrabold uppercase leading-[0.95] tracking-tight text-[clamp(3rem,10vw,8rem)]"
-    >
-      <span className="block text-white">Get In</span>
-      <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#bf4417] via-amber-600 to-[#991b1b]">
-        Touch
-      </span>
-    </motion.h1>
-
-    <motion.p
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: EASE, delay: 0.22 }}
-      className="relative z-10 mt-6 max-w-lg text-center text-sm font-light leading-relaxed text-white/55 sm:text-base"
-    >
-      Let&apos;s create something extraordinary together. Reach out through any
-      channel — I&apos;ll get back to you fast.
-    </motion.p>
-  </section>
+  <PageHeader
+    title={"GET IN\nTOUCH"}
+    kicker="echo $CONTACT_INFO"
+    subtitle="Let's create something extraordinary together. Reach out through any channel — I'll get back to you fast."
+  />
 );
 
 export const Contact = () => {
@@ -153,7 +127,7 @@ export const Contact = () => {
   const toggleFaq = (idx) => setOpenFaq(openFaq === idx ? null : idx);
 
   return (
-    <main className="relative w-full bg-[#020202] min-h-screen">
+    <ClickSpark color="#ff9a4d" count={10} size={14} radius={34} className="relative w-full overflow-hidden bg-[#020202]">
       <SEO
         title="Contact Shah Dhairya – Full-Stack Developer"
         description="Get in touch with Shah Dhairya for project collaborations, freelance work, or full-stack web development inquiries. Based in Gujarat, India."
@@ -165,7 +139,8 @@ export const Contact = () => {
 
       {/* ─── Status Cards ─── */}
       <section className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 -mt-6 md:-mt-10 mb-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <DotGrid className="opacity-20" dotSize={1.5} gap={32} radius={150} activeColor="#ff9a4d" />
+        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {/* Live Status */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -280,30 +255,31 @@ export const Contact = () => {
       {/* ─── Workflow ─── */}
       <section className="relative w-full max-w-6xl mx-auto px-6 py-16 md:py-24">
         <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
+        <DotGrid className="opacity-20" dotSize={1.5} gap={32} radius={150} activeColor="#ff9a4d" />
         <div className="pointer-events-none absolute right-0 top-1/2 h-[400px] w-[500px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-10 blur-[120px]" />
 
         <div className="relative z-10 text-center mb-14">
-          <motion.span
+          <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-[#bf4417]/30 text-[#bf4417] text-xs font-semibold uppercase tracking-[0.18em]"
           >
-            <Sparkles size={13} />
-            Collaboration Process
-          </motion.span>
+            <SectionEyebrow icon={Sparkles} center>
+              Collaboration Process
+            </SectionEyebrow>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.08, ease: EASE }}
-            className="mt-4 text-3xl sm:text-5xl font-extrabold font-syne tracking-tight text-white"
+            className="mt-5 text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-white"
           >
-            How We{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff9a4d] via-[#ea580c] to-[#991b1b]">
+            <BlurText text="How We" className="block" />
+            <GradientText className="mt-1 block" speed={7} glow={0.2}>
               Work Together
-            </span>
+            </GradientText>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -353,24 +329,27 @@ export const Contact = () => {
         <div className="pointer-events-none absolute left-0 top-1/2 h-[400px] w-[500px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] opacity-10 blur-[120px]" />
 
         <div className="relative z-10 text-center mb-12">
-          <motion.span
+          <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-[#bf4417]/30 text-[#bf4417] text-xs font-semibold uppercase tracking-[0.18em]"
           >
-            <Sparkles size={13} />
-            Got Questions?
-          </motion.span>
+            <SectionEyebrow icon={Sparkles} center>
+              Got Questions?
+            </SectionEyebrow>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.08, ease: EASE }}
-            className="mt-4 text-3xl sm:text-4xl font-extrabold font-syne tracking-tight text-white"
+            className="mt-5 text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-white"
           >
-            Frequently Asked Questions
+            <BlurText text="Frequently Asked" className="block" />
+            <GradientText className="mt-1 block" speed={7} glow={0.2}>
+              Questions
+            </GradientText>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -432,46 +411,15 @@ export const Contact = () => {
         </div>
       </section>
 
-      {/* ─── Bottom CTA ─── */}
-      <section className="relative w-full max-w-5xl mx-auto px-6 pb-20">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: EASE }}
-          className="relative p-8 sm:p-12 rounded-3xl bg-white/[0.03] border border-white/10 overflow-hidden text-center flex flex-col items-center"
-        >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[200px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] blur-[80px] opacity-20 pointer-events-none" />
-
-          <div className="relative z-10 max-w-2xl">
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Ready to bring your ideas to life?
-            </h3>
-            <p className="mt-3 text-white/55 text-xs sm:text-sm font-light leading-relaxed">
-              Whether you have a specific inquiry or just want to explore opportunities, feel free to send a message or start a conversation.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
-              <a
-                href={`mailto:${identity.email}`}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-white text-xs sm:text-sm font-semibold rounded-xl transition-all shadow-[0_0_20px_rgba(191,68,23,0.3)] hover:shadow-[0_0_30px_rgba(191,68,23,0.5)] hover:-translate-y-0.5"
-              >
-                <Mail size={15} />
-                <span>Send an Email</span>
-              </a>
-              <a
-                href={`https://wa.me/${identity.phone.replace(/[^0-9]/g, "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] hover:-translate-y-0.5"
-              >
-                <MessageSquare size={15} />
-                <span>Chat on WhatsApp</span>
-              </a>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-    </main>
+      <PageCTA
+        eyebrow="START A CONVERSATION"
+        title="Ready to bring your"
+        accent="ideas to life?"
+        description="Whether you have a specific inquiry or just want to explore opportunities, feel free to send a message or start a conversation."
+        secondaryLabel="See the Work"
+        secondaryTo="/projects"
+      />
+    </ClickSpark>
   );
 };
 

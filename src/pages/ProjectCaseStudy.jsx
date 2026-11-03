@@ -3,6 +3,10 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, FolderGit2, CheckCircle2, Cpu, Cod
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import { SEO } from "@/components/SEO";
+import PageCTA from "@/components/shared/PageCTA";
+import ClickSpark from "@/components/reactbits/ClickSpark";
+import DotGrid from "@/components/reactbits/DotGrid";
+import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import { projects, nextProject, isPrivateProject } from "@/data/projects";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -42,14 +46,14 @@ SectionTitle.propTypes = {
 };
 
 const StatTile = ({ stat }) => (
-  <div className="px-4 py-5 rounded-2xl bg-white/[0.02] border border-white/5 border-l-2 border-l-[#bf4417]">
+  <SpotlightCard className="px-4 py-5">
     <div className="font-display text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#ff9a4d] to-[#991b1b]">
       {stat.value}
     </div>
     <div className="mt-1 text-[9px] uppercase tracking-[0.18em] text-white/50">
       {stat.label}
     </div>
-  </div>
+  </SpotlightCard>
 );
 
 StatTile.propTypes = {
@@ -67,8 +71,9 @@ export const ProjectCaseStudy = () => {
   const upcoming = nextProject(project.slug);
 
   return (
-    <main className="relative w-full min-h-screen bg-[#020202] text-white flex flex-col items-center py-[4vh] pb-40 px-[4vw] overflow-hidden font-sans">
+    <ClickSpark color="#ff9a4d" count={10} size={14} radius={34} className="relative flex min-h-screen w-full flex-col items-center overflow-hidden bg-[#020202] px-[4vw] py-[4vh] pb-40 font-sans text-white">
       <div className="absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:54px_54px] pointer-events-none" />
+      <DotGrid className="opacity-20" dotSize={1.5} gap={32} radius={150} activeColor="#ff9a4d" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(#bf4417_0%,transparent_70%)] blur-[140px] opacity-10 pointer-events-none" />
 
       <SEO
@@ -348,7 +353,16 @@ export const ProjectCaseStudy = () => {
             ))}
         </motion.div>
       </div>
-    </main>
+
+      <PageCTA
+        eyebrow="BUILD SOMETHING SIMILAR"
+        title="Have a system that needs"
+        accent="this level of care?"
+        description="Every case study started as a messy problem. Share yours and let's map the cleanest path to production."
+        secondaryLabel="All Projects"
+        secondaryTo="/projects"
+      />
+    </ClickSpark>
   );
 };
 
