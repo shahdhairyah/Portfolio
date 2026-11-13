@@ -98,6 +98,104 @@ export const AchievementDetails = () => {
     return <Navigate to="/achievements" replace />;
   }
 
+  const isResearchPaper = hack.slug === "ijrti-research-paper-2026";
+
+  const citationData = isResearchPaper
+    ? {
+        title:
+          hack.paperTitle ||
+          "An Arduino-Based Waterlogging Detection and Barrier-Control Prototype for Subterranean Infrastructure",
+        author: "Shah, Dhairya",
+        date: "2026/10",
+        journal: "International Journal for Research Trends and Innovation",
+        issn: "2456-3315",
+        volume: "11",
+        issue: "10",
+        doi: "10.56975/ijrti.v11i10.301844",
+        pdfUrl: "https://shahdhairyah.in/papers/IJRTI2610697.pdf",
+      }
+    : null;
+
+  const jsonLdData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://shahdhairyah.in",
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Achievements",
+          "item": "https://shahdhairyah.in/achievements",
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": hack.title,
+          "item": `https://shahdhairyah.in/achievements/${hack.slug}`,
+        },
+      ],
+    },
+    ...(isResearchPaper
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "ScholarlyArticle",
+            headline:
+              hack.paperTitle ||
+              "An Arduino-Based Waterlogging Detection and Barrier-Control Prototype for Subterranean Infrastructure",
+            name: hack.title,
+            description: hack.text,
+            author: {
+              "@type": "Person",
+              name: "Shah Dhairya",
+              url: "https://shahdhairyah.in",
+              jobTitle: "Student Researcher & Full-Stack Developer",
+              affiliation: {
+                "@type": "EducationalOrganization",
+                name: "A. D. Patel Institute of Technology (ADIT), CVM University",
+              },
+            },
+            datePublished: "2026-10",
+            inLanguage: "en",
+            identifier: "10.56975/ijrti.v11i10.301844",
+            sameAs: [
+              "https://doi.org/10.56975/ijrti.v11i10.301844",
+              "https://ijrti.org/viewpaperforall.php?paper=IJRTI2610697",
+              "https://ijrti.org/papers/IJRTI2610697.pdf",
+            ],
+            publisher: {
+              "@type": "Organization",
+              name: "International Journal for Research Trends and Innovation (IJRTI)",
+              url: "https://ijrti.org",
+              issn: "2456-3315",
+            },
+            isPartOf: {
+              "@type": "PublicationVolume",
+              volumeNumber: "11",
+              issueNumber: "10",
+              isPartOf: {
+                "@type": "Periodical",
+                name: "International Journal for Research Trends and Innovation",
+                issn: "2456-3315",
+              },
+            },
+            image: "https://shahdhairyah.in/images/achievement/ijrti-paper-2026-cover.webp",
+            encoding: {
+              "@type": "MediaObject",
+              contentUrl: "https://shahdhairyah.in/papers/IJRTI2610697.pdf",
+              encodingFormat: "application/pdf",
+            },
+          },
+        ]
+      : []),
+  ];
+
   const Icon = hack.icon;
 
   return (
@@ -117,6 +215,15 @@ export const AchievementDetails = () => {
         title={`${hack.title} – Shah Dhairya Achievements`}
         description={hack.text}
         path={`/achievements/${hack.slug}`}
+        image={hack.image || "/images/achievement/ijrti-paper-2026-cover.webp"}
+        type={isResearchPaper ? "article" : "website"}
+        citation={citationData}
+        jsonLd={jsonLdData}
+        keywords={
+          isResearchPaper
+            ? "Shah Dhairya research paper, IJRTI, 2456-3315, 10.56975/ijrti.v11i10.301844, waterlogging detection Arduino, subterranean infrastructure prototype, CVM University, ADIT"
+            : undefined
+        }
       />
 
       <div className="relative z-10 w-full max-w-4xl mx-auto">
@@ -352,10 +459,40 @@ export const AchievementDetails = () => {
                             </a>
                           </div>
                         </div>
-                        <div className="mt-4 text-center max-w-xl">
-                          <p className="text-xs sm:text-sm text-white/70">
-                            {currentDoc.desc}
-                          </p>
+
+                        {/* Live official document link & verification box */}
+                        <div className="mt-5 w-full max-w-3xl rounded-2xl border border-[#bf4417]/30 bg-gradient-to-r from-[#bf4417]/10 via-black/40 to-black/20 p-4 md:p-5 flex flex-wrap items-center justify-between gap-4 text-left shadow-lg backdrop-blur-sm">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-mono text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 inline-flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                Official Live Link
+                              </span>
+                              <span className="text-xs text-white/60 font-mono">
+                                {currentDoc.meta}
+                              </span>
+                            </div>
+                            <a
+                              href={currentDoc.externalUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-1.5 block font-mono text-xs text-[#ff9a4d] hover:text-white hover:underline truncate"
+                            >
+                              {currentDoc.externalUrl}
+                            </a>
+                            <p className="mt-1 text-xs text-white/50 leading-relaxed">
+                              {currentDoc.desc}
+                            </p>
+                          </div>
+                          <a
+                            href={currentDoc.externalUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#bf4417] to-[#d8501c] hover:brightness-110 text-white text-xs font-semibold tracking-wide transition-all shadow-[0_0_20px_rgba(191,68,23,0.35)] shrink-0 hover:scale-[1.02]"
+                          >
+                            <span>Open Official Portal</span>
+                            <ExternalLink size={13} />
+                          </a>
                         </div>
                       </motion.div>
                     )}

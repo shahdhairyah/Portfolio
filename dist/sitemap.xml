@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://shahdhairyah.in/</loc>
     <lastmod>2026-11-13</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/profile.webp</image:loc>
+      <image:title>Shah Dhairya — Full-Stack Developer &amp; Researcher</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://shahdhairyah.in/about</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/profile.webp</image:loc>
+      <image:title>About Shah Dhairya</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://shahdhairyah.in/skills</loc>
+    <loc>https://shahdhairyah.in/achievements</loc>
     <lastmod>2026-11-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ijrti-paper-2026-cover.webp</image:loc>
+      <image:title>First Research Paper Published at Age 18 in IJRTI</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ssip-2023-cover.webp</image:loc>
+      <image:title>SSIP Hackathon 2023 4th Place State Finalist</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/creo-2024-cover.webp</image:loc>
+      <image:title>Creato 2024 Best Innovative Project</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://shahdhairyah.in/projects</loc>
@@ -25,22 +46,22 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://shahdhairyah.in/achievements</loc>
+    <loc>https://shahdhairyah.in/skills</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://shahdhairyah.in/contact</loc>
-    <lastmod>2026-11-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://shahdhairyah.in/resume</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://shahdhairyah.in/contact</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://shahdhairyah.in/privacy</loc>
@@ -55,69 +76,209 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://shahdhairyah.in/achievements/SSIP-2023</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ssip-2023-cover.webp</image:loc>
+      <image:title>SSIP Hackathon — 4th Place My Sector — Main Cover</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ssip-2023-01.webp</image:loc>
+      <image:title>SSIP Hackathon — 4th Place My Sector photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ssip-2023-02.webp</image:loc>
+      <image:title>SSIP Hackathon — 4th Place My Sector photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ssip-2023-03.webp</image:loc>
+      <image:title>SSIP Hackathon — 4th Place My Sector photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ssip-2023-04.webp</image:loc>
+      <image:title>SSIP Hackathon — 4th Place My Sector photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ssip-2023-05.webp</image:loc>
+      <image:title>SSIP Hackathon — 4th Place My Sector photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ssip-2023-06.webp</image:loc>
+      <image:title>SSIP Hackathon — 4th Place My Sector photo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://shahdhairyah.in/achievements/bbit-creato-2024</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/creo-2024-cover.webp</image:loc>
+      <image:title>Creato 2024 — Best Innovative Project (Team CO17) — Main Cover</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/creo-2024-01.webp</image:loc>
+      <image:title>Creato 2024 — Best Innovative Project (Team CO17) photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/creo-2024-02.webp</image:loc>
+      <image:title>Creato 2024 — Best Innovative Project (Team CO17) photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/creo-2024-03.webp</image:loc>
+      <image:title>Creato 2024 — Best Innovative Project (Team CO17) photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/creo-2024-04.webp</image:loc>
+      <image:title>Creato 2024 — Best Innovative Project (Team CO17) photo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://shahdhairyah.in/achievements/CVMU-2025</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/cvmu-2025-cover.webp</image:loc>
+      <image:title>CVMU Hackathon 2025 — Top 181 Selection — Main Cover</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/cvmu-2025-round1-01.webp</image:loc>
+      <image:title>CVMU Hackathon 2025 — Top 181 Selection photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/cvmu-2025-round1-02.webp</image:loc>
+      <image:title>CVMU Hackathon 2025 — Top 181 Selection photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/cvmu-2025-round1-03.webp</image:loc>
+      <image:title>CVMU Hackathon 2025 — Top 181 Selection photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/cvmu-2025-round2-01.webp</image:loc>
+      <image:title>CVMU Hackathon 2025 — Top 181 Selection photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/cvmu-2025-01.webp</image:loc>
+      <image:title>CVMU Hackathon 2025 — Top 181 Selection photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/cvmu-2025-02.webp</image:loc>
+      <image:title>CVMU Hackathon 2025 — Top 181 Selection photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/cvmu-2025-03.webp</image:loc>
+      <image:title>CVMU Hackathon 2025 — Top 181 Selection photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/cvmu-2025-04.webp</image:loc>
+      <image:title>CVMU Hackathon 2025 — Top 181 Selection photo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://shahdhairyah.in/achievements/gujarat-gaurav-2026</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/gga-2026-cover.webp</image:loc>
+      <image:title>Gujarat Gaurav Award 2026 — Water Logging Project — Main Cover</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/gga-2026-01.webp</image:loc>
+      <image:title>Gujarat Gaurav Award 2026 — Water Logging Project photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/gga-2026-02.webp</image:loc>
+      <image:title>Gujarat Gaurav Award 2026 — Water Logging Project photo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://shahdhairyah.in/achievements/ijrti-research-paper-2026</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ijrti-paper-2026-cover.webp</image:loc>
+      <image:title>First Research Paper Published at Age 18 — IJRTI — Main Cover</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ijrti-certificate-preview.webp</image:loc>
+      <image:title>Publication Certificate — First Research Paper Published at Age 18 — IJRTI</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ijrti-confirmation-preview.webp</image:loc>
+      <image:title>Acceptance &amp; Confirmation Letter — First Research Paper Published at Age 18 — IJRTI</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ijrti-paper-2026-prototype.webp</image:loc>
+      <image:title>First Research Paper Published at Age 18 — IJRTI photo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/ijrti-paper-2026-architecture.webp</image:loc>
+      <image:title>First Research Paper Published at Age 18 — IJRTI photo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://shahdhairyah.in/achievements/hackout-26</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/achievement/hackout-26-certificate.webp</image:loc>
+      <image:title>Hackout 26 — National Hackathon — Main Cover</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://shahdhairyah.in/projects/adit-cms</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/projects/ADITCMS/cover.png</image:loc>
+      <image:title>ADIT CMS Platform — Project Showcase</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://shahdhairyah.in/projects/centralized-dashboard</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/projects/CD/cover.png</image:loc>
+      <image:title>Centralized Dashboard — Project Showcase</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://shahdhairyah.in/projects/smart-home-system</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/projects/smart-iot/cover.webp</image:loc>
+      <image:title>Smart Home System — Project Showcase</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://shahdhairyah.in/projects/weather-application</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/projects/weather/cover.webp</image:loc>
+      <image:title>Weather Application — Project Showcase</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://shahdhairyah.in/projects/foodzip</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://shahdhairyah.in/achievements/SSIP-2023</loc>
-    <lastmod>2026-11-13</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://shahdhairyah.in/achievements/bbit-creato-2024</loc>
-    <lastmod>2026-11-13</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://shahdhairyah.in/achievements/CVMU-2025</loc>
-    <lastmod>2026-11-13</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://shahdhairyah.in/achievements/gujarat-gaurav-2026</loc>
-    <lastmod>2026-11-13</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://shahdhairyah.in/achievements/ijrti-research-paper-2026</loc>
-    <lastmod>2026-11-13</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://shahdhairyah.in/achievements/hackout-26</loc>
-    <lastmod>2026-11-13</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://shahdhairyah.in/images/projects/FoodZip/cover.png</image:loc>
+      <image:title>FoodZip — Project Showcase</image:title>
+    </image:image>
   </url>
 </urlset>
