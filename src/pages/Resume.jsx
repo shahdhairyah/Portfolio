@@ -10,6 +10,8 @@ import {
   GraduationCap,
   Award,
   User,
+  BookOpen,
+  ExternalLink,
 } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import PageCTA from "@/components/shared/PageCTA";
@@ -47,6 +49,19 @@ const experience = timeline.map((t) => ({
 const keyProjects = projects.filter((p) => p.featured).slice(0, 3);
 
 const hackathons = [
+  {
+    title: "First Research Paper Published at Age 18 — IJRTI",
+    text: "Authored peer-reviewed paper 'An Arduino-Based Waterlogging Detection and Barrier-Control Prototype for Subterranean Infrastructure' in IJRTI (Volume 11, Issue 10, DOI: 10.56975/ijrti.v11i10.301844).",
+    link: "https://ijrti.org/papers/IJRTI2610697.pdf",
+    icon: BookOpen,
+  },
+  {
+    title: "Hackout 26 — National Hackathon (Top 5%)",
+    text: "Selected in top 5% of 200+ teams nationwide at DAU & DAIICT in a 36-hour sprint.",
+    link: "https://unstop.com/certificate-preview/abfbdc93-0725-4a52-ab8e-a27180ad1a7d",
+    linkText: "Certificate",
+    icon: Award,
+  },
   {
     title: "SSIP Hackathon — 4th Place My Sector",
     text: "Built a working product among 2062 teams (10449 participants) statewide, ranking 4th in my sector among 181 selected teams.",
@@ -262,17 +277,32 @@ export const Resume = () => {
             <motion.div {...reveal(0.15)} className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6">
               {sectionHeader(<Award size={15} />, "Achievements")}
               <div className="space-y-5">
-                {hackathons.map((h) => (
-                  <div key={h.title} className="flex items-start gap-4">
-                    <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-amber-400/10 border border-amber-400/30 text-amber-400 shrink-0">
-                      <Award size={16} />
+                {hackathons.map((h) => {
+                  const ItemIcon = h.icon || Award;
+                  return (
+                    <div key={h.title} className="flex items-start gap-4">
+                      <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-amber-400/10 border border-amber-400/30 text-amber-400 shrink-0">
+                        <ItemIcon size={16} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-baseline justify-between gap-2">
+                          <h3 className="text-sm font-semibold text-white/90">{h.title}</h3>
+                          {h.link && (
+                            <a
+                              href={h.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-[11px] font-mono text-[#ff9a4d] hover:underline shrink-0"
+                            >
+                              {h.linkText || "PDF"} <ExternalLink size={10} />
+                            </a>
+                          )}
+                        </div>
+                        <p className="text-sm text-white/55 leading-relaxed mt-1">{h.text}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-white/90">{h.title}</h3>
-                      <p className="text-sm text-white/55 leading-relaxed mt-1">{h.text}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </motion.div>
           </div>

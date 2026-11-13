@@ -143,7 +143,11 @@ function App() {
             <ChatbotWidget />
             <CursorAccent />
             <PageTransition />
-            <Analytics />
+            {/* Only inject Vercel Analytics in production on the deployed domain to prevent local 404 console errors */}
+            {typeof window !== "undefined" &&
+              !["localhost", "127.0.0.1"].includes(window.location.hostname) && (
+                <Analytics />
+              )}
           </BrowserRouter>
           {!welcomeDismissed && (
             <WelcomeScreen onWelcomeComplete={handleWelcomeComplete} />

@@ -15,6 +15,7 @@ import {
   Trophy,
   ShieldCheck,
   ArrowUpRight,
+  BookOpen,
 } from "lucide-react";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -59,6 +60,14 @@ const journeyData = [
     title: "B.Tech Computer Eng at ADIT, CVM",
     desc: "Started B.Tech in Computer Engineering at ADIT, CVM University — advancing into full-stack development and AI.",
     icon: ShieldCheck,
+  },
+  {
+    year: "2026",
+    hash: "paper18",
+    tag: "v6 · publication",
+    title: "First Research Paper Published (Age 18)",
+    desc: "Published first peer-reviewed research paper in IJRTI on subterranean waterlogging detection and barrier control (DOI: 10.56975/ijrti.v11i10.301844).",
+    icon: BookOpen,
   },
 ];
 

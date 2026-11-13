@@ -50,6 +50,7 @@ export const timeline = [
   { year: "2023", title: "Diploma in Computer Engineering", desc: "Began Diploma at BBIT, CVM University & Gujarat Technical University." },
   { year: "2026", title: "Diploma Completed — 7.90 CGPA", desc: "Graduated with a 7.90 CGPA." },
   { year: "2026", title: "B.Tech Computer Eng at ADIT, CVM", desc: "Started B.Tech — advancing into full-stack and AI." },
+  { year: "2026", title: "First Research Paper Published (Age 18)", desc: "Published peer-reviewed paper on Arduino-based subterranean waterlogging detection and barrier control in IJRTI." },
 ];
 
 export const roles = [

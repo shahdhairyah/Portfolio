@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import {
   Trophy,
   Award,
-  Medal,
   Flame,
   Users,
   Quote,
@@ -20,6 +19,8 @@ import {
   ChevronRight,
   ShieldCheck,
   Star,
+  BookOpen,
+  FileText,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import PageHeader from "@/components/PageHeader";
@@ -50,10 +51,10 @@ const statsData = [
     subtext: "Gujarat Gaurav Award & BBIT Creato Best Project",
   },
   {
-    icon: Award,
-    number: "17+",
-    label: "Final Rounds Selected",
-    subtext: "Shortlisted in top competitive cohorts statewide",
+    icon: BookOpen,
+    number: "1",
+    label: "Research Paper (Age 18)",
+    subtext: "Published in IJRTI with Crossref DOI index",
   },
   {
     icon: Users,
@@ -501,7 +502,7 @@ FeaturedMilestoneCard.propTypes = {
    BENTO GRID CARD
    ═══════════════════════════════════════════ */
 const AchievementCard = ({ hack, index, onOpenGallery }) => {
-  const Icon = hack.icon === Medal ? Medal : hack.icon === Award ? Award : Trophy;
+  const Icon = hack.icon || Trophy;
   const coverImage = hack.image || hack.gallery?.[0];
 
   return (
@@ -623,17 +624,43 @@ const AchievementCard = ({ hack, index, onOpenGallery }) => {
       </div>
 
       {/* Card Actions Footer */}
-      <div className="relative p-6 pt-0 flex items-center justify-between gap-3">
-        <Link
-          to={`/achievements/${hack.slug}`}
-          className="group/more inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#bf4417]/40 bg-[#bf4417]/10 text-[#ff9a4d] text-xs font-semibold uppercase tracking-wider hover:bg-[#bf4417] hover:text-white transition-all duration-300"
-        >
-          Deep Dive Story
-          <ArrowUpRight
-            size={14}
-            className="transition-transform duration-300 group-hover/more:translate-x-0.5 group-hover/more:-translate-y-0.5"
-          />
-        </Link>
+      <div className="relative p-6 pt-0 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <Link
+            to={`/achievements/${hack.slug}`}
+            className="group/more inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#bf4417]/40 bg-[#bf4417]/10 text-[#ff9a4d] text-xs font-semibold uppercase tracking-wider hover:bg-[#bf4417] hover:text-white transition-all duration-300"
+          >
+            Deep Dive Story
+            <ArrowUpRight
+              size={14}
+              className="transition-transform duration-300 group-hover/more:translate-x-0.5 group-hover/more:-translate-y-0.5"
+            />
+          </Link>
+          {hack.links?.paper && (
+            <a
+              href={hack.links.paper}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-white/10 bg-white/[0.04] text-white/80 hover:text-white hover:border-[#bf4417]/50 text-xs font-mono transition-all duration-300"
+              title="Read Research Paper (PDF)"
+            >
+              <FileText size={13} className="text-[#ff9a4d]" />
+              <span className="hidden sm:inline">Paper</span>
+            </a>
+          )}
+          {hack.links?.certificate && !hack.links?.paper && (
+            <a
+              href={hack.links.certificate}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-white/10 bg-white/[0.04] text-white/80 hover:text-white hover:border-[#bf4417]/50 text-xs font-mono transition-all duration-300"
+              title="View Official Certificate"
+            >
+              <Award size={13} className="text-[#ff9a4d]" />
+              <span className="hidden sm:inline">Certificate</span>
+            </a>
+          )}
+        </div>
 
         {hack.gallery && hack.gallery.length > 0 && (
           <button
@@ -734,7 +761,29 @@ const TimelineNode = ({ hack, index, isLast, onOpenGallery }) => {
               </div>
             )}
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              {hack.links?.paper && (
+                <a
+                  href={hack.links.paper}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-mono text-[#ff9a4d] hover:underline"
+                >
+                  <FileText size={12} />
+                  Paper (PDF)
+                </a>
+              )}
+              {hack.links?.certificate && !hack.links?.paper && (
+                <a
+                  href={hack.links.certificate}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-mono text-[#ff9a4d] hover:underline"
+                >
+                  <Award size={12} />
+                  Certificate
+                </a>
+              )}
               {hack.gallery && hack.gallery.length > 0 && (
                 <button
                   type="button"
@@ -824,10 +873,12 @@ export const Achievements = () => {
       const matchesSearch =
         query === "" ||
         h.title.toLowerCase().includes(query) ||
+        (h.paperTitle && h.paperTitle.toLowerCase().includes(query)) ||
         h.org.toLowerCase().includes(query) ||
         h.text.toLowerCase().includes(query) ||
         h.year.toLowerCase().includes(query) ||
-        h.rank.toLowerCase().includes(query);
+        h.rank.toLowerCase().includes(query) ||
+        (h.category && h.category.toLowerCase().includes(query));
       return matchesCategory && matchesSearch;
     });
   }, [activeCategory, searchQuery]);
@@ -848,7 +899,7 @@ export const Achievements = () => {
     >
       <SEO
         title="Achievements – Shah Dhairya, Hackathons & Awards"
-        description="Hackathon achievements and milestones of Shah Dhairya — SSIP Hackathon 4th place in my sector out of 10,449 participants, Creato 2024 Best Innovative Project, CVMU Hackathon 2025, Gujarat Gaurav Award 2026, and Hackout 26."
+        description="Achievements and research milestones of Shah Dhairya — First research paper published at age 18 in IJRTI, SSIP Hackathon 4th place out of 10,449 participants, Creato 2024 Best Innovative Project, CVMU Hackathon 2025, Gujarat Gaurav Award 2026, and Hackout 26."
         path="/achievements"
         jsonLd={breadcrumbJsonLd}
       />

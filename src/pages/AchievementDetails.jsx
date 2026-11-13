@@ -1,6 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
-import { ArrowLeft, Trophy, Sparkles, Users, X, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowLeft,
+  Trophy,
+  Sparkles,
+  Users,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  FileText,
+  ExternalLink,
+  FileCheck,
+  Award,
+  Globe,
+  CheckCircle2,
+  ArrowUpRight,
+  Download,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import PageCTA from "@/components/shared/PageCTA";
@@ -21,6 +37,19 @@ export const AchievementDetails = () => {
   const { slug } = useParams();
   const hack = hackathons.find((h) => h.slug === slug);
   const [lightbox, setLightbox] = useState(null);
+  const [activeDocId, setActiveDocId] = useState(
+    hack?.documents?.[0]?.id || "paper"
+  );
+
+  useEffect(() => {
+    if (hack?.documents?.[0]?.id) {
+      setActiveDocId(hack.documents[0].id);
+    }
+  }, [slug, hack]);
+
+  const currentDoc =
+    hack?.documents?.find((d) => d.id === activeDocId) ||
+    hack?.documents?.[0];
 
   const gallery = hack?.gallery || [];
 
@@ -130,6 +159,17 @@ export const AchievementDetails = () => {
               {hack.title}
             </h1>
 
+            {hack.paperTitle && (
+              <div className="mt-4 p-4 rounded-xl border border-[#bf4417]/30 bg-[#bf4417]/[0.08] backdrop-blur-sm">
+                <span className="block font-mono text-[10px] uppercase tracking-wider text-[#ff9a4d] mb-1">
+                  Published Paper Title
+                </span>
+                <p className="font-display text-base sm:text-lg text-white font-medium italic">
+                  &ldquo;{hack.paperTitle}&rdquo;
+                </p>
+              </div>
+            )}
+
             <p className="mt-5 text-white/60 leading-relaxed text-base md:text-lg">
               {hack.text}
             </p>
@@ -170,7 +210,247 @@ export const AchievementDetails = () => {
               ))}
             </div>
 
-            {hack.image && (
+            {/* Interactive Document Showcase (Research Paper, Certificate, Acceptance Letter) */}
+            {hack.documents && hack.documents.length > 0 && currentDoc && (
+              <motion.div
+                {...reveal(0.2)}
+                className="mt-10 overflow-hidden rounded-3xl border border-[#bf4417]/35 bg-gradient-to-b from-[#160803]/80 via-[#0a0a0a] to-[#040404] shadow-[0_0_50px_rgba(191,68,23,0.22)] backdrop-blur-md"
+              >
+                {/* Stage Header / Document Control Bar */}
+                <div className="flex flex-wrap items-center justify-between gap-4 p-5 md:p-6 border-b border-white/10 bg-white/[0.02]">
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div className="flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-br from-[#bf4417]/30 to-[#991b1b]/20 border border-[#bf4417]/40 text-[#ff9a4d] shadow-[0_0_18px_rgba(191,68,23,0.35)] shrink-0">
+                      {currentDoc.id === "paper" ? (
+                        <FileText size={22} />
+                      ) : currentDoc.id === "certificate" ? (
+                        <Award size={22} />
+                      ) : (
+                        <CheckCircle2 size={22} />
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-mono text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d]">
+                          {currentDoc.badge}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          Verified Official Document
+                        </span>
+                      </div>
+                      <h3 className="mt-1 font-display text-base sm:text-lg md:text-xl font-bold text-white truncate">
+                        {currentDoc.title}
+                      </h3>
+                      <p className="text-xs text-white/50 truncate">
+                        {currentDoc.meta}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    {currentDoc.type === "pdf" && currentDoc.pdfUrl && (
+                      <a
+                        href={currentDoc.pdfUrl}
+                        download="IJRTI2610697-Dhairya-Shah.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#bf4417] hover:bg-[#d8501c] text-white text-xs font-semibold tracking-wide transition-all duration-200 shadow-[0_0_20px_rgba(191,68,23,0.4)] hover:scale-[1.02]"
+                      >
+                        <Download size={14} />
+                        Download PDF
+                      </a>
+                    )}
+                    {currentDoc.externalUrl && (
+                      <a
+                        href={currentDoc.externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 hover:border-white/20 text-white text-xs font-semibold tracking-wide transition-all duration-200 hover:scale-[1.02]"
+                      >
+                        {currentDoc.id === "paper"
+                          ? "Official IJRTI Link"
+                          : currentDoc.id === "certificate"
+                          ? "Verify on IJRTI"
+                          : "Verify Letter"}
+                        <ExternalLink size={13} />
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* Main Stage Preview Viewer */}
+                <div className="relative w-full bg-black/80 flex flex-col items-center justify-center min-h-[460px] md:min-h-[660px]">
+                  <AnimatePresence mode="wait">
+                    {currentDoc.id === "paper" ? (
+                      <motion.div
+                        key="doc-paper"
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ duration: 0.25 }}
+                        className="w-full flex flex-col"
+                      >
+                        {/* Interactive PDF Viewer Embed */}
+                        <div className="w-full h-[520px] sm:h-[650px] md:h-[720px] relative bg-neutral-950">
+                          <iframe
+                            src={`${currentDoc.pdfUrl}#toolbar=1&navpanes=0&view=FitH`}
+                            title="IJRTI Research Paper PDF Viewer"
+                            className="w-full h-full border-0"
+                          />
+                        </div>
+
+                        {/* Document Metadata Bar */}
+                        <div className="px-5 py-3 border-t border-white/10 bg-black/60 flex flex-wrap items-center justify-between gap-3 text-xs text-white/60">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-mono text-[#ff9a4d]">Paper ID: IJRTI2610697</span>
+                            <span>·</span>
+                            <span>ISSN: 2456-3315</span>
+                            <span>·</span>
+                            <a
+                              href="https://doi.org/10.56975/ijrti.v11i10.301844"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-amber-400 hover:underline inline-flex items-center gap-1 font-mono"
+                            >
+                              DOI: 10.56975/ijrti.v11i10.301844 <ArrowUpRight size={11} />
+                            </a>
+                          </div>
+                          <a
+                            href={currentDoc.pdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[#ff9a4d] hover:text-white transition-colors"
+                          >
+                            Open full PDF in new tab <ExternalLink size={12} />
+                          </a>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key={currentDoc.id}
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ duration: 0.25 }}
+                        className="w-full flex flex-col items-center p-4 sm:p-6 md:p-8"
+                      >
+                        <div className="relative max-w-3xl w-full rounded-2xl overflow-hidden border border-white/10 bg-black/60 shadow-2xl group">
+                          <img
+                            src={currentDoc.imageUrl}
+                            alt={currentDoc.title}
+                            className="w-full h-auto object-contain max-h-[640px] mx-auto bg-black/40"
+                          />
+                          <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div className="absolute bottom-4 right-4 flex items-center gap-2">
+                            <a
+                              href={currentDoc.externalUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/80 hover:bg-[#bf4417] border border-white/20 text-white text-xs font-semibold backdrop-blur-md transition-colors shadow-lg"
+                            >
+                              Verify on IJRTI Portal <ExternalLink size={12} />
+                            </a>
+                          </div>
+                        </div>
+                        <div className="mt-4 text-center max-w-xl">
+                          <p className="text-xs sm:text-sm text-white/70">
+                            {currentDoc.desc}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* 3-Cover Selector Row: Same Line for all 3 covers */}
+                <div className="p-4 md:p-6 bg-gradient-to-t from-black via-black/95 to-black/70 border-t border-white/10">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-white/50">
+                      Document Showcase · Select Cover to Switch View
+                    </span>
+                    <span className="text-[11px] font-mono text-[#ff9a4d]">
+                      {activeDocId === "paper"
+                        ? "1/3 · Paper PDF"
+                        : activeDocId === "certificate"
+                        ? "2/3 · Certificate"
+                        : "3/3 · Acceptance Letter"}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+                    {hack.documents.map((doc) => {
+                      const isActive = activeDocId === doc.id;
+                      return (
+                        <button
+                          key={doc.id}
+                          type="button"
+                          onClick={() => setActiveDocId(doc.id)}
+                          className={`group relative text-left rounded-2xl overflow-hidden p-3 transition-all duration-300 border ${
+                            isActive
+                              ? "border-[#ff9a4d] ring-2 ring-[#bf4417]/60 bg-gradient-to-b from-[#bf4417]/25 via-white/[0.04] to-transparent shadow-[0_0_25px_rgba(191,68,23,0.35)]"
+                              : "border-white/10 bg-white/[0.02] hover:border-white/25 hover:bg-white/[0.05] opacity-75 hover:opacity-100"
+                          }`}
+                        >
+                          {/* Thumbnail preview */}
+                          <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black/60 border border-white/10 mb-3">
+                            <img
+                              src={doc.coverImage}
+                              alt={doc.title}
+                              loading="lazy"
+                              className={`w-full h-full object-cover object-top transition-transform duration-500 ${
+                                isActive ? "scale-105" : "group-hover:scale-105"
+                              }`}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+
+                            {/* Active Indicator Badge */}
+                            {isActive && (
+                              <span className="absolute top-2 right-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/90 text-white font-mono text-[9px] uppercase tracking-wider font-semibold shadow-md backdrop-blur-md">
+                                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                                Active View
+                              </span>
+                            )}
+
+                            <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 px-2 py-0.5 rounded bg-black/80 border border-white/15 text-[10px] font-mono text-[#ff9a4d]">
+                              {doc.badge}
+                            </span>
+                          </div>
+
+                          {/* Text details */}
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0">
+                              <span
+                                className={`block font-display text-sm font-bold truncate ${
+                                  isActive
+                                    ? "text-[#ff9a4d]"
+                                    : "text-white group-hover:text-white/90"
+                                }`}
+                              >
+                                {doc.title}
+                              </span>
+                              <span className="block text-[11px] text-white/50 truncate mt-0.5">
+                                {doc.subtitle}
+                              </span>
+                            </div>
+                            <div
+                              className={`flex items-center justify-center w-7 h-7 rounded-lg shrink-0 transition-colors ${
+                                isActive
+                                  ? "bg-[#bf4417] text-white"
+                                  : "bg-white/5 text-white/40 group-hover:bg-white/10 group-hover:text-white"
+                              }`}
+                            >
+                              <ArrowUpRight size={14} />
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {hack.image && !hack.documents && (
               <motion.div
                 {...reveal(0.2)}
                 className="mt-10 overflow-hidden rounded-2xl border border-white/10 bg-black/30"
@@ -214,6 +494,208 @@ export const AchievementDetails = () => {
               </div>
             )}
 
+            {hack.links && !hack.documents && (
+              <motion.div
+                {...reveal(0.22)}
+                className="mt-10 rounded-2xl border border-[#bf4417]/35 bg-gradient-to-b from-[#bf4417]/10 via-black/40 to-black/30 p-6 md:p-8 shadow-[0_0_35px_rgba(191,68,23,0.18)]"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <FileCheck size={18} className="text-[#ff9a4d]" />
+                    <h2 className="text-sm font-bold uppercase tracking-widest text-white">
+                      Official Links &amp; Verification Documents
+                    </h2>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 font-mono text-[10px] uppercase tracking-wider font-semibold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Verified &amp; Indexed
+                  </span>
+                </div>
+                <p className="mt-2 text-xs md:text-sm text-white/60 leading-relaxed font-light">
+                  {hack.links.intro ||
+                    (hack.links.paper
+                      ? "Access the official published paper, registered Crossref DOI identifier, author certificate of publication, and confirmation letter from IJRTI."
+                      : "Access the official verified certificates and credentials for this milestone.")}
+                </p>
+
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {hack.links.paper && (
+                    <a
+                      href={hack.links.paper}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] hover:border-[#bf4417] hover:bg-white/[0.05] transition-all duration-300 shadow-lg"
+                    >
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/50 border-b border-white/10">
+                        <img
+                          src={hack.links.paperPreview || hack.image || hack.gallery?.[0]}
+                          alt="Research Paper Preview"
+                          loading="lazy"
+                          className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                        <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-black/80 border border-white/15 text-[10px] font-bold uppercase tracking-wider text-[#ff9a4d] backdrop-blur-md">
+                          <FileText size={11} />
+                          Paper PDF
+                        </span>
+                        <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-[11px] font-medium text-white/90 bg-black/75 border border-white/10 px-2 py-0.5 rounded backdrop-blur-md">
+                          Open PDF <ExternalLink size={11} />
+                        </span>
+                      </div>
+                      <div className="p-4 flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <span className="block text-sm font-bold text-white group-hover:text-[#ff9a4d] transition-colors truncate">
+                            Read Research Paper (PDF)
+                          </span>
+                          <span className="block text-[11px] font-mono text-white/45 truncate mt-0.5">
+                            Full Published Paper · IJRTI
+                          </span>
+                        </div>
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] group-hover:scale-110 transition-transform shrink-0">
+                          <ArrowUpRight size={15} />
+                        </span>
+                      </div>
+                    </a>
+                  )}
+
+                  {hack.links.doi && (
+                    <a
+                      href={hack.links.doi}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] hover:border-amber-400/60 hover:bg-white/[0.05] transition-all duration-300 shadow-lg"
+                    >
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/50 border-b border-white/10">
+                        <img
+                          src={hack.links.doiPreview || hack.gallery?.[1] || hack.image}
+                          alt="DOI Indexing Preview"
+                          loading="lazy"
+                          className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                        <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-black/80 border border-white/15 text-[10px] font-bold uppercase tracking-wider text-amber-300 backdrop-blur-md">
+                          <Globe size={11} />
+                          DOI Index
+                        </span>
+                        <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-[11px] font-medium text-white/90 bg-black/75 border border-white/10 px-2 py-0.5 rounded backdrop-blur-md">
+                          View Index <ExternalLink size={11} />
+                        </span>
+                      </div>
+                      <div className="p-4 flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <span className="block text-sm font-bold text-white group-hover:text-amber-300 transition-colors truncate">
+                            DOI Publication Index
+                          </span>
+                          <span className="block text-[11px] font-mono text-white/45 truncate mt-0.5">
+                            10.56975/ijrti.v11i10.301844
+                          </span>
+                        </div>
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400/15 border border-amber-400/30 text-amber-300 group-hover:scale-110 transition-transform shrink-0">
+                          <ArrowUpRight size={15} />
+                        </span>
+                      </div>
+                    </a>
+                  )}
+
+                  {hack.links.certificate && (
+                    <a
+                      href={hack.links.certificate}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] hover:border-emerald-400/60 hover:bg-white/[0.05] transition-all duration-300 shadow-lg"
+                    >
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/50 border-b border-white/10">
+                        {hack.links.certificatePreview ? (
+                          <img
+                            src={hack.links.certificatePreview}
+                            alt="Certificate Preview"
+                            loading="lazy"
+                            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-emerald-950/40 via-black/60 to-black p-4 text-center">
+                            <Award size={36} className="text-emerald-400/60 mb-2" />
+                            <span className="font-display text-sm font-bold text-white/80">
+                              {hack.links.certificateLabel || "Official Certificate"}
+                            </span>
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                        <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-black/80 border border-white/15 text-[10px] font-bold uppercase tracking-wider text-emerald-300 backdrop-blur-md">
+                          <Award size={11} />
+                          Certificate
+                        </span>
+                        <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-[11px] font-medium text-white/90 bg-black/75 border border-white/10 px-2 py-0.5 rounded backdrop-blur-md">
+                          Verify <ExternalLink size={11} />
+                        </span>
+                      </div>
+                      <div className="p-4 flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <span className="block text-sm font-bold text-white group-hover:text-emerald-300 transition-colors truncate">
+                            {hack.links.certificateLabel || "Publication Certificate"}
+                          </span>
+                          <span className="block text-[11px] font-mono text-white/45 truncate mt-0.5">
+                            {hack.links.certificateSubtext || "Verified Official Certificate"}
+                          </span>
+                        </div>
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 group-hover:scale-110 transition-transform shrink-0">
+                          <ArrowUpRight size={15} />
+                        </span>
+                      </div>
+                    </a>
+                  )}
+
+                  {hack.links.confirmationLetter && (
+                    <a
+                      href={hack.links.confirmationLetter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] hover:border-blue-400/60 hover:bg-white/[0.05] transition-all duration-300 shadow-lg"
+                    >
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/50 border-b border-white/10">
+                        {hack.links.confirmationLetterPreview ? (
+                          <img
+                            src={hack.links.confirmationLetterPreview}
+                            alt="Confirmation Letter Preview"
+                            loading="lazy"
+                            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-blue-950/40 via-black/60 to-black p-4 text-center">
+                            <CheckCircle2 size={36} className="text-blue-400/60 mb-2" />
+                            <span className="font-display text-sm font-bold text-white/80">
+                              Confirmation Letter
+                            </span>
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                        <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-black/80 border border-white/15 text-[10px] font-bold uppercase tracking-wider text-blue-300 backdrop-blur-md">
+                          <CheckCircle2 size={11} />
+                          Letter
+                        </span>
+                        <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 text-[11px] font-medium text-white/90 bg-black/75 border border-white/10 px-2 py-0.5 rounded backdrop-blur-md">
+                          View Letter <ExternalLink size={11} />
+                        </span>
+                      </div>
+                      <div className="p-4 flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <span className="block text-sm font-bold text-white group-hover:text-blue-300 transition-colors truncate">
+                            {hack.links.confirmationLetterLabel || "Confirmation Letter"}
+                          </span>
+                          <span className="block text-[11px] font-mono text-white/45 truncate mt-0.5">
+                            {hack.links.confirmationLetterSubtext || "Official Acceptance Letter"}
+                          </span>
+                        </div>
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-400/15 border border-blue-400/30 text-blue-300 group-hover:scale-110 transition-transform shrink-0">
+                          <ArrowUpRight size={15} />
+                        </span>
+                      </div>
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            )}
+
             <div className="mt-10 rounded-2xl border border-white/10 bg-black/20 p-6 md:p-8">
               <div className="flex items-center gap-2.5">
                 <Sparkles size={16} className="text-[#bf4417]" />
@@ -250,7 +732,7 @@ export const AchievementDetails = () => {
                   </span>
                 </motion.div>
                 <p className="mt-3 mb-8 text-sm text-white/50 leading-relaxed">
-                  A peek behind the scenes — every frame below tells a part of the SSIP story.
+                  A peek behind the scenes — every frame below tells a part of this journey.
                   Tap any photo to view it up close.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
@@ -362,9 +844,35 @@ export const AchievementDetails = () => {
             </AnimatePresence>
 
             <div className="mt-10 flex flex-wrap gap-4">
+              {hack.links?.paper && (
+                <a
+                  href={hack.links.paper}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-sm font-semibold text-white transition-all duration-300 shadow-[0_0_18px_rgba(191,68,23,0.35)]"
+                >
+                  <FileText size={15} />
+                  Read Research Paper (PDF)
+                </a>
+              )}
+              {hack.links?.certificate && !hack.links?.paper && (
+                <a
+                  href={hack.links.certificate}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-sm font-semibold text-white transition-all duration-300 shadow-[0_0_18px_rgba(191,68,23,0.35)]"
+                >
+                  <Award size={15} />
+                  View Certificate
+                </a>
+              )}
               <Link
                 to="/achievements"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-sm font-semibold text-white transition-all duration-300 shadow-[0_0_18px_rgba(191,68,23,0.35)]"
+                className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  hack.links?.paper || hack.links?.certificate
+                    ? "border border-white/15 text-white/80 hover:text-white hover:border-white/30 bg-white/[0.03]"
+                    : "bg-gradient-to-r from-[#bf4417] to-[#991b1b] hover:from-[#ea580c] hover:to-[#7f1d1d] text-white shadow-[0_0_18px_rgba(191,68,23,0.35)]"
+                }`}
               >
                 <ArrowLeft size={15} />
                 All Achievements
