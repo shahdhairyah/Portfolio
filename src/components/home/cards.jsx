@@ -66,15 +66,25 @@ export const FeaturedProjectCard = ({ project }) => {
       transition={{ duration: 0.7, ease: EASE }}
       className="group relative rounded-3xl border border-white/[0.08] bg-white/[0.03] overflow-hidden hover:border-[#bf4417]/30 transition-all duration-500"
     >
-      <div className="relative w-full h-[280px] md:h-[400px] overflow-hidden">
+      <div className="relative w-full h-[300px] sm:h-[360px] md:h-[440px] overflow-hidden bg-[#06080d] flex items-center justify-center">
+        {/* Ambient blurred backdrop for aesthetic full bleed */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <img
+            src={project.image}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover blur-2xl opacity-35 scale-110"
+          />
+        </div>
+        {/* Sharp foreground image shown completely without clipping */}
         <img
           src={project.image}
           alt={project.title}
           loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="relative z-10 max-w-full max-h-full object-contain p-2 sm:p-3 md:p-4 transition-transform duration-700 group-hover:scale-[1.02]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/40 to-transparent" />
-        <div className="absolute top-5 left-5 flex items-center gap-2">
+        <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-t from-[#020202]/90 via-transparent to-black/20" />
+        <div className="absolute top-5 left-5 z-20 flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             {project.status}
@@ -83,11 +93,11 @@ export const FeaturedProjectCard = ({ project }) => {
             {project.category}
           </span>
         </div>
-        <div className="absolute top-5 right-5 px-3 py-1 rounded-full bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] text-[10px] font-mono font-bold backdrop-blur-md">
+        <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] text-[10px] font-mono font-bold backdrop-blur-md">
           {project.year}
         </div>
         {project.featured && (
-          <div className="absolute bottom-5 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
+          <div className="absolute bottom-5 right-5 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#bf4417]/20 border border-[#bf4417]/40 text-[#ff9a4d] text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
             <Star size={12} fill="currentColor" />
             Featured
           </div>
