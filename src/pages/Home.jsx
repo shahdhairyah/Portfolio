@@ -140,8 +140,8 @@ const Home = () => {
         })}
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-24 pt-32">
-          <div className="grid items-center gap-14 xl:grid-cols-[minmax(0,1fr)_360px]">
-            <div className="text-center xl:text-left">
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_380px] xl:gap-14">
+            <div className="text-center lg:text-left">
               <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.035] px-4 py-2 backdrop-blur-md">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
@@ -165,7 +165,7 @@ const Home = () => {
                   className="block text-[clamp(4rem,15vw,9.5rem)] text-white"
                 />
                 <GradientText
-                  className="mt-1 block text-[clamp(2.5rem,13.5vw,8.7rem)] leading-[0.85] xl:text-[clamp(3.3rem,8vw,6.5rem)]"
+                  className="mt-1 block text-[clamp(2.5rem,13.5vw,8.7rem)] leading-[0.85] lg:text-[clamp(3.3rem,8vw,6.5rem)]"
                   colors={["#bf4417", "#ea580c", "#ffb26b", "#ff9a4d", "#bf4417"]}
                   speed={7}
                   glow={0.45}
@@ -174,7 +174,7 @@ const Home = () => {
                 </GradientText>
               </h1>
 
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[11px] uppercase tracking-[0.22em] text-white/45 xl:justify-start">
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[11px] uppercase tracking-[0.22em] text-white/45 lg:justify-start">
                 <span className="h-px w-9 bg-gradient-to-r from-[#bf4417] to-transparent" />
                 <DecryptedText
                   text="Full-Stack Developer"
@@ -182,15 +182,15 @@ const Home = () => {
                   className="font-medium text-white/80"
                 />
                 <span className="text-[#bf4417]">/</span>
-                <span>Digital Architect</span>
+                <span className="font-semibold text-[#ff9a4d]">Digital Architect</span>
               </div>
 
-              <p className="mx-auto mt-7 max-w-lg text-sm font-light leading-relaxed text-white/60 sm:text-base xl:mx-0">
+              <p className="mx-auto mt-7 max-w-lg text-sm font-light leading-relaxed text-white/60 sm:text-base lg:mx-0">
                 I build fast, reliable web products where clean engineering meets
                 considered design — from the first pixel to the final deployment.
               </p>
 
-              <div className="mt-9 flex flex-wrap items-center justify-center gap-4 xl:justify-start">
+              <div className="mt-9 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
                 <Magnet className="inline-block" maxOffset={10} strength={0.2}>
                   <StarBorder
                     as={Link}
@@ -216,7 +216,7 @@ const Home = () => {
                 </Magnet>
               </div>
 
-              <div className="mt-9 flex items-center justify-center gap-4 xl:justify-start">
+              <div className="mt-9 flex items-center justify-center gap-4 lg:justify-start">
                 <Magnet className="inline-block" maxOffset={8} strength={0.35}>
                   <a
                     href={github}
@@ -247,34 +247,44 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Portrait card */}
-            <div className="relative mx-auto w-full max-w-[380px]">
-              <div className="pointer-events-none absolute -inset-12 rounded-full bg-[#bf4417]/20 blur-[90px]" />
+            {/* Right side photo & identity showcase card */}
+            <div className="relative mx-auto mt-6 w-full max-w-[390px] lg:mt-0">
+              <div className="pointer-events-none absolute -inset-10 rounded-full bg-gradient-to-br from-[#bf4417]/25 via-[#ea580c]/15 to-transparent blur-[80px]" />
               <SpotlightCard
-                className="relative rounded-[2rem] border-white/10 bg-[#080808]/80 p-2 backdrop-blur-xl"
-                color="rgba(234, 88, 12, 0.32)"
-                size={360}
+                className="relative overflow-hidden rounded-[2rem] border-white/15 bg-gradient-to-b from-[#0f0704]/90 via-[#080808]/90 to-[#040404]/95 p-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_40px_rgba(191,68,23,0.18)] backdrop-blur-2xl ring-1 ring-white/10"
+                color="rgba(234, 88, 12, 0.35)"
+                size={380}
               >
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem]">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#0a0a0a]">
                   <img
                     src="/passport.png"
                     alt="Shah Dhairya"
-                    className="h-full w-full object-cover object-top"
+                    className="h-full w-full object-cover object-top filter brightness-[0.98] contrast-[1.03] transition-transform duration-700 hover:scale-[1.03]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/10 to-transparent" />
-                  <div className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-white/75 backdrop-blur-md">
-                    <CircleDot size={10} className="text-emerald-400" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/30 to-transparent" />
+                  
+                  {/* Status Badge */}
+                  <div className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-black/60 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-emerald-300 shadow-lg backdrop-blur-md">
+                    <CircleDot size={10} className="text-emerald-400 animate-pulse" />
                     Open to work
                   </div>
+
+                  {/* Top Right Focus Pill */}
+                  <div className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-[#bf4417]/35 bg-[#bf4417]/20 px-2.5 py-1 text-[9px] font-semibold tracking-wider text-[#ff9a4d] backdrop-blur-md">
+                    <Code2 size={11} />
+                    <span>Full-Stack</span>
+                  </div>
+
+                  {/* Bottom Identity Overlay */}
                   <div className="absolute inset-x-0 bottom-0 p-5">
-                    <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[#ff9a4d]">
+                    <div className="inline-flex items-center gap-1.5 rounded-md border border-[#bf4417]/30 bg-[#bf4417]/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#ff9a4d]">
                       Digital Architect
-                    </p>
-                    <h2 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-white">
+                    </div>
+                    <h2 className="mt-2 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-md">
                       Shah Dhairya
                     </h2>
-                    <p className="mt-1 text-xs font-light text-white/45">
-                      {identity.education}
+                    <p className="mt-1 text-xs font-medium leading-relaxed text-white/80">
+                      Computer Engineering, ADIT (CVM University), Anand
                     </p>
                   </div>
                 </div>
@@ -283,34 +293,18 @@ const Home = () => {
                   {stats.map((stat) => (
                     <div
                       key={stat.label}
-                      className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-1.5 py-3 text-center"
+                      className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-1.5 py-3 text-center transition-colors hover:border-[#bf4417]/40 hover:bg-white/[0.05]"
                     >
                       <div className="font-display text-lg font-extrabold text-white">
                         <CountUp to={statNumber(stat.value)} suffix={statSuffix(stat.value)} />
                       </div>
-                      <div className="mt-0.5 text-[7px] uppercase tracking-[0.12em] text-white/40">
+                      <div className="mt-0.5 text-[7px] uppercase tracking-[0.12em] text-white/50">
                         {stat.label}
                       </div>
                     </div>
                   ))}
                 </div>
               </SpotlightCard>
-
-              <Magnet
-                className="absolute -right-4 top-20 hidden sm:block"
-                maxOffset={12}
-                strength={0.3}
-              >
-                <div className="flex items-center gap-2.5 rounded-2xl border border-white/10 bg-[#0a0a0a]/90 p-3 pr-4 shadow-2xl backdrop-blur-xl">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#bf4417]/15 text-[#ff9a4d]">
-                    <Code2 size={15} />
-                  </span>
-                  <div>
-                    <p className="text-[8px] uppercase tracking-[0.16em] text-white/35">Focus</p>
-                    <p className="text-xs font-semibold text-white">Full-Stack</p>
-                  </div>
-                </div>
-              </Magnet>
             </div>
           </div>
         </div>
