@@ -237,7 +237,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://shahdhairyah.in/images/projects/ADITCMS/cover.png</image:loc>
+      <image:loc>https://shahdhairyah.in/images/projects/ADITCMS/cover.webp</image:loc>
       <image:title>ADIT CMS Platform — Project Showcase</image:title>
     </image:image>
   </url>
@@ -247,7 +247,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://shahdhairyah.in/images/projects/CD/cover.png</image:loc>
+      <image:loc>https://shahdhairyah.in/images/projects/CD/cover.webp</image:loc>
       <image:title>Centralized Dashboard — Project Showcase</image:title>
     </image:image>
   </url>

@@ -22,6 +22,18 @@ const WelcomeScreen = ({ onWelcomeComplete }) => {
   const [isFading, setIsFading] = useState(false);
   const completed = useRef(false);
 
+  useEffect(() => {
+    // If the visitor is a bot or crawler, bypass the splash screen immediately for SEO
+    if (
+      typeof navigator !== "undefined" &&
+      /bot|crawler|spider|crawling|googlebot|bingbot|duckduckbot|baiduspider|yandexbot/i.test(
+        navigator.userAgent || ""
+      )
+    ) {
+      onWelcomeComplete();
+    }
+  }, [onWelcomeComplete]);
+
   const handleSkip = useCallback(() => {
     if (completed.current) return;
     setIsFading(true);

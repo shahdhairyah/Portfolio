@@ -20,6 +20,7 @@ const DotGrid = ({
     if (!ctx) return undefined;
 
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    const isTouch = window.matchMedia?.("(pointer: coarse)").matches ?? false;
     const pointer = { x: -9999, y: -9999, active: false };
     let dots = [];
     let width = 1;
@@ -114,8 +115,10 @@ const DotGrid = ({
     });
     intersection.observe(canvas);
 
-    window.addEventListener("pointermove", locate, { passive: true });
-    document.documentElement.addEventListener("pointerleave", onLeave);
+    if (!isTouch) {
+      window.addEventListener("pointermove", locate, { passive: true });
+      document.documentElement.addEventListener("pointerleave", onLeave);
+    }
 
     build();
     draw();
@@ -125,8 +128,10 @@ const DotGrid = ({
       cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       intersection.disconnect();
-      window.removeEventListener("pointermove", locate);
-      document.documentElement.removeEventListener("pointerleave", onLeave);
+      if (!isTouch) {
+        window.removeEventListener("pointermove", locate);
+        document.documentElement.removeEventListener("pointerleave", onLeave);
+      }
     };
   }, [activeColor, baseColor, dotSize, gap, radius]);
 

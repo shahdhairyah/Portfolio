@@ -77,17 +77,49 @@ const floatingIcons = [
 const statNumber = (value) => parseInt(String(value), 10) || 0;
 const statSuffix = (value) => String(value).replace(/^\d+/, "");
 
-const personJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Shah Dhairya",
-  alternateName: "Dhairya Shah",
-  url: "https://shahdhairyah.in/",
-  image: "https://shahdhairyah.in/og-image.png",
-  jobTitle: "Full-Stack Developer",
-  sameAs: ["https://github.com/shahdhairyah", "https://www.linkedin.com/in/shahdhairyah/"],
-  knowsAbout: ["PHP", "JavaScript", "React", "Python", "MySQL", "HTML", "CSS", "Tailwind CSS"],
-};
+const personJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Shah Dhairya",
+    alternateName: ["Dhairya Shah", "shahdhairyah"],
+    url: "https://shahdhairyah.in/",
+    image: "https://shahdhairyah.in/og-image.png",
+    jobTitle: "Full-Stack Developer & Digital Architect",
+    sameAs: [
+      "https://github.com/shahdhairyah",
+      "https://www.linkedin.com/in/shahdhairyah/",
+      "https://leetcode.com/shahdhairyah",
+      "https://www.instagram.com/shahdhairyah",
+    ],
+    knowsAbout: [
+      "React",
+      "JavaScript",
+      "TypeScript",
+      "Node.js",
+      "PHP",
+      "Python",
+      "MySQL",
+      "Tailwind CSS",
+      "REST APIs",
+      "Full-Stack Web Development",
+    ],
+    alumniOf: {
+      "@type": "EducationalOrganization",
+      name: "A.D. Patel Institute of Technology (ADIT), CVM University",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Shah Dhairya Portfolio",
+    url: "https://shahdhairyah.in/",
+    author: {
+      "@type": "Person",
+      name: "Shah Dhairya",
+    },
+  },
+];
 
 const Home = () => {
   const location = useLocation();
@@ -106,8 +138,9 @@ const Home = () => {
     <ClickSpark color="#ff9a4d" count={12} size={16} radius={36} className="w-full overflow-hidden bg-[#020202]">
       <SEO
         title="Shah Dhairya – Full-Stack Developer & Digital Architect"
-        description="Portfolio of Shah Dhairya, a full-stack developer building products with React, Node.js, Python and PHP."
+        description="Portfolio of Shah Dhairya, a full-stack developer building fast, modern web applications with React, Node.js, Python, and PHP. Explore selected projects, technical stack, and achievements."
         path="/"
+        keywords="Shah Dhairya, Dhairya Shah, full-stack developer, React developer, PHP developer, web developer, software engineer, portfolio, Gujarat India"
         jsonLd={personJsonLd}
       />
 
@@ -256,11 +289,18 @@ const Home = () => {
                 size={380}
               >
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#0a0a0a]">
-                  <img
-                    src="/passport.png"
-                    alt="Shah Dhairya"
-                    className="h-full w-full object-cover object-top filter brightness-[0.98] contrast-[1.03] transition-transform duration-700 hover:scale-[1.03]"
-                  />
+                  <picture>
+                    <source srcSet="/passport.webp" type="image/webp" />
+                    <img
+                      src="/passport.png"
+                      alt="Shah Dhairya"
+                      width="380"
+                      height="475"
+                      fetchPriority="high"
+                      decoding="async"
+                      className="h-full w-full object-cover object-top filter brightness-[0.98] contrast-[1.03] transition-transform duration-700 hover:scale-[1.03]"
+                    />
+                  </picture>
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/30 to-transparent" />
                   
                   {/* Status Badge */}

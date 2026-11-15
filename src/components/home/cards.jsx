@@ -73,6 +73,8 @@ export const FeaturedProjectCard = ({ project }) => {
             src={project.image}
             alt=""
             aria-hidden="true"
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover blur-2xl opacity-35 scale-110"
           />
         </div>
@@ -81,6 +83,9 @@ export const FeaturedProjectCard = ({ project }) => {
           src={project.image}
           alt={project.title}
           loading="lazy"
+          decoding="async"
+          width="800"
+          height="500"
           className="relative z-10 max-w-full max-h-full object-contain p-2 sm:p-3 md:p-4 transition-transform duration-700 group-hover:scale-[1.02]"
         />
         <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-t from-[#020202]/90 via-transparent to-black/20" />

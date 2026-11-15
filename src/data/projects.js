@@ -7,7 +7,7 @@ export const projects = [
     year: "2026",
     role: "Full-Stack Developer",
     status: "Live",
-    image: "/images/projects/ADITCMS/cover.png",
+    image: "/images/projects/ADITCMS/cover.webp",
     coverPosition: "center 01%",
     tagline:
       "A full-stack content management system built for ADIT — a role-aware platform for managing departments, events, notices, gallery, and placements, replacing static pages with a dynamic, admin-controlled experience.",
@@ -68,7 +68,7 @@ export const projects = [
     year: "2026",
     role: "Full-Stack Developer",
     status: "Live",
-    image: "/images/projects/CD/cover.png",
+    image: "/images/projects/CD/cover.webp",
     tagline:
       "A unified operations platform for a multi-department institution, aggregating attendance, performance, and administrative data into one real-time, role-aware dashboard. Replaced scattered spreadsheets with a single live source of truth for leadership and HODs.",
     stack: ["PHP", "MySQL", "Bootstrap", "jQuery", "Ajax"],

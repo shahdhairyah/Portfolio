@@ -22,6 +22,8 @@ const Magnet = ({
     if (disabled) return undefined;
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     if (reduce) return undefined;
+    const isTouch = window.matchMedia?.("(pointer: coarse)").matches;
+    if (isTouch) return undefined;
 
     const onMove = (event) => {
       const node = ref.current;
